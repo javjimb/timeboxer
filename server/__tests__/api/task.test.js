@@ -50,6 +50,14 @@ describe('Task', () => {
         expect(response.status).toBe(404);
     });
 
+    it('should not be able to create task without a name', async () => {
+        const response = await request.post('/tasks').send({});
+
+        expect(response.status).toBe(422);
+        expect(response.body).toHaveProperty('errors');
+        expect(response.body.errors[0].msg).toBe('Task name cannot be empty');
+    });
+
     it('should be able to create task', async () => {
         const response = await request.post('/tasks').send({
             name: 'Jest new task',
@@ -59,6 +67,20 @@ describe('Task', () => {
         expect(response.status).toBe(201);
         expect(response.body.name).toBe('Jest new task');
         expect(response.body.duration).toBe(1);
+    });
+
+    it('should not be able to update task with invalid values', async () => {
+
+        const task = await TaskService.createTask({ name: 'Task test'});
+
+        const response = await request.put('/tasks/' + task._id).send({
+            name: '',
+            status: 'banana'
+        });
+
+        expect(response.status).toBe(500);
+        expect(response.body).toHaveProperty('errors');
+        expect(response.body.errors).toHaveLength(2);
     });
 
     it('should be able to update a task', async () => {
