@@ -56,7 +56,7 @@ describe('Task', () => {
             duration: '1',
         });
 
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
         expect(response.body.name).toBe('Jest new task');
         expect(response.body.duration).toBe(1);
     });
