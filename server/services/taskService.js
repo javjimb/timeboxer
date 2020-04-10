@@ -30,7 +30,7 @@ class TaskService {
 
     async updateTask(task_id, update) {
 
-        let task = await TaskModel.findByIdAndUpdate(task_id, update, { new: true });
+        let task = await TaskModel.findByIdAndUpdate(task_id, update, { new: true, runValidators: true });
 
         return task;
     }
