@@ -43,6 +43,13 @@ describe('Task', () => {
         expect(response.body.status).toBe('new');
     });
 
+    it('should get 404 status code when fetching non existing id', async () => {
+
+        const response = await request.get('/tasks/invalid-id');
+
+        expect(response.status).toBe(404);
+    });
+
     it('should be able to create task', async () => {
         const response = await request.post('/tasks').send({
             name: 'Jest new task',
