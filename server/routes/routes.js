@@ -12,10 +12,12 @@ router.get('/tasks', (req, res) => {
 
 });
 
-router.get('/tasks/:id', (req, res) => {
+router.get('/tasks/:id', (req, res, next) => {
 
     TaskService.getTaskById(req.params.id).then((result) => {
         res.send(result);
+    }).catch( err => {
+        res.sendStatus(404);
     });
 
 });

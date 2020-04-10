@@ -5,7 +5,7 @@ const taskSchema = new Schema(
     {
         name: String,
         start: Number,
-        duration: Number,
+        duration: Number, // in hours
         status: {
             type: String,
             enum: ['new', 'in-progress', 'completed', 'scheduled'],

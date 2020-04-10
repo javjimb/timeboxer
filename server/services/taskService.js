@@ -2,12 +2,6 @@ const TaskModel = require('../models/Task');
 
 class TaskService {
 
-    /*
-    constructor(taskModel) {
-        this.taskModel = taskModel;
-    }
-    */
-
     async getTasks(filter) {
 
         let tasks = await TaskModel.find({});
