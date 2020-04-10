@@ -25,7 +25,7 @@ router.get('/tasks/:id', (req, res, next) => {
 router.post('/tasks', async (req, res) => {
 
     TaskService.createTask(req.body).then((result) => {
-        res.send(result);
+        res.status(201).send(result);
     });
 });
 
@@ -42,13 +42,5 @@ router.delete('/tasks/:id', async (req, res) => {
         res.send(result);
     })
 });
-
-
-/*
-routes.post('/users', UserController.store);
-routes.delete('/users', UserController.delete);
-routes.post('/tasks', TaskController.store);
-routes.delete('/tasks', TaskController.delete);
-*/
 
 module.exports = router;
