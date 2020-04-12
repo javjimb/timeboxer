@@ -4,8 +4,16 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles((theme) => ({}));
+const defaultProps = {
+  bgcolor: 'background.paper',
+  m: 1,
+  style: { width: '100%', height: '2rem' },
+  borderColor: 'text.primary',
+};
 
 export default function AddTask() {
   const classes = useStyles();
@@ -15,7 +23,7 @@ export default function AddTask() {
         <Grid item xs={7}>
           <TextField
             id='taskName'
-            label='Task'
+            label='Create a new task'
             placeholder='Enter task name'
             variant='outlined'
             size='small'
@@ -26,7 +34,7 @@ export default function AddTask() {
           <TextField
             id='duration'
             label='Duration'
-            placeholder='Enter duration'
+            placeholder='hours'
             variant='outlined'
             size='small'
             fullWidth
@@ -38,6 +46,7 @@ export default function AddTask() {
           </Button>
         </Grid>
       </Grid>
+      <Box borderBottom={1} {...defaultProps} />
     </form>
   );
 }
