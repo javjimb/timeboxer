@@ -8,12 +8,12 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-export default function TaskList() {
+export default function TaskList({ newTask, newDuration }) {
   return (
     <div>
       <List>
         <ListItem>
-          <ListItemText primary='Task1' />
+          <ListItemText primary={newTask} secondary={newDuration} />
           <ListItemSecondaryAction>
             <IconButton edge='end' aria-label='delete'>
               <DeleteIcon />
