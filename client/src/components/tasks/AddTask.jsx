@@ -1,5 +1,5 @@
 // Library
-import React, { useState } from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -17,45 +17,22 @@ const defaultProps = {
   borderColor: 'text.primary',
 };
 
-export default function AddTask() {
+export default function AddTask({
+  task,
+  duration,
+  createNewTask,
+  taskChangeHandler,
+  durationChangeHandler,
+}) {
   const classes = useStyles();
-  const [task, setTask] = useState('');
-  const [duration, setDuration] = useState(0);
-  const [taskList, setTaskList] = useState([]);
 
-  const taskChangeHandler = (event) => {
-    setTask(event.target.value);
-  };
-  const durationChangeHandler = (event) => {
-    setDuration(event.target.value);
-  };
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-
-    fetch('http://localhost:5000/tasks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: task,
-        duration: duration,
-      }),
-    })
-      .then((response) => {
-        console.log(response);
-        taskList.push(response);
-        setTaskList(taskList);
-        setTask('');
-      })
-      .catch((error) => console.log(error));
-  };
   return (
     <div>
       <form
         className={classes.root}
         noValidate
         autoComplete='off'
-        onSubmit={submitHandler}>
+        onSubmit={createNewTask}>
         <Grid container spacing={1}>
           <Grid item xs={7}>
             <TextField
