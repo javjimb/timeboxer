@@ -23,6 +23,7 @@ export default function AddTask({
   createNewTask,
   taskChangeHandler,
   durationChangeHandler,
+  taskList,
 }) {
   const classes = useStyles();
 
@@ -66,7 +67,7 @@ export default function AddTask({
         </Grid>
         <Box borderBottom={1} {...defaultProps} />
       </form>
-      <TaskList />
+      <TaskList taskList={taskList} />
     </div>
   );
 }

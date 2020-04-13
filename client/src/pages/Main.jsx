@@ -1,5 +1,5 @@
 // Library
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -25,6 +25,7 @@ export default function Main() {
   const [task, setTask] = useState('');
   const [duration, setDuration] = useState(0);
   const [taskList, setTaskList] = useState([]);
+  const [hasError, setErrors] = useState(false);
 
   const taskChangeHandler = (event) => {
     setTask(event.target.value);
@@ -34,7 +35,6 @@ export default function Main() {
   };
   const createNewTask = (event) => {
     event.preventDefault();
-
     fetch('http://localhost:5000/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -43,14 +43,27 @@ export default function Main() {
         duration: duration,
       }),
     })
+      .then((response) => response.json())
       .then((response) => {
         console.log(response);
         taskList.push(response);
         setTaskList(taskList);
         setTask('');
+        setDuration(0);
       })
       .catch((error) => console.log(error));
   };
+
+  useEffect(() => {
+    async function fetchTasks() {
+      const response = await fetch('http://localhost:5000/tasks');
+      response
+        .json()
+        .then((response) => setTaskList(response))
+        .catch((error) => setErrors(error));
+    }
+    fetchTasks();
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -63,6 +76,7 @@ export default function Main() {
               createNewTask={createNewTask}
               taskChangeHandler={taskChangeHandler}
               durationChangeHandler={durationChangeHandler}
+              taskList={taskList}
             />
           </Paper>
         </Grid>
