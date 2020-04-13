@@ -45,12 +45,20 @@ export default function Main() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         taskList.push(response);
         setTaskList(taskList);
         setTask('');
         setDuration(0);
       })
+      .catch((error) => console.log(error));
+  };
+  const deleteTask = (id) => {
+    fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then(() => setTaskList(taskList.filter((task) => task._id !== id)))
       .catch((error) => console.log(error));
   };
 
@@ -77,6 +85,7 @@ export default function Main() {
               taskChangeHandler={taskChangeHandler}
               durationChangeHandler={durationChangeHandler}
               taskList={taskList}
+              deleteTask={deleteTask}
             />
           </Paper>
         </Grid>

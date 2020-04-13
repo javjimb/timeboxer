@@ -8,7 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-export default function TaskList({ taskList }) {
+export default function TaskList({ taskList, deleteTask }) {
   return (
     <div>
       <List>
@@ -16,7 +16,10 @@ export default function TaskList({ taskList }) {
           <ListItem key={idx}>
             <ListItemText primary={task.name + ' ' + task.duration + 'hrs'} />
             <ListItemSecondaryAction>
-              <IconButton edge='end' aria-label='delete'>
+              <IconButton
+                edge='end'
+                aria-label='delete'
+                onClick={() => deleteTask(task._id)}>
                 <DeleteIcon />
               </IconButton>
             </ListItemSecondaryAction>
