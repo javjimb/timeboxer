@@ -24,6 +24,7 @@ export default function AddTask({
   taskChangeHandler,
   durationChangeHandler,
   taskList,
+  deleteTask,
 }) {
   const classes = useStyles();
 
@@ -67,7 +68,7 @@ export default function AddTask({
         </Grid>
         <Box borderBottom={1} {...defaultProps} />
       </form>
-      <TaskList taskList={taskList} />
+      <TaskList taskList={taskList} deleteTask={deleteTask} />
     </div>
   );
 }
