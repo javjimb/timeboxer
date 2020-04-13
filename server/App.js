@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 
 const routes = require('./routes/routes');
 
@@ -9,7 +10,7 @@ const databaseHelper = require('./helpers/database');
 class App {
     constructor() {
         this.express = express();
-
+        this.express.use(cors());
         this.database();
         this.middlewares();
         this.routes();
