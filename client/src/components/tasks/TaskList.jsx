@@ -12,8 +12,14 @@ export default function TaskList({ taskList, deleteTask }) {
   return (
     <div>
       <List>
-        {taskList.map((task, idx) => (
-          <ListItem key={idx}>
+        {taskList.map((task) => (
+          <ListItem
+              className="draggable-task"
+              name={task.name}
+              duration={task.duration}
+              id={task._id}
+              key={task._id}
+          >
             <ListItemText primary={task.name + ' ' + task.duration + 'hrs'} />
             <ListItemSecondaryAction>
               <IconButton
