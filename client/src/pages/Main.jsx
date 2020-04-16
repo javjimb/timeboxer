@@ -62,6 +62,10 @@ export default function Main() {
       .catch((error) => console.log(error));
   };
 
+  const updateTask = (id, newData) => {
+    console.warn('Update:', id, newData);
+  }
+
   useEffect(() => {
     async function fetchTasks() {
       const response = await fetch('http://localhost:5000/tasks');
@@ -70,11 +74,12 @@ export default function Main() {
         .then((response) => setTaskList(response))
         .catch((error) => setErrors(error));
     }
-    fetchTasks();
+    fetchTasks().then( o => console.log );
+
   }, []);
 
   return (
-    <div className={classes.root}>
+    <div id='task-list' className={classes.root}>
       <Grid container spacing={0}>
         <Grid item xs={12} sm={4}>
           <Paper className={classes.paper}>
@@ -91,7 +96,7 @@ export default function Main() {
         </Grid>
         <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
-            <Scheduler />
+            <Scheduler updateTask={updateTask} />
           </Paper>
         </Grid>
       </Grid>

@@ -1,10 +1,13 @@
 // Library
-import React from 'react';
+import React, {useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+
+// Fullcalendar
+import { Draggable } from '@fullcalendar/interaction';
 
 // Components
 import TaskList from './TaskList';
@@ -27,6 +30,27 @@ export default function AddTask({
   deleteTask,
 }) {
   const classes = useStyles();
+
+  useEffect(() => {
+
+    // Set the draggable section of the app. This is the container where the task list is.
+    let draggableEl = document.getElementById("task-list");
+    new Draggable(draggableEl, {
+      itemSelector: ".draggable-task",
+      eventData: function(eventEl) {
+        let name = eventEl.getAttribute("name");
+        let id = eventEl.getAttribute("id");
+        let duration = eventEl.getAttribute("duration");
+
+        return {
+          name: name,
+          duration: duration,
+          id: id
+        };
+      }
+    });
+
+  }, []);
 
   return (
     <div>
@@ -68,7 +92,7 @@ export default function AddTask({
         </Grid>
         <Box borderBottom={1} {...defaultProps} />
       </form>
-      <TaskList taskList={taskList} deleteTask={deleteTask} />
+      <TaskList  taskList={taskList} deleteTask={deleteTask} />
     </div>
   );
 }
