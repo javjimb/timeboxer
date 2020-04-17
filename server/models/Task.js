@@ -5,6 +5,7 @@ const taskSchema = new Schema(
     {
         name: String,
         start: Number,
+        end: Number,
         duration: Number, // in hours
         status: {
             type: String,
