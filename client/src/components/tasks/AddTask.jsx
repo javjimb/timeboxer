@@ -43,9 +43,10 @@ export default function AddTask({
         let duration = eventEl.getAttribute("duration");
 
         return {
-          name: name,
+          title: name,
           duration: duration,
-          id: id
+          id: id,
+          editable: true
         };
       }
     });
