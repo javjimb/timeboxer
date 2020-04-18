@@ -1,5 +1,5 @@
 // Library
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -32,25 +32,23 @@ export default function AddTask({
   const classes = useStyles();
 
   useEffect(() => {
-
     // Set the draggable section of the app. This is the container where the task list is.
-    let draggableEl = document.getElementById("task-list");
+    let draggableEl = document.getElementById('task-list');
     new Draggable(draggableEl, {
-      itemSelector: ".draggable-task",
-      eventData: function(eventEl) {
-        let name = eventEl.getAttribute("name");
-        let id = eventEl.getAttribute("id");
-        let duration = eventEl.getAttribute("duration");
+      itemSelector: '.draggable-task',
+      eventData: function (eventEl) {
+        let name = eventEl.getAttribute('name');
+        let id = eventEl.getAttribute('id');
+        let duration = eventEl.getAttribute('duration');
 
         return {
           title: name,
           duration: duration,
           id: id,
-          editable: true
+          editable: true,
         };
-      }
+      },
     });
-
   }, []);
 
   return (
@@ -93,7 +91,7 @@ export default function AddTask({
         </Grid>
         <Box borderBottom={1} {...defaultProps} />
       </form>
-      <TaskList  taskList={taskList} deleteTask={deleteTask} />
+      <TaskList taskList={taskList} deleteTask={deleteTask} />
     </div>
   );
 }

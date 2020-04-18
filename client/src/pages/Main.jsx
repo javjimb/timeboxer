@@ -5,11 +5,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
 // Services
-import TaskService from "../services/TaskService";
+import TaskService from '../services/TaskService';
 
 // Components
 import Scheduler from '../components/schedule/Scheduler';
 import AddTask from '../components/tasks/AddTask';
+import ScheduledTaskList from '../components/tasks/ScheduledTaskList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +69,7 @@ export default function Main() {
   const updateTask = (id, newData) => {
     // update the task in the database
     TaskService.updateTask(id, newData);
-  }
+  };
 
   useEffect(() => {
     async function fetchTasks() {
@@ -78,8 +79,7 @@ export default function Main() {
         .then((response) => setTaskList(response))
         .catch((error) => setErrors(error));
     }
-    fetchTasks().then( o => console.log );
-
+    fetchTasks().then((o) => console.log);
   }, []);
 
   return (
@@ -96,7 +96,9 @@ export default function Main() {
               taskList={taskList}
               deleteTask={deleteTask}
             />
+            <ScheduledTaskList />
           </Paper>
+          {/* <Paper className={classes.paper}></Paper> */}
         </Grid>
         <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
