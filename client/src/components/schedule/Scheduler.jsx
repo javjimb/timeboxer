@@ -41,7 +41,11 @@ export default function Scheduler({
 
     const calendarRef = React.createRef()
 
-    const receive = (event) => {
+    /**
+     * Triggered when an external element is dropped inside the scheduler
+     * @param event the object associated with the dropped element
+     */
+    const eventReceive = (event) => {
 
         let duration = event.draggedEl.attributes.duration.value;
         // extract the id from the dragged event
@@ -65,6 +69,29 @@ export default function Scheduler({
         //calendarEvent.draggedEl.parentNode.removeChild(calendarEvent.draggedEl);
     }
 
+    /**
+     * Triggered when an event within the scheduler is moved
+     * @param data the calendar event data
+     */
+    const eventDrop = (data) => {
+        updateTask(data.event.id, {
+            start: moment(data.event.start).unix(),
+            end: moment(data.event.end).unix()
+        });
+    }
+
+    /**
+     * Triggered when resizing stops and the event has changed in duration
+     * @param data
+     */
+    const eventResize = (data) => {
+        updateTask(data.event.id, {
+            start: moment(data.event.start).unix(),
+            end: moment(data.event.end).unix(),
+            duration: (moment(data.event.end).unix() - moment(data.event.start).unix()) / 3600
+        });
+    }
+
   return <div>
       <FullCalendar
           ref={calendarRef}
@@ -73,7 +100,9 @@ export default function Scheduler({
           droppable={true}
           editable={true}
           events={eventList}
-          eventReceive={(event) => receive(event)}
+          eventReceive={eventReceive}
+          eventDrop={eventDrop}
+          eventResize={eventResize}
           header={{
               //left: 'prev,next today',
               left: '',
