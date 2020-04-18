@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import moment from "moment";
 
 // Fullcalendar
@@ -10,7 +10,34 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import './Scheduler.scss' // webpack must be configured to do this
 
-export default function Scheduler({updateTask}) {
+export default function Scheduler({
+  taskList,
+  updateTask
+}) {
+
+    const [eventList, setEventList] = useState([]);
+
+    useEffect(() => {
+
+        function convertTasksToSchedulerEvents() {
+            let events = [];
+            taskList.forEach( task => {
+                if (task.start > 0 && task.end > 0) {
+                    events.push({
+                        title: task.name,
+                        id: task._id,
+                        start: moment.unix(task.start).toDate(),
+                        end: moment.unix(task.end).toDate()
+                    });
+                }
+            })
+
+            setEventList(events);
+        }
+
+        convertTasksToSchedulerEvents();
+
+    }, [taskList]);
 
     const calendarRef = React.createRef()
 
@@ -45,6 +72,7 @@ export default function Scheduler({updateTask}) {
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
           droppable={true}
           editable={true}
+          events={eventList}
           eventReceive={(event) => receive(event)}
           header={{
               //left: 'prev,next today',

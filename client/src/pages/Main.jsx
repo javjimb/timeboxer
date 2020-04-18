@@ -100,7 +100,7 @@ export default function Main() {
         </Grid>
         <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
-            <Scheduler updateTask={updateTask} />
+            <Scheduler taskList={taskList} updateTask={updateTask} />
           </Paper>
         </Grid>
       </Grid>
