@@ -2,6 +2,12 @@ const apiURL = 'http://localhost:5000/tasks/';
 
 export default {
 
+    /**
+     * Updates a task
+     * @param task_id string unique id of the task
+     * @param newData object of new data for the task
+     * @returns {Promise<any>}
+     */
     async updateTask(task_id, newData) {
 
         const requestOptions = {
