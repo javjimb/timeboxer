@@ -63,7 +63,8 @@ export default function Scheduler({
         // update the task's start and end date
         updateTask(id, {
             start: startTimestamp,
-            end: endTimestamp
+            end: endTimestamp,
+            status: 'scheduled'
         });
 
         //calendarEvent.draggedEl.parentNode.removeChild(calendarEvent.draggedEl);
