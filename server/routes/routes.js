@@ -40,7 +40,7 @@ router.post('/tasks', [
 });
 
 router.put('/tasks/:id', [
-        check('name').not().isEmpty().withMessage('Task name cannot be empty'),
+        check('name').optional().not().isEmpty().withMessage('Task name cannot be empty'),
         check('status').optional().isIn(['new', 'in-progress', 'completed', 'scheduled']).withMessage('Invalid task status')
     ],
     async (req, res) => {
