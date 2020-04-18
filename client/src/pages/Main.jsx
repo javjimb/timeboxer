@@ -12,6 +12,8 @@ import Scheduler from '../components/schedule/Scheduler';
 import AddTask from '../components/tasks/AddTask';
 import ScheduledTaskList from '../components/tasks/ScheduledTaskList';
 
+const _ = require('lodash');
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -68,7 +70,16 @@ export default function Main() {
 
   const updateTask = (id, newData) => {
     // update the task in the database
-    TaskService.updateTask(id, newData);
+    TaskService.updateTask(id, newData)
+        .then((res) => {
+            // find the task in our list and update it
+            let index = _.findIndex(taskList, o => o._id === id );
+            _.extend(taskList[index], newData);
+            setTaskList([...taskList]);
+        }).catch( err => {
+          // TODO: create a global error handler
+          console.error(err);
+    });
   };
 
   useEffect(() => {
