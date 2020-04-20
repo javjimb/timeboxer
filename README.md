@@ -2,6 +2,9 @@
 
 A simple app to practice the [Timeboxing](https://en.wikipedia.org/wiki/Timeboxing) technique.
 
+## Requirements
+- A local instance of MongoDB
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -29,14 +32,14 @@ npm test
 
 ## Built With
 
-* [Node](https://nodejs.org) - The backend
-* [React](https://reactjs.org) - The frontend
+* [Node](https://nodejs.org) - Backend
+* [React](https://reactjs.org) - Frontend
 * [Material-UI](https://material-ui.com) - Design
 * [MongoDB](https://www.mongodb.com) - Database
 
 ## Authors
 
-* **Javier Jimenez Blasco** - *Initial work* 
-* **Julia Heller** - *Collaborator* 
+* **Javier Jimenez Blasco** - *Backend/Frontend* 
+* **Julia Heller** - *Frontend* 
 
 
