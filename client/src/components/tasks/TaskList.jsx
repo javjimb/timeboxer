@@ -12,7 +12,7 @@ export default function TaskList({ taskList, deleteTask }) {
   return (
     <div>
       <List>
-        {taskList.map((task) => (
+        {taskList.filter(item => item.status !== 'scheduled').map((task) => (
           <ListItem
               className="draggable-task"
               name={task.name}
