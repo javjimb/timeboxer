@@ -100,6 +100,7 @@ export default function Scheduler({
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
           droppable={true}
           editable={true}
+          slotDuration={'00:15:00'}
           events={eventList}
           eventReceive={eventReceive}
           eventDrop={eventDrop}
