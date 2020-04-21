@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Main() {
   const classes = useStyles();
   const [task, setTask] = useState('');
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState('');
   const [taskList, setTaskList] = useState([]);
   const [hasError, setErrors] = useState(false);
 

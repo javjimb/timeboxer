@@ -22,7 +22,7 @@ export default function Scheduler({
         function convertTasksToSchedulerEvents() {
             let events = [];
             taskList.forEach( task => {
-                if (task.start > 0 && task.end > 0) {
+                if (task.status === 'scheduled') {
                     events.push({
                         title: task.name,
                         id: task._id,
