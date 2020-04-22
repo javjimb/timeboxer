@@ -5,13 +5,15 @@ export default function UnscheduledTime({ taskList }) {
 
     let totalTime = 0;
     taskList.forEach( task => {
-        totalTime += task.duration;
+        if (task.status == 'new') {
+            totalTime += task.duration;
+        }
     })
 
     return (
         <div>
             <Typography variant="h6">
-                Total unscheduled time: {totalTime} hrs 
+                Total unscheduled time: {totalTime} hrs
             </Typography>
         </div>
     )
