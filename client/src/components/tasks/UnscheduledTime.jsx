@@ -5,7 +5,7 @@ export default function UnscheduledTime({ taskList }) {
 
     let totalTime = 0;
     taskList.forEach( task => {
-        if (task.status == 'new') {
+        if (task.status === 'new') {
             totalTime += task.duration;
         }
     })
