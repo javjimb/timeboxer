@@ -9,11 +9,17 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UnscheduledTime from "./UnscheduledTime";
 
+const _ = require('lodash');
+
 export default function TaskList({ taskList, deleteTask }) {
-  return (
+
+    // only show if there are new unscheduled tasks
+    let unscheduledTime = _.some(taskList, {status: 'new'}) ? <UnscheduledTime taskList={taskList} /> : '';
+
+return (
     <div>
       <List>
-          <UnscheduledTime taskList={taskList} />
+          {unscheduledTime}
         {taskList.filter(item => item.status !== 'scheduled').map((task) => (
           <ListItem
               className="draggable-task"
