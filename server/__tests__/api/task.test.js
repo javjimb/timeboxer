@@ -109,4 +109,26 @@ describe('Task', () => {
         const result = await TaskService.getTaskById(task._id);
         expect(result).toBeNull();
     });
+
+    it('should be able to get a list of tasks between dates', async () => {
+
+        let now = moment();
+        let fromTimestamp = now.startOf('day').unix();
+        let toTimestamp = now.endOf('day').unix();
+
+        // use the service to create some tasks
+        TaskService.createTask({name : 'Task 1'}); // not scheduled
+        // scheduled within timestamps defined above
+        TaskService.createTask({name : 'Task 2', start: fromTimestamp + 3600, end: fromTimestamp + 3600 *2, status: 'scheduled' });
+        // scheduled outside of the range
+        TaskService.createTask({name : 'Task 3', start: fromTimestamp - 3600 *2, end: fromTimestamp - 3600 *4, status: 'scheduled' });
+
+        // should return only one of the tasks
+        let response = await request.get('/tasks?fromTimestamp=' + fromTimestamp + '&untilTimestamp=' + toTimestamp);
+        expect(response.body).toHaveLength(1);
+
+        // should return only two of the tasks
+        response = await request.get('/tasks?status=scheduled');
+        expect(response.body).toHaveLength(2);
+    });
 });
