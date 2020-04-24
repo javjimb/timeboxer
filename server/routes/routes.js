@@ -7,10 +7,23 @@ const router = new express.Router();
 
 //routes.post('/tasks', TaskService.createTask);
 router.get('/tasks', (req, res) => {
-    TaskService.getTasks({}).then((result) => {
+
+    let filter = {}
+
+    // apply filters from query string
+    if (req.query.fromTimestamp) {
+        filter.start = { $gte: req.query.fromTimestamp}
+    }
+    if (req.query.untilTimestamp) {
+        filter.end = { $lte: req.query.untilTimestamp}
+    }
+    if (req.query.status) {
+        filter.status = { $eq: req.query.status}
+    }
+
+    TaskService.getTasks(filter).then((result) => {
         res.send(result);
     });
-
 });
 
 router.get('/tasks/:id', (req, res, next) => {

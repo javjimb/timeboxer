@@ -3,9 +3,7 @@ const TaskModel = require('../models/Task');
 class TaskService {
 
     async getTasks(filter) {
-
-        let tasks = await TaskModel.find({});
-
+        let tasks = await TaskModel.find(filter);
         return tasks;
     }
 
