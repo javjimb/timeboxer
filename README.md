@@ -27,7 +27,20 @@ To run backend tests:
 
 ```
 cd server
-npm test
+npm run test
+```
+
+## Documentation
+
+To generate the documentation for the API:
+
+```
+cd server
+npm run docs
+```
+The documentation can be viewed at
+```
+http://[yourdomain]/apidoc
 ```
 
 ## Built With
