@@ -11,6 +11,7 @@ class App {
     constructor() {
         this.express = express();
         this.express.use(cors());
+        this.express.use(express.static('public'));
         this.database();
         this.middlewares();
         this.routes();
