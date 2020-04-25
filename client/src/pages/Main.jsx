@@ -87,7 +87,7 @@ export default function Main() {
       const response = await fetch('http://localhost:5000/tasks');
       response
         .json()
-        .then((response) => setTaskList(response))
+        .then((response) => setTaskList(response.tasks))
         .catch((error) => setErrors(error));
     }
     fetchTasks().then((o) => console.log);
