@@ -7,38 +7,42 @@ import Divider from '@material-ui/core/Divider';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import UnscheduledTime from "./UnscheduledTime";
+import UnscheduledTime from './UnscheduledTime';
 
 const _ = require('lodash');
 
 export default function TaskList({ taskList, deleteTask }) {
+  // only show if there are new unscheduled tasks
+  let unscheduledTime = _.some(taskList, { status: 'new' }) ? (
+    <UnscheduledTime taskList={taskList} />
+  ) : (
+    ''
+  );
 
-    // only show if there are new unscheduled tasks
-    let unscheduledTime = _.some(taskList, {status: 'new'}) ? <UnscheduledTime taskList={taskList} /> : '';
-
-return (
+  return (
     <div>
       <List>
-          {unscheduledTime}
-        {taskList.filter(item => item.status !== 'scheduled').map((task) => (
-          <ListItem
-              className="draggable-task"
+        {unscheduledTime}
+        {taskList
+          .filter((item) => item.status !== 'scheduled')
+          .map((task) => (
+            <ListItem
+              className='draggable-task'
               name={task.name}
               duration={task.duration}
               id={task._id}
-              key={task._id}
-          >
-            <ListItemText primary={task.name + ' ' + task.duration + 'hrs'} />
-            <ListItemSecondaryAction>
-              <IconButton
-                edge='end'
-                aria-label='delete'
-                onClick={() => deleteTask(task._id)}>
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
+              key={task._id}>
+              <ListItemText primary={task.name + ' ' + task.duration + 'hrs'} />
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge='end'
+                  aria-label='delete'
+                  onClick={() => deleteTask(task._id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
         <Divider />
       </List>
     </div>

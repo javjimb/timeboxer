@@ -71,15 +71,16 @@ export default function Main() {
   const updateTask = (id, newData) => {
     // update the task in the database
     TaskService.updateTask(id, newData)
-        .then((res) => {
-            // find the task in our list and update it
-            let index = _.findIndex(taskList, o => o._id === id );
-            _.extend(taskList[index], newData);
-            setTaskList([...taskList]);
-        }).catch( err => {
-          // TODO: create a global error handler
-          console.error(err);
-    });
+      .then((res) => {
+        // find the task in our list and update it
+        let index = _.findIndex(taskList, (o) => o._id === id);
+        _.extend(taskList[index], newData);
+        setTaskList([...taskList]);
+      })
+      .catch((err) => {
+        // TODO: create a global error handler
+        console.error(err);
+      });
   };
 
   useEffect(() => {
@@ -107,7 +108,7 @@ export default function Main() {
               taskList={taskList}
               deleteTask={deleteTask}
             />
-            <ScheduledTaskList />
+            <ScheduledTaskList taskList={taskList} />
           </Paper>
           {/* <Paper className={classes.paper}></Paper> */}
         </Grid>
