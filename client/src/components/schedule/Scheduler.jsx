@@ -21,6 +21,8 @@ export default function Scheduler({
 
         function convertTasksToSchedulerEvents() {
             let events = [];
+            let calendarApi = calendarRef.current.getApi();
+
             taskList.forEach( task => {
                 if (task.status === 'scheduled') {
                     events.push({
@@ -59,15 +61,14 @@ export default function Scheduler({
         let end = moment.unix(endTimestamp).toDate();
         // set the end date of the calendar event
         calEvent.setEnd(end);
-
+        // delete the event because all events will get redrawn and will create a duplicate
+        calEvent.remove();
         // update the task's start and end date
         updateTask(id, {
             start: startTimestamp,
             end: endTimestamp,
             status: 'scheduled'
         });
-
-        //calendarEvent.draggedEl.parentNode.removeChild(calendarEvent.draggedEl);
     }
 
     /**
