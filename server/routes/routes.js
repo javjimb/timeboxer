@@ -1,9 +1,8 @@
 const express = require('express');
-const TaskService = require('../services/taskService');
-const { check, validationResult } = require('express-validator');
+const TasksController = require('../controllers/tasks.controller');
+const { check } = require('express-validator');
 
 const router = new express.Router();
-
 
 /**
  * @api {get} /tasks List all tasks
@@ -40,25 +39,7 @@ const router = new express.Router();
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.get('/tasks', (req, res) => {
-
-    let filter = {}
-
-    // apply filters from query string
-    if (req.query.fromTimestamp) {
-        filter.start = { $gte: req.query.fromTimestamp}
-    }
-    if (req.query.untilTimestamp) {
-        filter.end = { $lte: req.query.untilTimestamp}
-    }
-    if (req.query.status) {
-        filter.status = { $eq: req.query.status}
-    }
-
-    TaskService.getTasks(filter).then((result) => {
-        res.send({tasks : result});
-    });
-});
+router.get('/tasks', TasksController.getAll);
 
 /**
  * @api {get} /tasks/:id Find a task
@@ -95,15 +76,8 @@ router.get('/tasks', (req, res) => {
  * @apiErrorExample {json} Find error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.get('/tasks/:id', (req, res, next) => {
 
-    TaskService.getTaskById(req.params.id).then((result) => {
-        res.send(result);
-    }).catch( err => {
-        return res.status(404).json({ errors: [{ msg: 'Could not find task with id ' + req.params.id}] });
-    });
-
-});
+router.get('/tasks/:id', TasksController.getById);
 
 /**
  * @api {post} /tasks Create a task
@@ -151,18 +125,8 @@ router.get('/tasks/:id', (req, res, next) => {
 router.post('/tasks', [
         check('name').not().isEmpty().withMessage('Task name cannot be empty')
     ],
-    async (req, res) => {
-
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
-
-        TaskService.createTask(req.body).then((result) => {
-            res.status(201).send(result);
-        });
-});
+    TasksController.create
+);
 
 /**
  * @api {put} /tasks/:id Update a task
@@ -204,20 +168,8 @@ router.put('/tasks/:id', [
         check('name').optional().not().isEmpty().withMessage('Task name cannot be empty'),
         check('status').optional().isIn(['new', 'in-progress', 'completed', 'scheduled']).withMessage('Invalid task status')
     ],
-    async (req, res) => {
-
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(500).json({ errors: errors.array() });
-        }
-
-        TaskService.updateTask(req.params.id, req.body).then((result) => {
-            res.send(result);
-        }).catch( err => {
-            return res.status(500).json({ errors: [{ msg: 'Could not update task'}] });
-        });
-});
+    TasksController.update
+);
 
 /**
  * @api {delete} /tasks/:id Remove a task
@@ -250,11 +202,6 @@ router.put('/tasks/:id', [
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
-router.delete('/tasks/:id', async (req, res) => {
-
-    TaskService.deleteTask(req.params.id).then((result) => {
-        res.send(result);
-    })
-});
+router.delete('/tasks/:id', TasksController.delete);
 
 module.exports = router;
