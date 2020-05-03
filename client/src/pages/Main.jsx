@@ -11,6 +11,7 @@ import TaskService from '../services/TaskService';
 import Scheduler from '../components/schedule/Scheduler';
 import AddTask from '../components/tasks/AddTask';
 import ScheduledTaskList from '../components/tasks/ScheduledTaskList';
+import TBAppBar from "../components/TBAppBar";
 
 const _ = require('lodash');
 
@@ -94,29 +95,32 @@ export default function Main() {
   }, []);
 
   return (
-    <div id='task-list' className={classes.root}>
-      <Grid container spacing={0}>
-        <Grid item xs={12} sm={4}>
-          <Paper className={classes.paper}>
-            <AddTask
-              task={task}
-              duration={duration}
-              createNewTask={createNewTask}
-              taskChangeHandler={taskChangeHandler}
-              durationChangeHandler={durationChangeHandler}
-              taskList={taskList}
-              deleteTask={deleteTask}
-            />
-            <ScheduledTaskList />
-          </Paper>
-          {/* <Paper className={classes.paper}></Paper> */}
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Paper className={classes.paper}>
-            <Scheduler taskList={taskList} updateTask={updateTask} />
-          </Paper>
-        </Grid>
-      </Grid>
-    </div>
+      <div>
+        <TBAppBar />
+        <div id='task-list' className={classes.root}>
+          <Grid container spacing={0}>
+            <Grid item xs={12} sm={4}>
+              <Paper className={classes.paper}>
+                <AddTask
+                    task={task}
+                    duration={duration}
+                    createNewTask={createNewTask}
+                    taskChangeHandler={taskChangeHandler}
+                    durationChangeHandler={durationChangeHandler}
+                    taskList={taskList}
+                    deleteTask={deleteTask}
+                />
+                <ScheduledTaskList />
+              </Paper>
+              {/* <Paper className={classes.paper}></Paper> */}
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <Paper className={classes.paper}>
+                <Scheduler taskList={taskList} updateTask={updateTask} />
+              </Paper>
+            </Grid>
+          </Grid>
+        </div>
+      </div>
   );
 }
