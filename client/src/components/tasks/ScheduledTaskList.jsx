@@ -57,25 +57,23 @@ export default function ScheduledTaskList({ taskList, updateTask }) {
                     ' ' +
                     task.name
                   }
-                  style={{ textDecoration: 'line-throug' }}
+                  style={{ textDecoration: 'line-through' }}
                 />
               )}
               <ListItemSecondaryAction>
-                <Tooltip title='Mark as completed'>
-                  <IconButton
-                    edge='end'
-                    aria-label='completed'
-                    onClick={() =>
-                      updateTask(task._id, { status: 'completed' })
-                    }>
-                    <CheckCircleOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title='Removed from scheduled'>
-                  <IconButton edge='end'>
-                    <HighlightOffIcon />
-                  </IconButton>
-                </Tooltip>
+                {/* <Tooltip title='Mark as completed'> */}
+                <IconButton
+                  edge='end'
+                  aria-label='completed'
+                  onClick={() => updateTask(task._id, { status: 'completed' })}>
+                  <CheckCircleOutlinedIcon />
+                </IconButton>
+                {/* </Tooltip>
+                <Tooltip title='Removed from scheduled'> */}
+                <IconButton edge='end'>
+                  <HighlightOffIcon />
+                </IconButton>
+                {/* </Tooltip> */}
               </ListItemSecondaryAction>
             </ListItem>
           ))}

@@ -19,7 +19,7 @@ describe('Task', () => {
         const response = await request.get('/tasks');
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(3);
+        expect(response.body.tasks).toHaveLength(3);
     });
 
     it('should be able to get a single task by its id', async () => {
@@ -125,10 +125,10 @@ describe('Task', () => {
 
         // should return only one of the tasks
         let response = await request.get('/tasks?fromTimestamp=' + fromTimestamp + '&untilTimestamp=' + toTimestamp);
-        expect(response.body).toHaveLength(1);
+        expect(response.body.tasks).toHaveLength(1);
 
         // should return only two of the tasks
         response = await request.get('/tasks?status=scheduled');
-        expect(response.body).toHaveLength(2);
+        expect(response.body.tasks).toHaveLength(2);
     });
 });
