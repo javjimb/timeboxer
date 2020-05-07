@@ -14,11 +14,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ScheduledTime from './ScheduledTime';
 
 const _ = require('lodash');
+const moment = require('moment');
 
-export default function ScheduledTaskList({ taskList }) {
+export default function ScheduledTaskList({ taskList, updateTask }) {
   //   only show if there are scheduled tasks
-  let scheduledTime = _.some(taskList, { status: 'scheduled' }) ? (
-    <scheduledTime taskList={taskList} />
+  let scheduledTime = _.some(taskList, {
+    status: 'scheduled',
+  }) ? (
+    <ScheduledTime taskList={taskList} />
   ) : (
     ''
   );
@@ -28,21 +31,43 @@ export default function ScheduledTaskList({ taskList }) {
       <List>
         {scheduledTime}
         {taskList
-          .filter((item) => item.status == 'scheduled')
+          .filter((item) => item.status !== 'new')
           .map((task) => (
             <ListItem
               name={task.name}
               duration={task.duration}
               id={task._id}
               key={task._id}>
-              <ListItemText primary={task.name + ' ' + task.duration + 'hrs'} />
+              {task.status !== 'completed' ? (
+                <ListItemText
+                  primary={
+                    moment.unix(task.start).format('HH:mm') +
+                    ' - ' +
+                    moment.unix(task.end).format('HH:mm') +
+                    ' ' +
+                    task.name
+                  }
+                />
+              ) : (
+                <ListItemText
+                  primary={
+                    moment.unix(task.start).format('HH:mm') +
+                    ' - ' +
+                    moment.unix(task.end).format('HH:mm') +
+                    ' ' +
+                    task.name
+                  }
+                  style={{ textDecoration: 'line-throug' }}
+                />
+              )}
               <ListItemSecondaryAction>
                 <Tooltip title='Mark as completed'>
                   <IconButton
                     edge='end'
                     aria-label='completed'
-                    //   onClick={() => deleteTask(task._id)}
-                  >
+                    onClick={() =>
+                      updateTask(task._id, { status: 'completed' })
+                    }>
                     <CheckCircleOutlinedIcon />
                   </IconButton>
                 </Tooltip>

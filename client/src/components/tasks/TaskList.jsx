@@ -24,7 +24,7 @@ export default function TaskList({ taskList, deleteTask }) {
       <List>
         {unscheduledTime}
         {taskList
-          .filter((item) => item.status !== 'scheduled')
+          .filter((item) => item.status === 'new')
           .map((task) => (
             <ListItem
               className='draggable-task'

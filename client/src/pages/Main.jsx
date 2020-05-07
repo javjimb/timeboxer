@@ -70,6 +70,7 @@ export default function Main() {
 
   const updateTask = (id, newData) => {
     // update the task in the database
+    console.warn(id);
     TaskService.updateTask(id, newData)
       .then((res) => {
         // find the task in our list and update it
@@ -108,7 +109,7 @@ export default function Main() {
               taskList={taskList}
               deleteTask={deleteTask}
             />
-            <ScheduledTaskList taskList={taskList} />
+            <ScheduledTaskList taskList={taskList} updateTask={updateTask} />
           </Paper>
           {/* <Paper className={classes.paper}></Paper> */}
         </Grid>
