@@ -23,7 +23,7 @@ const router = new express.Router();
  * @apiSuccess {Date} tasks.createdAt When the task was created
  *
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
+ *    HTTP/1.1 201 OK
  *    {
  *      tasks: [{
  *           "_id": "5e9d4825e40a457a5cd02449",
