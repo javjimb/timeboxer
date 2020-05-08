@@ -38,7 +38,7 @@ export default function ScheduledTaskList({ taskList, updateTask }) {
               duration={task.duration}
               id={task._id}
               key={task._id}>
-              {task.status === 'completed' ? (
+              {
                 <ListItemText
                   primary={
                     moment.unix(task.start).format('HH:mm') +
@@ -47,19 +47,12 @@ export default function ScheduledTaskList({ taskList, updateTask }) {
                     ' ' +
                     task.name
                   }
-                  style={{ textDecoration: 'line-through' }}
+                  style={{
+                    textDecoration:
+                      task.status === 'completed' ? 'line-through' : 'none',
+                  }}
                 />
-              ) : (
-                <ListItemText
-                  primary={
-                    moment.unix(task.start).format('HH:mm') +
-                    ' - ' +
-                    moment.unix(task.end).format('HH:mm') +
-                    ' ' +
-                    task.name
-                  }
-                />
-              )}
+              }
               <ListItemSecondaryAction>
                 {/* <Tooltip title='Mark as completed'> */}
                 <IconButton
