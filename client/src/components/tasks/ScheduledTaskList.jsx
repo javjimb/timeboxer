@@ -16,7 +16,7 @@ import ScheduledTime from './ScheduledTime';
 const _ = require('lodash');
 const moment = require('moment');
 
-export default function ScheduledTaskList({ taskList, updateTask }) {
+export default function ScheduledTaskList({ taskList, updateTaskStatus }) {
   //   only show if there are scheduled tasks
   let scheduledTime = _.some(taskList, {
     status: 'scheduled',
@@ -58,7 +58,7 @@ export default function ScheduledTaskList({ taskList, updateTask }) {
                 <IconButton
                   edge='end'
                   aria-label='completed'
-                  onClick={() => updateTask(task._id, { status: 'completed' })}>
+                  onClick={() => updateTaskStatus(task._id, 'scheduled', 'completed')}>
                   <CheckCircleOutlinedIcon />
                 </IconButton>
                 {/* </Tooltip>
@@ -67,7 +67,7 @@ export default function ScheduledTaskList({ taskList, updateTask }) {
                   edge='end'
                   aria-label='scheduled'
                   onClick={() =>
-                    updateTask(task._id, { status: 'new', start: 0, end: 0 })
+                    updateTaskStatus(task._id, 'scheduled', 'new')
                   }>
                   <HighlightOffIcon />
                 </IconButton>
