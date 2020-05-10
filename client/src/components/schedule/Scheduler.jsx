@@ -10,20 +10,51 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import './Scheduler.scss' // webpack must be configured to do this
 
-export default function Scheduler({
-  taskList,
-  updateTask
-}) {
+export default class Scheduler extends React.Component{
+    constructor(props) {
+        super(props);
 
-    const [eventList, setEventList] = useState([]);
+        this.calendarRef = React.createRef();
 
-    useEffect(() => {
+        this.state = {
+            taskList: this.props.taskList,
+            eventList: []
+        }
+    }
 
-        function convertTasksToSchedulerEvents() {
+    componentDidMount() {
+        this.convertTasksToSchedulerEvents();
+    }
+
+    /**
+     * Go to next day in the scheduler
+     */
+    next() {
+        this.calendarRef.current.getApi().next();
+    }
+
+    /**
+     * Go to the previous day in the scheduler
+     */
+    previous() {
+        this.calendarRef.current.getApi().prev();
+    }
+
+    /**
+     * Go to today's date in the scheduler
+     */
+    today() {
+        this.calendarRef.current.getApi().today();
+    }
+
+    /**
+     * Formats tasks coming from the API into events compatible with fullcalendar
+     */
+    convertTasksToSchedulerEvents() {
+        setTimeout(() => {
             let events = [];
-            let calendarApi = calendarRef.current.getApi();
 
-            taskList.forEach( task => {
+            this.props.taskList.forEach( task => {
                 if (task.status === 'scheduled') {
                     events.push({
                         title: task.name,
@@ -34,26 +65,22 @@ export default function Scheduler({
                 }
             })
 
-            setEventList(events);
-        }
+            this.setState({eventList: events});
 
-        convertTasksToSchedulerEvents();
-
-    }, [taskList]);
-
-    const calendarRef = React.createRef()
+        }, 500)
+    }
 
     /**
      * Triggered when an external element is dropped inside the scheduler
      * @param event the object associated with the dropped element
      */
-    const eventReceive = (event) => {
+    eventReceive = (event) => {
 
         let duration = event.draggedEl.attributes.duration.value;
         // extract the id from the dragged event
         let id = event.draggedEl.attributes.id.value;
         // get the event drawn in the calendar
-        let calendarApi = calendarRef.current.getApi()
+        let calendarApi = this.calendarRef.current.getApi()
         let calEvent = calendarApi.getEventById(id);
         // use the duration and start date to create the end date
         let startTimestamp = moment(calEvent.start).unix();
@@ -64,7 +91,7 @@ export default function Scheduler({
         // delete the event because all events will get redrawn and will create a duplicate
         calEvent.remove();
         // update the task's start and end date
-        updateTask(id, {
+        this.props.updateTask(id, {
             start: startTimestamp,
             end: endTimestamp,
             status: 'scheduled'
@@ -75,8 +102,8 @@ export default function Scheduler({
      * Triggered when an event within the scheduler is moved
      * @param data the calendar event data
      */
-    const eventDrop = (data) => {
-        updateTask(data.event.id, {
+    eventDrop = (data) => {
+        this.props.updateTask(data.event.id, {
             start: moment(data.event.start).unix(),
             end: moment(data.event.end).unix()
         });
@@ -86,33 +113,36 @@ export default function Scheduler({
      * Triggered when resizing stops and the event has changed in duration
      * @param data
      */
-    const eventResize = (data) => {
-        updateTask(data.event.id, {
+    eventResize = (data) => {
+        this.props.updateTask(data.event.id, {
             start: moment(data.event.start).unix(),
             end: moment(data.event.end).unix(),
             duration: (moment(data.event.end).unix() - moment(data.event.start).unix()) / 3600
         });
     }
 
-  return <div>
-      <FullCalendar
-          ref={calendarRef}
-          defaultView="timeGridDay"
-          plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
-          droppable={true}
-          editable={true}
-          slotDuration={'00:15:00'}
-          events={eventList}
-          eventReceive={eventReceive}
-          eventDrop={eventDrop}
-          eventResize={eventResize}
-          header={{
-              //left: 'prev,next today',
-              left: '',
-              center: 'title',
-              right: ''
-              //right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-          }}
-      />
-  </div>;
+    render() {
+        console.info('render', this.props);
+        return (<div>
+            <FullCalendar
+              ref={this.calendarRef}
+              defaultView="timeGridDay"
+              plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
+              droppable={true}
+              editable={true}
+              slotDuration={'00:15:00'}
+              events={this.state.eventList}
+              eventReceive={this.eventReceive}
+              eventDrop={this.eventDrop}
+              eventResize={this.eventResize}
+              header={{
+                  //left: 'prev,next today',
+                  left: '',
+                  center: 'title',
+                  right: ''
+                  //right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+              }}
+            />
+        </div>);
+    }
 }

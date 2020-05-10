@@ -35,6 +35,7 @@ npm run test
 To generate the documentation for the API:
 
 ```
+npm install -g apidoc
 cd server
 npm run docs
 ```
