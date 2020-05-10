@@ -21,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TBAppBar({next, prev, today}) {
+export default function TBAppBar({ next, prev, today }) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <AppBar position='static'>
+      <AppBar position='static' style={{ backgroundColor: '#3788d8' }}>
         <Toolbar>
           <IconButton
             edge='start'
@@ -38,15 +38,15 @@ export default function TBAppBar({next, prev, today}) {
           <Typography variant='h6' className={classes.title}>
             Timeboxing App
           </Typography>
-            <IconButton color="inherit" onClick={prev}>
-              <NavigateBeforeIcon />
-            </IconButton>
-            <IconButton  color="inherit" onClick={today}>
-              <TodayIcon />
-            </IconButton>
-            <IconButton  color="inherit" onClick={next}>
-              <NavigateNextIcon />
-            </IconButton>
+          <IconButton color='inherit' onClick={prev}>
+            <NavigateBeforeIcon />
+          </IconButton>
+          <IconButton color='inherit' onClick={today}>
+            <TodayIcon />
+          </IconButton>
+          <IconButton color='inherit' onClick={next}>
+            <NavigateNextIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </div>
