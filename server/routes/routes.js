@@ -9,8 +9,8 @@ const router = new express.Router();
  * @apiName GetTasks
  * @apiGroup Tasks
  * @apiParam {String="new","in-progress","scheduled","completed"} [status] Task status
- * @apiParam {Number} [fromTimestamp] Scheduled tasks after this date
- * @apiParam {Number} [untilTimestamp] Scheduled tasks until this date
+ * @apiParam {Number} [fromTimestamp] Scheduled tasks after this date (Unix timestamp)
+ * @apiParam {Number} [untilTimestamp] Scheduled tasks until this date (Unix timestamp)
  *
  * @apiSuccess {Object[]} tasks Task's list
  * @apiSuccess {String} tasks._id Task unique id

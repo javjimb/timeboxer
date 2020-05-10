@@ -1,5 +1,5 @@
 // Libraries
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import moment from "moment";
 
 // Fullcalendar
@@ -122,7 +122,6 @@ export default class Scheduler extends React.Component{
     }
 
     render() {
-        console.info('render', this.props);
         return (<div>
             <FullCalendar
               ref={this.calendarRef}
@@ -135,6 +134,7 @@ export default class Scheduler extends React.Component{
               eventReceive={this.eventReceive}
               eventDrop={this.eventDrop}
               eventResize={this.eventResize}
+              datesRender={this.props.onDateChange}
               header={{
                   //left: 'prev,next today',
                   left: '',

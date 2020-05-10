@@ -33,8 +33,19 @@ export default function Main() {
   const [task, setTask] = useState('');
   const [duration, setDuration] = useState('');
   const [taskList, setTaskList] = useState([]);
+  const [startTimestamp, setStartTimestamp] = useState(moment().startOf('day').unix());
+  const [endTimestamp, setEndTimestamp] = useState(moment().endOf('day').unix());
 
   const schedulerRef = React.createRef()
+
+  /**
+   * Callback when the scheduler dates are changed
+  */
+  const onDateChange = (data) => {
+    setStartTimestamp(moment(data.view.activeStart).unix());
+    setEndTimestamp(moment(data.view.activeEnd).unix());
+    console.log('Date has changed: ', startTimestamp, endTimestamp);
+  }
 
   const goToNext = () => {
     let scheduler = schedulerRef.current;
@@ -101,7 +112,6 @@ export default function Main() {
   };
 
   let fromToday = moment().startOf('day').unix();
-  console.log(fromToday);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -114,6 +124,7 @@ export default function Main() {
         .catch((error) => console.error(error));
     }
     fetchTasks().then((o) => console.log);
+
   }, []);
 
 
@@ -143,6 +154,7 @@ export default function Main() {
                 <Scheduler
                   taskList={taskList}
                   updateTask={updateTask}
+                  onDateChange={(start,end) => onDateChange(start,end)}
                   ref={schedulerRef}
                 />
               </Paper>
