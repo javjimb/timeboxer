@@ -41,7 +41,7 @@ npm run docs
 ```
 The documentation can be viewed at
 ```
-http://[yourdomain]/apidoc
+http://[yourAPIdomain]/apidoc
 ```
 
 ## Built With
