@@ -11,7 +11,7 @@ import TaskService from '../services/TaskService';
 import Scheduler from '../components/schedule/Scheduler';
 import AddTask from '../components/tasks/AddTask';
 import ScheduledTaskList from '../components/tasks/ScheduledTaskList';
-import TBAppBar from '../components/TBAppBar';
+import TBAppBar from "../components/TBAppBar";
 
 const _ = require('lodash');
 
@@ -32,7 +32,23 @@ export default function Main() {
   const [task, setTask] = useState('');
   const [duration, setDuration] = useState('');
   const [taskList, setTaskList] = useState([]);
-  const [hasError, setErrors] = useState(false);
+
+  const schedulerRef = React.createRef()
+
+  const goToNext = () => {
+    let scheduler = schedulerRef.current;
+    scheduler.next();
+  }
+
+  const goToPrevious = () => {
+    let scheduler = schedulerRef.current;
+    scheduler.previous();
+  }
+
+  const goToToday = () => {
+    let scheduler = schedulerRef.current;
+    scheduler.today();
+  }
 
   const taskChangeHandler = (event) => {
     setTask(event.target.value);
@@ -71,18 +87,16 @@ export default function Main() {
 
   const updateTask = (id, newData) => {
     // update the task in the database
-    console.warn(id);
     TaskService.updateTask(id, newData)
-      .then((res) => {
-        // find the task in our list and update it
-        let index = _.findIndex(taskList, (o) => o._id === id);
-        _.extend(taskList[index], newData);
-        setTaskList([...taskList]);
-      })
-      .catch((err) => {
-        // TODO: create a global error handler
-        console.error(err);
-      });
+        .then((res) => {
+            // find the task in our list and update it
+            let index = _.findIndex(taskList, o => o._id === id );
+            _.extend(taskList[index], newData);
+            setTaskList([...taskList]);
+        }).catch( err => {
+          // TODO: create a global error handler
+          console.error(err);
+    });
   };
 
   useEffect(() => {
@@ -91,38 +105,44 @@ export default function Main() {
       response
         .json()
         .then((response) => setTaskList(response.tasks))
-        .catch((error) => setErrors(error));
+        .catch((error) => console.error(error));
     }
     fetchTasks().then((o) => console.log);
   }, []);
 
+
+
   return (
-    <div>
-      <TBAppBar />
-      <div id='task-list' className={classes.root}>
-        <Grid container spacing={0}>
-          <Grid item xs={12} sm={4}>
-            <Paper className={classes.paper}>
-              <AddTask
-                task={task}
-                duration={duration}
-                createNewTask={createNewTask}
-                taskChangeHandler={taskChangeHandler}
-                durationChangeHandler={durationChangeHandler}
-                taskList={taskList}
-                deleteTask={deleteTask}
-              />
-              <ScheduledTaskList taskList={taskList} updateTask={updateTask} />
-            </Paper>
-            {/* <Paper className={classes.paper}></Paper> */}
+      <div>
+        <TBAppBar next={goToNext}  prev={goToPrevious} today={goToToday} />
+        <div id='task-list' className={classes.root}>
+          <Grid container spacing={0}>
+            <Grid item xs={12} sm={4}>
+              <Paper className={classes.paper}>
+                <AddTask
+                    task={task}
+                    duration={duration}
+                    createNewTask={createNewTask}
+                    taskChangeHandler={taskChangeHandler}
+                    durationChangeHandler={durationChangeHandler}
+                    taskList={taskList}
+                    deleteTask={deleteTask}
+                />
+                <ScheduledTaskList taskList={taskList} updateTask={updateTask} />
+              </Paper>
+              {/* <Paper className={classes.paper}></Paper> */}
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <Paper className={classes.paper}>
+                <Scheduler
+                  taskList={taskList}
+                  updateTask={updateTask}
+                  ref={schedulerRef}
+                />
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={8}>
-            <Paper className={classes.paper}>
-              <Scheduler taskList={taskList} updateTask={updateTask} />
-            </Paper>
-          </Grid>
-        </Grid>
+        </div>
       </div>
-    </div>
   );
 }
