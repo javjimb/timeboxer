@@ -33,6 +33,7 @@ export default function Main() {
   const [task, setTask] = useState('');
   const [duration, setDuration] = useState('');
   const [taskList, setTaskList] = useState([]);
+  const [newTaskList, setNewTaskList] = useState([]);
   const [startTimestamp, setStartTimestamp] = useState(moment().startOf('day').unix());
   const [endTimestamp, setEndTimestamp] = useState(moment().endOf('day').unix());
 
@@ -80,8 +81,7 @@ export default function Main() {
     })
       .then((response) => response.json())
       .then((response) => {
-        taskList.push(response);
-        setTaskList(taskList);
+        setNewTaskList([...newTaskList, response]);
         setTask('');
         setDuration(0);
       })
@@ -100,11 +100,45 @@ export default function Main() {
   const updateTask = (id, newData) => {
     // update the task in the database
     TaskService.updateTask(id, newData)
-        .then((res) => {
-            // find the task in our list and update it
-            let index = _.findIndex(taskList, o => o._id === id );
-            _.extend(taskList[index], newData);
-            setTaskList([...taskList]);
+        .then((updatedTask) => {
+
+          setTaskList(taskList.map(task => (task._id === id ? _.extend(updatedTask) : task)))
+          setNewTaskList(newTaskList.map(task => (task._id === id ? _.extend(updatedTask) : task)))
+
+        }).catch( err => {
+          // TODO: create a global error handler
+          console.error(err);
+    });
+  };
+
+  const updateTaskStatus = (id, oldStatus, newStatus) => {
+
+    // update the task in the database
+    TaskService.updateTask(id, {status: newStatus})
+        .then((updatedTask) => {
+
+          // Update our lists in the state to react to the new status
+          switch (oldStatus) {
+            case 'scheduled':
+                if (newStatus === 'completed') {
+                  setTaskList(taskList.map(task => (task._id === id ? _.extend(updatedTask) : task)));
+                } else if (newStatus === 'new') {
+                  TaskService.updateTask(id, {start: 0, end: 0}).then(response => {
+                    setNewTaskList([...newTaskList, response]);
+                    setTaskList(taskList.filter( task => task._id !== id));
+                  });
+                }
+              break;
+            case 'new':
+              setNewTaskList(newTaskList.filter( task => task._id !== id));
+              setTaskList([...taskList, updatedTask]);
+              break;
+            case 'completed':
+              setNewTaskList([...newTaskList, updatedTask]);
+              setTaskList(taskList.filter( task => task._id !== id));
+              break;
+          }
+
         }).catch( err => {
           // TODO: create a global error handler
           console.error(err);
@@ -114,6 +148,7 @@ export default function Main() {
   let fromToday = moment().startOf('day').unix();
 
   useEffect(() => {
+
     async function fetchTasks() {
       const response = await fetch(
         `http://localhost:5000/tasks?fromTimestamp=${fromToday}`
@@ -123,7 +158,19 @@ export default function Main() {
         .then((response) => setTaskList(response.tasks))
         .catch((error) => console.error(error));
     }
-    fetchTasks().then((o) => console.log);
+
+    async function fetchNewTasks() {
+      const response = await fetch(
+        `http://localhost:5000/tasks?status=new`
+      );
+      response
+        .json()
+        .then((response) => setNewTaskList(response.tasks))
+        .catch((error) => console.error(error));
+    }
+
+    fetchTasks();
+    fetchNewTasks();
 
   }, []);
 
@@ -142,10 +189,13 @@ export default function Main() {
                     createNewTask={createNewTask}
                     taskChangeHandler={taskChangeHandler}
                     durationChangeHandler={durationChangeHandler}
-                    taskList={taskList}
+                    taskList={newTaskList}
                     deleteTask={deleteTask}
                 />
-                <ScheduledTaskList taskList={taskList} updateTask={updateTask} />
+                <ScheduledTaskList
+                  taskList={taskList}
+                  updateTaskStatus={updateTaskStatus}
+                />
               </Paper>
               {/* <Paper className={classes.paper}></Paper> */}
             </Grid>
@@ -154,6 +204,7 @@ export default function Main() {
                 <Scheduler
                   taskList={taskList}
                   updateTask={updateTask}
+                  updateTaskStatus={updateTaskStatus}
                   onDateChange={(start,end) => onDateChange(start,end)}
                   ref={schedulerRef}
                 />

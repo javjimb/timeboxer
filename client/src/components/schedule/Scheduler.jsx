@@ -93,9 +93,12 @@ export default class Scheduler extends React.Component{
         // update the task's start and end date
         this.props.updateTask(id, {
             start: startTimestamp,
-            end: endTimestamp,
-            status: 'scheduled'
+            end: endTimestamp
         });
+        // update the task status
+        this.props.updateTaskStatus(id, 'new', 'scheduled');
+
+        this.convertTasksToSchedulerEvents();
     }
 
     /**
