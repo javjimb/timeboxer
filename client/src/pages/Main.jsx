@@ -14,6 +14,7 @@ import ScheduledTaskList from '../components/tasks/ScheduledTaskList';
 import TBAppBar from '../components/TBAppBar';
 
 const _ = require('lodash');
+const moment = require('moment');
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,9 +86,14 @@ export default function Main() {
       });
   };
 
+  let fromToday = moment().startOf('day').unix();
+  console.log(fromToday);
+
   useEffect(() => {
     async function fetchTasks() {
-      const response = await fetch('http://localhost:5000/tasks');
+      const response = await fetch(
+        `http://localhost:5000/tasks?fromTimestamp=${fromToday}`
+      );
       response
         .json()
         .then((response) => setTaskList(response.tasks))
