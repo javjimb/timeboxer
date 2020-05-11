@@ -93,7 +93,7 @@ export default function Main() {
       headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => response.json())
-      .then(() => setTaskList(taskList.filter((task) => task._id !== id)))
+      .then(() => setNewTaskList(newTaskList.filter((task) => task._id !== id)))
       .catch((error) => console.log(error));
   };
 
