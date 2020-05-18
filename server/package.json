@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
+    "faker": "^4.1.0",
     "jest": "^25.2.4",
     "mongodb-memory-server": "^6.5.0",
     "nodemon": "^2.0.2",
