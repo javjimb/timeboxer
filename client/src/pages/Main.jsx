@@ -75,15 +75,7 @@ export default function Main() {
     };
     const createNewTask = (event) => {
         event.preventDefault();
-        fetch('http://localhost:5000/tasks', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: task,
-                duration: duration,
-            }),
-        })
-            .then((response) => response.json())
+       TaskService.createNewTask(task, duration)
             .then((response) => {
                 setNewTaskList([...newTaskList, response]);
                 setTask('');
@@ -92,11 +84,7 @@ export default function Main() {
             .catch((error) => console.log(error));
     };
     const deleteTask = (id) => {
-        fetch(`http://localhost:5000/tasks/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-        })
-            .then((response) => response.json())
+       TaskService.deleteTask(id)
             .then(() =>
                 setNewTaskList(newTaskList.filter((task) => task._id !== id))
             )
