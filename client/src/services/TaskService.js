@@ -46,4 +46,18 @@ export default {
         const data = await response.json();
         return data;
     },
+
+    async createNewTask(task, duration) {
+        const requestOptions = { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "name": task,
+                "duration": duration,
+            })
+        };
+              const response = await fetch(apiURL, requestOptions);
+        const data = await response.json();
+        return data;
+    }
 };
