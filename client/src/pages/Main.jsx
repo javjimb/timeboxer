@@ -107,16 +107,8 @@ export default function Main() {
         // update the task in the database
         TaskService.updateTask(id, newData)
             .then((updatedTask) => {
-                setTaskList(
-                    taskList.map((task) =>
-                        task._id === id ? _.extend(updatedTask) : task
-                    )
-                );
-                setNewTaskList(
-                    newTaskList.map((task) =>
-                        task._id === id ? _.extend(updatedTask) : task
-                    )
-                );
+                setTaskList(taskList.map((task) => task._id === id ? _.extend(updatedTask) : task ));
+                setNewTaskList(newTaskList.map((task) => task._id === id ? _.extend(updatedTask) : task));
             })
             .catch((err) => {
                 // TODO: create a global error handler
@@ -132,29 +124,19 @@ export default function Main() {
                 switch (oldStatus) {
                     case 'scheduled':
                         if (newStatus === 'completed') {
-                            setTaskList(
-                                taskList.map((task) =>
-                                    task._id === id
-                                        ? _.extend(updatedTask)
-                                        : task
-                                )
-                            );
+                            setTaskList(taskList.map((task) => task._id === id ? _.extend(updatedTask) : task));
                         } else if (newStatus === 'new') {
                             TaskService.updateTask(id, {
                                 start: 0,
                                 end: 0,
                             }).then((response) => {
                                 setNewTaskList([...newTaskList, response]);
-                                setTaskList(
-                                    taskList.filter((task) => task._id !== id)
-                                );
+                                setTaskList(taskList.filter((task) => task._id !== id));
                             });
                         }
                         break;
                     case 'new':
-                        setNewTaskList(
-                            newTaskList.filter((task) => task._id !== id)
-                        );
+                        setNewTaskList(newTaskList.filter((task) => task._id !== id));
                         setTaskList([...taskList, updatedTask]);
                         break;
                     case 'completed':
