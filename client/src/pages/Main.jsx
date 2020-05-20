@@ -92,11 +92,7 @@ export default function Main() {
             .catch((error) => console.log(error));
     };
     const deleteTask = (id) => {
-        fetch(`http://localhost:5000/tasks/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-        })
-            .then((response) => response.json())
+       TaskService.deleteTask(id)
             .then(() =>
                 setNewTaskList(newTaskList.filter((task) => task._id !== id))
             )
