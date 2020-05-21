@@ -23,6 +23,7 @@ export default class Scheduler extends React.Component{
     }
 
     componentDidMount() {
+        //setTimeout(this.convertTasksToSchedulerEvents, 500);
         this.convertTasksToSchedulerEvents();
     }
 
@@ -53,7 +54,7 @@ export default class Scheduler extends React.Component{
     convertTasksToSchedulerEvents() {
         setTimeout(() => {
             let events = [];
-
+console.log(this.props.taskList);
             this.props.taskList.forEach( task => {
                 if (task.status === 'scheduled') {
                     events.push({
