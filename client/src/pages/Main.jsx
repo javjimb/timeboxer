@@ -158,8 +158,9 @@ export default function Main() {
     };
 
     useEffect(() => {
-        let fromToday = moment().startOf('day').unix();
-        TaskService.getAllTasks({ fromTimestamp: fromToday })
+     
+
+        TaskService.getAllTasks({ fromTimestamp: startTimestamp })
             .then((response) => setTaskList(response.tasks))
             .catch((error) => console.error(error));
 
