@@ -52,6 +52,7 @@ export default class Scheduler extends React.Component {
                     * Formats tasks coming from the API into events compatible with fullcalendar
                     */
                    convertTasksToSchedulerEvents() {
+                       console.log('CONVERT');
                        setTimeout(() => {
                            let events = [];
                            console.log(this.props.taskList);
@@ -67,7 +68,7 @@ export default class Scheduler extends React.Component {
                            });
 
                            this.setState({ eventList: events });
-                       }, 1200);
+                       }, 1500);
                    }
 
                    /**
