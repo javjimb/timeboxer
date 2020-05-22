@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Snackbar from '@material-ui/core/Snackbar';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 // Services
 import TaskService from '../services/TaskService';
@@ -40,6 +42,8 @@ export default function Main() {
     const [endTimestamp, setEndTimestamp] = useState(
         moment().endOf('day').unix()
     );
+    const [showSnackbar, setShowSnackbar] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const schedulerRef = React.createRef();
 
@@ -70,22 +74,33 @@ export default function Main() {
         scheduler.today();
     };
 
+    const onSnackbarClose = (event) => {
+        setShowSnackbar(false);
+    }
+
     const taskChangeHandler = (event) => {
         setTask(event.target.value);
     };
     const durationChangeHandler = (event) => {
-        setDuration(event.target.value);
+        setDuration(event.target.value)
     };
     const createNewTask = (event) => {
         event.preventDefault();
+   if (duration > 0 && duration <= 24 && task.length > 0 ) {
        TaskService.createNewTask(task, duration)
-            .then((response) => {
-                setNewTaskList([...newTaskList, response]);
-                setTask('');
-                setDuration(0);
-            })
-            .catch((error) => console.log(error));
+           .then((response) => {
+               setNewTaskList([...newTaskList, response]);
+               setTask('');
+               setDuration('');
+           })
+           .catch((error) => console.log(error));
+   } else {
+       setShowSnackbar(true);
+       setAlertMessage('The duration must be at least 0.25 hrs and not more than 24 hrs. The task must contain at least one character.')
+   }
+   
     };
+
     const deleteTask = (id) => {
        TaskService.deleteTask(id)
             .then(() =>
@@ -170,6 +185,7 @@ export default function Main() {
                                 taskList={newTaskList}
                                 deleteTask={deleteTask}
                             />
+
                             <ScheduledTaskList
                                 taskList={taskList}
                                 updateTaskStatus={updateTaskStatus}
@@ -192,6 +208,17 @@ export default function Main() {
                     </Grid>
                 </Grid>
             </div>
+            <Snackbar
+                open={showSnackbar}
+                autoHideDuration={3000}
+                onClose={onSnackbarClose}>
+                <Alert
+                     onClose={onSnackbarClose}
+                     severity='error'
+                    variant='filled'>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

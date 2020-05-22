@@ -28,13 +28,6 @@ export default function TBAppBar({ next, prev, today }) {
       <div className={classes.root}>
           <AppBar position='static' style={{ backgroundColor: '#3788d8' }}>
               <Toolbar>
-                  {/* <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='menu'>
-            <QueryBuilderIcon />
-          </IconButton> */}
                   <div>
                       <img
                           src='https://res.cloudinary.com/dcmfiobqe/image/upload/v1590138327/timeboxer_white_p74w3f.png'
@@ -42,7 +35,7 @@ export default function TBAppBar({ next, prev, today }) {
                           style={{ height: '80px', padding: '3px' }}
                       />
                   </div>
-                  <Typography variant='h6' className={classes.title}>
+                  <Typography variant='h2' className={classes.title}>
                       Time Boxer
                   </Typography>
                   <IconButton color='inherit' onClick={prev}>
