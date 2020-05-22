@@ -36,7 +36,7 @@ export default function TBAppBar({ next, prev, today }) {
             <QueryBuilderIcon />
           </IconButton>
           <Typography variant='h6' className={classes.title}>
-            Timeboxing App
+            Time Boxer
           </Typography>
           <IconButton color='inherit' onClick={prev}>
             <NavigateBeforeIcon />
