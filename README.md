@@ -18,7 +18,7 @@ npm install --prefix ./client
 - Start the server and the client:
 ```
 cd server
-npm start develop
+npm start dev
 ```
 
 ## Running the tests
