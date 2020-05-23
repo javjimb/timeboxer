@@ -53,10 +53,6 @@ export default function Main() {
     const onDateChange = (data) => {
         setStartTimestamp(moment(data.view.activeStart).unix());
         setEndTimestamp(moment(data.view.activeEnd).unix());
-        //console.log('Date has changed: ', startTimestamp, endTimestamp);
-        TaskService.getAllTasks({ fromTimestamp: startTimestamp, untilTimestamp: endTimestamp})
-            .then((response) => setTaskList(response.tasks))
-            .catch((error) => console.error(error));
     };
 
     const goToNext = () => {
@@ -167,7 +163,8 @@ export default function Main() {
         TaskService.getAllTasks({ status: 'new' })
             .then((response) => setNewTaskList(response.tasks))
             .catch((error) => console.error(error));
-    }, []);
+
+    }, [startTimestamp]);
 
     return (
         <div>
