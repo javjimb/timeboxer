@@ -8,7 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import Tooltip from '@material-ui/core/Tooltip';
+//import Tooltip from '@material-ui/core/Tooltip';
 
 // Components
 import ScheduledTime from './ScheduledTime';

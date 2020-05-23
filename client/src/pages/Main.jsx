@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 
 // Services
 import TaskService from '../services/TaskService';
@@ -149,6 +149,7 @@ export default function Main() {
                         setNewTaskList([...newTaskList, updatedTask]);
                         setTaskList(taskList.filter((task) => task._id !== id));
                         break;
+                    default:
                 }
             })
             .catch((err) => {
@@ -158,7 +159,6 @@ export default function Main() {
     };
 
     useEffect(() => {
-
 
         TaskService.getAllTasks({ fromTimestamp: startTimestamp })
             .then((response) => setTaskList(response.tasks))
