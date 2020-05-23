@@ -8,7 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import Tooltip from '@material-ui/core/Tooltip';
+//import Tooltip from '@material-ui/core/Tooltip';
 
 // Components
 import ScheduledTime from './ScheduledTime';
@@ -40,13 +40,7 @@ export default function ScheduledTaskList({ taskList, updateTaskStatus }) {
               key={task._id}>
               {
                 <ListItemText
-                  primary={
-                    moment.unix(task.start).format('HH:mm') +
-                    ' - ' +
-                    moment.unix(task.end).format('HH:mm') +
-                    ' ' +
-                    task.name
-                  }
+                  primary={moment.unix(task.start).format('HH:mm') + ' - ' + moment.unix(task.end).format('HH:mm') + ' ' + task.name}
                   style={{
                     textDecoration:
                       task.status === 'completed' ? 'line-through' : 'none',
@@ -66,9 +60,7 @@ export default function ScheduledTaskList({ taskList, updateTaskStatus }) {
                 <IconButton
                   edge='end'
                   aria-label='scheduled'
-                  onClick={() =>
-                    updateTaskStatus(task._id, 'scheduled', 'new')
-                  }>
+                  onClick={() => updateTaskStatus(task._id, 'scheduled', 'new') }>
                   <HighlightOffIcon />
                 </IconButton>
                 {/* </Tooltip> */}

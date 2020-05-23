@@ -52,46 +52,56 @@ export default function AddTask({
   }, []);
 
   return (
-    <div>
-      <form
-        className={classes.root}
-        noValidate
-        autoComplete='off'
-        onSubmit={createNewTask}>
-        <Grid container spacing={1}>
-          <Grid item xs={7}>
-            <TextField
-              id='taskName'
-              label='Create a new task'
-              placeholder='Enter task name'
-              variant='outlined'
-              size='small'
-              fullWidth
-              value={task}
-              onChange={taskChangeHandler}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <TextField
-              id='duration'
-              label='Duration'
-              placeholder='hours'
-              variant='outlined'
-              size='small'
-              fullWidth
-              value={duration}
-              onChange={durationChangeHandler}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <Button variant='contained' fullWidth type='submit'>
-              +
-            </Button>
-          </Grid>
-        </Grid>
-        <Box borderBottom={1} {...defaultProps} />
-      </form>
-      <TaskList taskList={taskList} deleteTask={deleteTask} />
-    </div>
+      <div>
+          <form
+              className={classes.root}
+              noValidate
+              autoComplete='off'
+              onSubmit={createNewTask}>
+              <Grid container spacing={1}>
+                  <Grid item xs={7}>
+                      <TextField
+                          id='taskName'
+                          label='Create a new task'
+                          placeholder='Enter task name'
+                          variant='outlined'
+                          size='small'
+                          fullWidth
+                          value={task}
+                          onChange={taskChangeHandler}
+                      />
+                  </Grid>
+                  <Grid item xs={3}>
+                      <TextField
+                          id='duration'
+                          label='Duration'
+                          placeholder='hours'
+                          variant='outlined'
+                          size='small'
+                          fullWidth
+                          value={duration}
+                          onChange={durationChangeHandler}
+                      />
+                  </Grid>
+                  <Grid item xs={2}>
+                      {duration <= 0 ? (
+                          <Button
+                              disabled 
+                              variant='contained'
+                              fullWidth
+                              type='submit'>
+                              +
+                          </Button>
+                      ) : (
+                          <Button variant='contained' fullWidth type='submit'>
+                              +
+                          </Button>
+                      )}
+                  </Grid>
+              </Grid>
+              <Box borderBottom={1} {...defaultProps} />
+          </form>
+          <TaskList taskList={taskList} deleteTask={deleteTask} />
+      </div>
   );
 }
