@@ -98,7 +98,7 @@ export default function Main() {
        setShowSnackbar(true);
        setAlertMessage('The duration must be at least 0.25 hrs and not more than 24 hrs. The task must contain at least one character.')
    }
-   
+
     };
 
     const deleteTask = (id) => {
@@ -158,7 +158,7 @@ export default function Main() {
     };
 
     useEffect(() => {
-     
+
 
         TaskService.getAllTasks({ fromTimestamp: startTimestamp })
             .then((response) => setTaskList(response.tasks))
@@ -199,9 +199,7 @@ export default function Main() {
                                 taskList={taskList}
                                 updateTask={updateTask}
                                 updateTaskStatus={updateTaskStatus}
-                                onDateChange={(start, end) =>
-                                    onDateChange(start, end)
-                                }
+                                onDateChange={(start, end) => onDateChange(start, end) }
                                 ref={schedulerRef}
                             />
                         </Paper>

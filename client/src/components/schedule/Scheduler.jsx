@@ -10,6 +10,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import './Scheduler.scss' // webpack must be configured to do this
 
+const _ = require('lodash');
+
 export default class Scheduler extends React.Component {
                    constructor(props) {
                        super(props);
@@ -17,17 +19,22 @@ export default class Scheduler extends React.Component {
                        this.calendarRef = React.createRef();
 
                        this.state = {
-                           prevTaskList: this.props.taskList,
+                           taskList: this.props.taskList,
                            eventList: [],
                        };
                    }
                    componentDidMount() {
-                      this.convertTasksToSchedulerEvents();
+                      //this.convertTasksToSchedulerEvents();
                    }
 
-                
+                   componentDidUpdate(prevProps, prevState, snapshot) {
+                       // redraw the calendar events when the prop is updated
+                       if (!_.isEqual(this.props.taskList, prevProps.taskList)) {
+                           this.convertTasksToSchedulerEvents();
+                       }
+                   }
 
-                   /**
+    /**
                     * Go to next day in the scheduler
                     */
                    next() {
@@ -52,23 +59,19 @@ export default class Scheduler extends React.Component {
                     * Formats tasks coming from the API into events compatible with fullcalendar
                     */
                    convertTasksToSchedulerEvents() {
-                       console.log('CONVERT');
-                       setTimeout(() => {
-                           let events = [];
-                           console.log(this.props.taskList);
-                           this.props.taskList.forEach((task) => {
-                               if (task.status === 'scheduled') {
-                                   events.push({
-                                       title: task.name,
-                                       id: task._id,
-                                       start: moment.unix(task.start).toDate(),
-                                       end: moment.unix(task.end).toDate(),
-                                   });
-                               }
-                           });
+                       let events = [];
+                       this.props.taskList.forEach((task) => {
+                           if (task.status === 'scheduled') {
+                               events.push({
+                                   title: task.name,
+                                   id: task._id,
+                                   start: moment.unix(task.start).toDate(),
+                                   end: moment.unix(task.end).toDate(),
+                               });
+                           }
+                       });
 
-                           this.setState({ eventList: events });
-                       }, 1500);
+                       this.setState({ eventList: events });
                    }
 
                    /**
