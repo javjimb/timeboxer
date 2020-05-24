@@ -24,6 +24,12 @@ class UsersController {
             return res.status(422).json({ errors: errors.array() });
         }
 
+        // check for duplicates
+        let user = await UserService.findByEmail(req.body.email);
+        if (user) {
+            return res.status(409).json({ errors: [{ msg: 'The email address is already registered'}] });
+        }
+
         UserService.createUser(req.body).then((result) => {
             res.status(201).send(result);
         });
