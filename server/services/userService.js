@@ -6,8 +6,8 @@ class UserService {
         return await UserModel.find(filter);
     }
 
-    async getUserById(user_id) {
-        return await UserModel.findById(user_id);
+    async findByEmail(email) {
+        return await UserModel.findOne({email: email});
     }
 
     async createUser(user) {

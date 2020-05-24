@@ -1,6 +1,7 @@
 const express = require('express');
 const TasksController = require('../controllers/tasks.controller');
 const UsersController = require('../controllers/users.controller');
+const AuthController = require('../controllers/auth.controller');
 const { check } = require('express-validator');
 
 const router = new express.Router();
@@ -205,8 +206,6 @@ router.put('/tasks/:id', [
  */
 router.delete('/tasks/:id', TasksController.delete);
 
-router.post('/users', UsersController.create);
-
 /**
  * @api {post} /users Create a user
  * @apiGroup User
@@ -253,4 +252,11 @@ router.post('/users', UsersController.create);
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
+router.post('/users', UsersController.create);
+
+
+router.post('/auth/login', AuthController.login);
+
+
+
 module.exports = router;

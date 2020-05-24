@@ -1,10 +1,6 @@
 const supertest = require('supertest');
 const faker = require('faker');
-
 const app = require('../../App');
-
-const UserService = require('../../services/userService');
-
 const request = supertest(app);
 
 describe('User', () => {
