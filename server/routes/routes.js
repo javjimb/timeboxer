@@ -257,6 +257,8 @@ router.post('/users', UsersController.create);
 
 router.post('/auth/login', AuthController.login);
 
+router.get('/auth/me', AuthController.me);
+
 
 
 module.exports = router;

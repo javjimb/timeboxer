@@ -1,5 +1,6 @@
 const supertest = require('supertest');
 const faker = require('faker');
+const jwt = require("jsonwebtoken");
 
 const app = require('../../App');
 
@@ -32,8 +33,8 @@ describe('Auth', () => {
 
         let password = faker.internet.password();
         let user = await UserService.createUser({
-            name: faker.name.firstName(),
-            surname: faker.name.lastName(),
+            name: faker.name.firstName(0),
+            surname: faker.name.lastName(0),
             email: faker.internet.email(),
             password: password,
             avatar: faker.image.avatar()
@@ -61,4 +62,26 @@ describe('Auth', () => {
         expect(response.body.errors).toBe('Could not find email address registered');
     });
 
+    it('should be able to get own data', async () => {
+
+        const payload = {
+            _id: faker.random.uuid(),
+            name: faker.name.firstName(),
+            surname: faker.name.lastName(),
+            email: faker.internet.email()
+        };
+
+        let token = await jwt.sign(
+            payload,
+            process.env.JWT_SECRET
+        );
+
+        const response = await request.get('/auth/me').set('x-access-token', token).send();
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('_id');
+        expect(response.body).toHaveProperty('name');
+        expect(response.body).toHaveProperty('surname');
+        expect(response.body).toHaveProperty('email');
+    });
 });

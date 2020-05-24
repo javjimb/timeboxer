@@ -47,6 +47,19 @@ class AuthController {
             }
         );
     }
+
+    me(req, res) {
+        let token = req.header('x-access-token');
+        if (!token) {
+            return res.status(401).json({ errors: [{ msg: 'No access token provided'}] });
+        }
+        jwt.verify(token, process.env.JWT_SECRET, ( err, decoded) => {
+            if (err) {
+                return res.status(500).json({ errors: [{ msg: 'Failed to authenticate token'}] });
+            }
+            res.status(200).send(decoded);
+        })
+    }
 }
 
 module.exports = new AuthController();
