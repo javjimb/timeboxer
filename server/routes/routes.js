@@ -2,6 +2,7 @@ const express = require('express');
 const TasksController = require('../controllers/tasks.controller');
 const UsersController = require('../controllers/users.controller');
 const AuthController = require('../controllers/auth.controller');
+const auth = require('../middleware/auth');
 const { check } = require('express-validator');
 
 const router = new express.Router();
@@ -257,7 +258,7 @@ router.post('/users', UsersController.create);
 
 router.post('/auth/login', AuthController.login);
 
-router.get('/auth/me', AuthController.me);
+router.get('/auth/me', auth, AuthController.me);
 
 
 

@@ -27,10 +27,12 @@ class AuthController {
             return res.status(401).json({ errors: 'Invalid password'});
         }
         const payload = {
-            _id: user._id,
-            name: user.name,
-            surname: user.surname,
-            email: user.email
+            user: {
+                _id: user._id,
+                name: user.name,
+                surname: user.surname,
+                email: user.email
+            }
         };
 
         jwt.sign(
@@ -48,17 +50,19 @@ class AuthController {
         );
     }
 
-    me(req, res) {
-        let token = req.header('x-access-token');
-        if (!token) {
-            return res.status(401).json({ errors: [{ msg: 'No access token provided'}] });
+    async me(req, res) {
+        try {
+            console.log(req.body);
+            console.log(req.user);
+            const user = await UserService.findById(req.user._id).catch( e => {
+                console.error(e);
+                process.exit(1);
+            });
+            res.status(200).send(user);
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ errors: [{ msg: 'Failed to authenticate token'}] });
         }
-        jwt.verify(token, process.env.JWT_SECRET, ( err, decoded) => {
-            if (err) {
-                return res.status(500).json({ errors: [{ msg: 'Failed to authenticate token'}] });
-            }
-            res.status(200).send(decoded);
-        })
     }
 }
 
