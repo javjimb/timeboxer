@@ -6,6 +6,10 @@ class UserService {
         return await UserModel.find(filter);
     }
 
+    async findById(id) {
+        return await UserModel.findOne({_id: id});
+    }
+
     async findByEmail(email) {
         return await UserModel.findOne({email: email});
     }
@@ -16,14 +20,14 @@ class UserService {
         return newUser;
     }
 
-    async deleteUser(user_id) {
-        let user = await this.getUserById(user_id);
-        await UserModel.findByIdAndRemove(user_id);
+    async deleteUser(id) {
+        let user = await this.findById(id);
+        await UserModel.findByIdAndRemove(id);
         return user;
     }
 
-    async updateUser(user_id, update) {
-        return await UserModel.findByIdAndUpdate(user_id, update, { new: true, runValidators: true });
+    async updateUser(id, update) {
+        return await UserModel.findByIdAndUpdate(id, update, { new: true, runValidators: true });
     }
 }
 
