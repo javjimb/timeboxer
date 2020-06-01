@@ -52,12 +52,11 @@ class AuthController {
 
     async me(req, res) {
         try {
-            console.log(req.body);
-            console.log(req.user);
             const user = await UserService.findById(req.user._id).catch( e => {
                 console.error(e);
                 process.exit(1);
             });
+            user.password = undefined;
             res.status(200).send(user);
         } catch (err) {
             console.error(err);
