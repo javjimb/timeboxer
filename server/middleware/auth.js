@@ -14,7 +14,7 @@ module.exports = function(req, res, next) {
             req.user = user;
             next();
         }).catch( e => {
-            console.error(e)
+         //   console.error(e)
             next();
         });
     })
