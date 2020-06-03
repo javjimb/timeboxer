@@ -1,5 +1,5 @@
 const TaskService = require('../services/taskService');
-const { validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
 class TasksController {
 
@@ -32,7 +32,10 @@ class TasksController {
         });
     }
 
-    create(req, res) {
+    async create(req, res) {
+
+        await check('name').not().isEmpty().withMessage('Task name cannot be empty').run(req);
+
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
@@ -44,7 +47,10 @@ class TasksController {
         });
     }
 
-    update(req, res) {
+    async update(req, res) {
+
+        await check('name').optional().not().isEmpty().withMessage('Task name cannot be empty').run(req);
+        await check('status').optional().isIn(['new', 'in-progress', 'completed', 'scheduled']).withMessage('Invalid task status').run(req);
 
         const errors = validationResult(req);
 
