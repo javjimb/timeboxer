@@ -42,7 +42,16 @@ class TasksController {
             return res.status(422).json({ errors: errors.array() });
         }
 
-        TaskService.createTask(req.body).then((result) => {
+        let task = {
+            user: req.user._id,
+            name: req.body.name,
+            duration: req.body.duration,
+            status: req.body.status,
+            start: req.body.start,
+            end: req.body.end
+        }
+
+        TaskService.createTask(task).then((result) => {
             res.status(201).send(result);
         });
     }
