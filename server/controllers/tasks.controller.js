@@ -43,7 +43,7 @@ class TasksController {
         }
 
         let task = {
-            user: req.user._id,
+            user: req.user ? req.user._id : null,
             name: req.body.name,
             duration: req.body.duration,
             status: req.body.status,
