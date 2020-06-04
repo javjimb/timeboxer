@@ -11,6 +11,10 @@ const taskSchema = new Schema(
             type: String,
             enum: ['new', 'in-progress', 'completed', 'scheduled'],
             default: 'new'
+        },
+        user :{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User'
         }
     },
     {
@@ -18,4 +22,4 @@ const taskSchema = new Schema(
     }
 );
 
-module.exports = mongoose.model('task', taskSchema);
+module.exports = mongoose.model('Task', taskSchema);
