@@ -130,6 +130,7 @@ describe('Task', () => {
             .send({name: 'Name change'})
             .catch( e => {console.error(e)});
 
+        expect(response).not.toHaveProperty('error');
         expect(response.status).toBe(200);
         expect(response.body.name).toBe('Name change');
     });
@@ -143,6 +144,7 @@ describe('Task', () => {
             .send()
             .catch( e => {console.error(e)});
 
+        expect(response).not.toHaveProperty('error');
         expect(response.status).toBe(200);
 
         // make sure the task has been deleted
@@ -169,6 +171,7 @@ describe('Task', () => {
             .send()
             .catch( e => {console.error(e)});
 
+        expect(response).not.toHaveProperty('error');
         expect(response.body.tasks).toHaveLength(1);
 
         // should return only two of the tasks
