@@ -16,10 +16,8 @@ class TasksController {
 
         let filter = {}
 
-        // An authenticated request should always have a user. This condition needs to be here so that task.test.js pass. TODO: fixme
-        if (req.user) {
-            filter.user = req.user._id;
-        }
+        // Only return tasks that belong to the authenticated user
+        filter.user = req.user._id;
 
         // apply filters from query string
         if (req.query.fromTimestamp) {
@@ -72,6 +70,17 @@ class TasksController {
             return res.status(500).json({ errors: errors.array() });
         }
 
+        // validate task
+        let task = await TaskService.getTaskById(req.params.id);
+        if (!task) {
+            return res.status(404).json({ errors: 'Invalid task id' });
+        }
+
+        // verify ownership of the task
+        if (task.user != req.user._id) {
+            return res.status(403).json({ errors: ['Permission denied'] });
+        }
+
         TaskService.updateTask(req.params.id, req.body).then((result) => {
             res.send(result);
         }).catch( err => {
@@ -79,7 +88,19 @@ class TasksController {
         });
     }
 
-    delete(req, res) {
+    async delete(req, res) {
+
+        // validate task
+        let task = await TaskService.getTaskById(req.params.id);
+        if (!task) {
+            return res.status(404).json({ errors: 'Invalid task id' });
+        }
+
+        // verify ownership of the task
+        if (task.user != req.user._id) {
+            return res.status(403).json({ errors: ['Permission denied'] });
+        }
+
         TaskService.deleteTask(req.params.id).then((result) => {
             res.send(result);
         })
