@@ -1,0 +1,23 @@
+  version: "3"
+  services:
+    frontend:
+      build: ./client
+      ports:
+        - "3000:3000"
+      stdin_open: true
+      depends_on:
+        - backend
+    backend:
+      build: ./server
+      ports:
+        - "5000:5000"
+      links:
+        - mongo
+    mongo:
+      hostname: mongo
+      restart: always
+      image: mongo
+      ports:
+        - '27017:27017'
+      volumes:
+        - "./docker/mongo/data:/data/db"
