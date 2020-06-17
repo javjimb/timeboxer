@@ -17,7 +17,7 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
-            <Link color="inherit" href="https://material-ui.com/">
+            <Link color="inherit" href="#">
                 Time Boxer
             </Link>{" "}
             {new Date().getFullYear()}
@@ -79,7 +79,7 @@ export default function Login() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Login
                     </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
@@ -125,7 +125,7 @@ export default function Login() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

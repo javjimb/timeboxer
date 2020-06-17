@@ -10,6 +10,7 @@ import "./App.css";
 // Components
 import Main from "../src/pages/Main";
 import Login from "../src/pages/Login";
+import SignUp from "../src/pages/SignUp";
 
 function App() {
     return (
@@ -21,6 +22,9 @@ function App() {
                     </Route>
                     <Route path="/login">
                         <Login />
+                    </Route>
+                    <Route path="/signup">
+                        <SignUp />
                     </Route>
                 </Switch>
             </div>
