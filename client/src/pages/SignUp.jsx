@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
+
+// Services
+import UserService from "../services/UserService";
 
 // Material UI
 import Avatar from "@material-ui/core/Avatar";
@@ -14,6 +18,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Snackbar from "@material-ui/core/Snackbar";
+import { Alert } from "@material-ui/lab";
 
 // Components
 import SignAppBar from "../components/SignAppBar";
@@ -51,12 +57,60 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp() {
+function SignUp(props) {
     const classes = useStyles();
+    const [showSnackbar, setShowSnackbar] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
 
+    const emailChangeHandler = (event) => {
+        setEmail(event.target.value);
+    };
+    const passwordChangeHandler = (event) => {
+        setPassword(event.target.value);
+    };
+    const nameChangeHandler = (event) => {
+        setName(event.target.value);
+    };
+    const surnameChangeHandler = (event) => {
+        setSurname(event.target.value);
+    };
+    const createUser = (event) => {
+        event.preventDefault();
+        UserService.createUser(email, password, name, surname)
+            .then((response) => {
+                if (response.errors) {
+                    setShowSnackbar(true);
+                    setAlertMessage(response.errors);
+                } else {
+                    props.history.push("/login");
+                }
+            })
+            .catch((error) => {
+                setShowSnackbar(true);
+                setAlertMessage(error);
+                console.log(error);
+            });
+    };
+    const onSnackbarClose = (event) => {
+        setShowSnackbar(false);
+    };
     return (
         <div>
-            {" "}
+            <Snackbar
+                open={showSnackbar}
+                autoHideDuration={3000}
+                onClose={onSnackbarClose}>
+                <Alert
+                    onClose={onSnackbarClose}
+                    severity="error"
+                    variant="filled">
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
             <SignAppBar />
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -67,7 +121,10 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form
+                        className={classes.form}
+                        noValidate
+                        onSubmit={createUser}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -78,7 +135,9 @@ export default function SignUp() {
                                     fullWidth
                                     id="firstName"
                                     label="First Name"
+                                    value={name}
                                     autoFocus
+                                    onChange={nameChangeHandler}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -90,6 +149,8 @@ export default function SignUp() {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="lname"
+                                    value={surname}
+                                    onChange={surnameChangeHandler}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -101,6 +162,8 @@ export default function SignUp() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    value={email}
+                                    onChange={emailChangeHandler}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -113,6 +176,8 @@ export default function SignUp() {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    value={password}
+                                    onChange={passwordChangeHandler}
                                 />
                             </Grid>
                             <Grid item xs={12}></Grid>
@@ -141,3 +206,4 @@ export default function SignUp() {
         </div>
     );
 }
+export default withRouter(SignUp);
