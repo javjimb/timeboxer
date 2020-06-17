@@ -1,22 +1,22 @@
 // Library
-import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Snackbar from '@material-ui/core/Snackbar';
-import { Alert } from '@material-ui/lab';
+import React, { useState, useEffect } from "react";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Snackbar from "@material-ui/core/Snackbar";
+import { Alert } from "@material-ui/lab";
 
 // Services
-import TaskService from '../services/TaskService';
+import TaskService from "../services/TaskService";
 
 // Components
-import Scheduler from '../components/schedule/Scheduler';
-import AddTask from '../components/tasks/AddTask';
-import ScheduledTaskList from '../components/tasks/ScheduledTaskList';
-import TBAppBar from '../components/TBAppBar';
+import Scheduler from "../components/schedule/Scheduler";
+import AddTask from "../components/tasks/AddTask";
+import ScheduledTaskList from "../components/tasks/ScheduledTaskList";
+import TBAppBar from "../components/TBAppBar";
 
-const _ = require('lodash');
-const moment = require('moment');
+const _ = require("lodash");
+const moment = require("moment");
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,26 +24,26 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: theme.spacing(2),
-        textAlign: 'center',
+        textAlign: "center",
         color: theme.palette.text.secondary,
-        height: '100%',
+        height: "100%",
     },
 }));
 
 export default function Main() {
     const classes = useStyles();
-    const [task, setTask] = useState('');
-    const [duration, setDuration] = useState('');
+    const [task, setTask] = useState("");
+    const [duration, setDuration] = useState("");
     const [taskList, setTaskList] = useState([]);
     const [newTaskList, setNewTaskList] = useState([]);
     const [startTimestamp, setStartTimestamp] = useState(
-        moment().startOf('day').unix()
+        moment().startOf("day").unix()
     );
     const [endTimestamp, setEndTimestamp] = useState(
-        moment().endOf('day').unix()
+        moment().endOf("day").unix()
     );
     const [showSnackbar, setShowSnackbar] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+    const [alertMessage, setAlertMessage] = useState("");
 
     const schedulerRef = React.createRef();
 
@@ -72,33 +72,34 @@ export default function Main() {
 
     const onSnackbarClose = (event) => {
         setShowSnackbar(false);
-    }
+    };
 
     const taskChangeHandler = (event) => {
         setTask(event.target.value);
     };
     const durationChangeHandler = (event) => {
-        setDuration(event.target.value)
+        setDuration(event.target.value);
     };
     const createNewTask = (event) => {
         event.preventDefault();
-   if (duration > 0 && duration <= 24 && task.length > 0 ) {
-       TaskService.createNewTask(task, duration)
-           .then((response) => {
-               setNewTaskList([...newTaskList, response]);
-               setTask('');
-               setDuration('');
-           })
-           .catch((error) => console.log(error));
-   } else {
-       setShowSnackbar(true);
-       setAlertMessage('The duration must be at least 0.25 hrs and not more than 24 hrs. The task must contain at least one character.')
-   }
-
+        if (duration > 0 && duration <= 24 && task.length > 0) {
+            TaskService.createNewTask(task, duration)
+                .then((response) => {
+                    setNewTaskList([...newTaskList, response]);
+                    setTask("");
+                    setDuration("");
+                })
+                .catch((error) => console.log(error));
+        } else {
+            setShowSnackbar(true);
+            setAlertMessage(
+                "The duration must be at least 0.25 hrs and not more than 24 hrs. The task must contain at least one character."
+            );
+        }
     };
 
     const deleteTask = (id) => {
-       TaskService.deleteTask(id)
+        TaskService.deleteTask(id)
             .then(() =>
                 setNewTaskList(newTaskList.filter((task) => task._id !== id))
             )
@@ -109,8 +110,16 @@ export default function Main() {
         // update the task in the database
         TaskService.updateTask(id, newData)
             .then((updatedTask) => {
-                setTaskList(taskList.map((task) => task._id === id ? _.extend(updatedTask) : task ));
-                setNewTaskList(newTaskList.map((task) => task._id === id ? _.extend(updatedTask) : task));
+                setTaskList(
+                    taskList.map((task) =>
+                        task._id === id ? _.extend(updatedTask) : task
+                    )
+                );
+                setNewTaskList(
+                    newTaskList.map((task) =>
+                        task._id === id ? _.extend(updatedTask) : task
+                    )
+                );
             })
             .catch((err) => {
                 // TODO: create a global error handler
@@ -124,24 +133,34 @@ export default function Main() {
             .then((updatedTask) => {
                 // Update our lists in the state to react to the new status
                 switch (oldStatus) {
-                    case 'scheduled':
-                        if (newStatus === 'completed') {
-                            setTaskList(taskList.map((task) => task._id === id ? _.extend(updatedTask) : task));
-                        } else if (newStatus === 'new') {
+                    case "scheduled":
+                        if (newStatus === "completed") {
+                            setTaskList(
+                                taskList.map((task) =>
+                                    task._id === id
+                                        ? _.extend(updatedTask)
+                                        : task
+                                )
+                            );
+                        } else if (newStatus === "new") {
                             TaskService.updateTask(id, {
                                 start: 0,
                                 end: 0,
                             }).then((response) => {
                                 setNewTaskList([...newTaskList, response]);
-                                setTaskList(taskList.filter((task) => task._id !== id));
+                                setTaskList(
+                                    taskList.filter((task) => task._id !== id)
+                                );
                             });
                         }
                         break;
-                    case 'new':
-                        setNewTaskList(newTaskList.filter((task) => task._id !== id));
+                    case "new":
+                        setNewTaskList(
+                            newTaskList.filter((task) => task._id !== id)
+                        );
                         setTaskList([...taskList, updatedTask]);
                         break;
-                    case 'completed':
+                    case "completed":
                         setNewTaskList([...newTaskList, updatedTask]);
                         setTaskList(taskList.filter((task) => task._id !== id));
                         break;
@@ -155,21 +174,19 @@ export default function Main() {
     };
 
     useEffect(() => {
-
         TaskService.getAllTasks({ fromTimestamp: startTimestamp })
             .then((response) => setTaskList(response.tasks))
             .catch((error) => console.error(error));
 
-        TaskService.getAllTasks({ status: 'new' })
+        TaskService.getAllTasks({ status: "new" })
             .then((response) => setNewTaskList(response.tasks))
             .catch((error) => console.error(error));
-
     }, [startTimestamp]);
 
     return (
         <div>
             <TBAppBar next={goToNext} prev={goToPrevious} today={goToToday} />
-            <div id='task-list' className={classes.root}>
+            <div id="task-list" className={classes.root}>
                 <Grid container spacing={0}>
                     <Grid item xs={12} sm={4}>
                         <Paper className={classes.paper}>
@@ -196,7 +213,9 @@ export default function Main() {
                                 taskList={taskList}
                                 updateTask={updateTask}
                                 updateTaskStatus={updateTaskStatus}
-                                onDateChange={(start, end) => onDateChange(start, end) }
+                                onDateChange={(start, end) =>
+                                    onDateChange(start, end)
+                                }
                                 ref={schedulerRef}
                             />
                         </Paper>
@@ -208,9 +227,9 @@ export default function Main() {
                 autoHideDuration={3000}
                 onClose={onSnackbarClose}>
                 <Alert
-                     onClose={onSnackbarClose}
-                     severity='error'
-                    variant='filled'>
+                    onClose={onSnackbarClose}
+                    severity="error"
+                    variant="filled">
                     {alertMessage}
                 </Alert>
             </Snackbar>
