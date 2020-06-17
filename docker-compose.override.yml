@@ -5,12 +5,16 @@ services:
     ports:
       - "3000:3000"
     stdin_open: true
+    volumes:
+      - "./client:/usr/src/app"
     depends_on:
       - backend
   backend:
     build: ./server
     ports:
       - "5000:5000"
+    volumes:
+      - "./server:/usr/src/app"
     links:
       - mongo
   mongo:

@@ -8,4 +8,4 @@ COPY . .
 # Install app dependencies
 RUN npm install
 EXPOSE 5000
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "server" ]
