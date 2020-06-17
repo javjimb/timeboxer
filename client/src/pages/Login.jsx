@@ -18,6 +18,9 @@ import { makeStyles } from "@material-ui/core/styles";
 // Components
 import SignAppBar from "../components/SignAppBar";
 
+// Media
+import timeBoxer from "../images/time-head.jpg";
+
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -36,12 +39,12 @@ const useStyles = makeStyles((theme) => ({
         height: "100vh",
     },
     image: {
-        backgroundImage: "url(https://source.unsplash.com/random)",
+        backgroundImage: `url(${timeBoxer})`,
         backgroundRepeat: "no-repeat",
-        backgroundColor:
-            theme.palette.type === "light"
-                ? theme.palette.grey[50]
-                : theme.palette.grey[900],
+        backgroundColor: "white",
+        // theme.palette.type === "light"
+        //     ? theme.palette.grey[50]
+        //     : theme.palette.grey[900],
         backgroundSize: "cover",
         backgroundPosition: "center",
     },
