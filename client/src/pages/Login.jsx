@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // Services
-import UserService from "../services/UserService";
+import AuthService from "../services/AuthService";
 
 // Material UI
 import Avatar from "@material-ui/core/Avatar";
@@ -88,7 +88,7 @@ export default function Login() {
     };
     const loginUser = (event) => {
         event.preventDefault();
-        UserService.loginUser(email, password)
+        AuthService.loginUser(email, password)
             .then((response) => {
                 if (response.errors) {
                     setShowSnackbar(true);
