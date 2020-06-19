@@ -1,3 +1,4 @@
+import auth from "../components/auth";
 const apiURL = 'http://localhost:5000/tasks/';
 const querystring = require('querystring');
 
@@ -11,7 +12,7 @@ export default {
     async updateTask(task_id, newData) {
         const requestOptions = {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(newData),
         };
         const response = await fetch(apiURL + task_id, requestOptions);
@@ -26,10 +27,11 @@ export default {
      */
     async getAllTasks(params) {
         let queryString = querystring.stringify(params);
-        const response = await fetch(apiURL + '?' + queryString);
-        const data = await response.json();
-
-        return data;
+        const response = await fetch(
+            apiURL + '?' + queryString,
+            { headers: auth.getAuthHeader()}
+        );
+        return await response.json();
     },
 
     /**
@@ -48,16 +50,15 @@ export default {
     },
 
     async createNewTask(task, duration) {
-        const requestOptions = { 
+        const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...auth.getAuthHeader() },
             body: JSON.stringify({
                 "name": task,
                 "duration": duration,
             })
         };
-              const response = await fetch(apiURL, requestOptions);
-        const data = await response.json();
-        return data;
+        const response = await fetch(apiURL, requestOptions);
+        return await response.json();
     }
 };
