@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import Cookies from 'universal-cookie';
 
 // Services
 import AuthService from "../services/AuthService";
@@ -78,7 +78,6 @@ export default function Login(props) {
     const [token, setToken] = useState("");
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
 
     const emailChangeHandler = (event) => {
         setEmail(event.target.value);
@@ -98,7 +97,12 @@ export default function Login(props) {
                     setAlertMessage(response.errors);
                 } else {
                     setToken(response.token);
-                    props.auth.login();
+                    auth.login(() => {
+                        let cookies = new Cookies();
+                        cookies.set('token', response.token, { path: '/', httpOnly: true } );
+                        props.history.push("/");
+                    });
+
                 }
             })
             .catch((error) => {
