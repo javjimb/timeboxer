@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Main() {
     const classes = useStyles();
+    const [loading, setLoading] = useState(true);
     const [task, setTask] = useState("");
     const [duration, setDuration] = useState("");
     const [taskList, setTaskList] = useState([]);
@@ -175,7 +176,11 @@ export default function Main() {
 
     useEffect(() => {
         TaskService.getAllTasks({ fromTimestamp: startTimestamp })
-            .then((response) => setTaskList(response.tasks))
+            .then((response) => {
+                setTaskList(response.tasks);
+                setLoading(false);
+            })
+
             .catch((error) => console.error(error));
 
         TaskService.getAllTasks({ status: "new" })
@@ -186,53 +191,63 @@ export default function Main() {
     return (
         <div>
             <TBAppBar next={goToNext} prev={goToPrevious} today={goToToday} />
-            <div id="task-list" className={classes.root}>
-                <Grid container spacing={0}>
-                    <Grid item xs={12} sm={4}>
-                        <Paper className={classes.paper}>
-                            <AddTask
-                                task={task}
-                                duration={duration}
-                                createNewTask={createNewTask}
-                                taskChangeHandler={taskChangeHandler}
-                                durationChangeHandler={durationChangeHandler}
-                                taskList={newTaskList}
-                                deleteTask={deleteTask}
-                            />
+            {loading ? (
+                <div className="loading">
+                    <h1>...loading</h1>{" "}
+                </div>
+            ) : (
+                <div>
+                    <div id="task-list" className={classes.root}>
+                        <Grid container spacing={0}>
+                            <Grid item xs={12} sm={4}>
+                                <Paper className={classes.paper}>
+                                    <AddTask
+                                        task={task}
+                                        duration={duration}
+                                        createNewTask={createNewTask}
+                                        taskChangeHandler={taskChangeHandler}
+                                        durationChangeHandler={
+                                            durationChangeHandler
+                                        }
+                                        taskList={newTaskList}
+                                        deleteTask={deleteTask}
+                                    />
 
-                            <ScheduledTaskList
-                                taskList={taskList}
-                                updateTaskStatus={updateTaskStatus}
-                            />
-                        </Paper>
-                        {/* <Paper className={classes.paper}></Paper> */}
-                    </Grid>
-                    <Grid item xs={12} sm={8}>
-                        <Paper className={classes.paper}>
-                            <Scheduler
-                                taskList={taskList}
-                                updateTask={updateTask}
-                                updateTaskStatus={updateTaskStatus}
-                                onDateChange={(start, end) =>
-                                    onDateChange(start, end)
-                                }
-                                ref={schedulerRef}
-                            />
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </div>
-            <Snackbar
-                open={showSnackbar}
-                autoHideDuration={3000}
-                onClose={onSnackbarClose}>
-                <Alert
-                    onClose={onSnackbarClose}
-                    severity="error"
-                    variant="filled">
-                    {alertMessage}
-                </Alert>
-            </Snackbar>
+                                    <ScheduledTaskList
+                                        taskList={taskList}
+                                        updateTaskStatus={updateTaskStatus}
+                                    />
+                                </Paper>
+                                {/* <Paper className={classes.paper}></Paper> */}
+                            </Grid>
+                            <Grid item xs={12} sm={8}>
+                                <Paper className={classes.paper}>
+                                    <Scheduler
+                                        taskList={taskList}
+                                        updateTask={updateTask}
+                                        updateTaskStatus={updateTaskStatus}
+                                        onDateChange={(start, end) =>
+                                            onDateChange(start, end)
+                                        }
+                                        ref={schedulerRef}
+                                    />
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <Snackbar
+                        open={showSnackbar}
+                        autoHideDuration={3000}
+                        onClose={onSnackbarClose}>
+                        <Alert
+                            onClose={onSnackbarClose}
+                            severity="error"
+                            variant="filled">
+                            {alertMessage}
+                        </Alert>
+                    </Snackbar>
+                </div>
+            )}
         </div>
     );
 }
