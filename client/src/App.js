@@ -11,21 +11,17 @@ import "./App.css";
 import Main from "../src/pages/Main";
 import Login from "../src/pages/Login";
 import SignUp from "../src/pages/SignUp";
+import { ProtectedRoute } from "./components/protected.route";
 
 function App() {
     return (
         <Router>
             <div className="App">
                 <Switch>
-                    <Route exact path="/">
-                        <Main />
-                    </Route>
-                    <Route path="/login">
-                        <Login />
-                    </Route>
-                    <Route path="/signup">
-                        <SignUp />
-                    </Route>
+                    <ProtectedRoute exact path="/" component={Main} />
+                    <Route path="/login" component={Login}></Route>
+                    <Route path="/signup" component={SignUp}></Route>
+                    <Route path="*" component={() => "404 Page not found"} />
                 </Switch>
             </div>
         </Router>

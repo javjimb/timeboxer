@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -22,6 +23,7 @@ import { Alert } from "@material-ui/lab";
 
 // Components
 import SignAppBar from "../components/SignAppBar";
+import auth from "../components/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
@@ -69,13 +71,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Login() {
+export default function Login(props) {
     const classes = useStyles();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState("");
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
+    const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
 
     const emailChangeHandler = (event) => {
         setEmail(event.target.value);
@@ -93,7 +96,10 @@ export default function Login() {
                 if (response.errors) {
                     setShowSnackbar(true);
                     setAlertMessage(response.errors);
-                } else setToken(response.token);
+                } else {
+                    setToken(response.token);
+                    props.auth.login();
+                }
             })
             .catch((error) => {
                 setShowSnackbar(true);
