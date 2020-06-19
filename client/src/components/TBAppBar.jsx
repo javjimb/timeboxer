@@ -54,15 +54,6 @@ export default function TBAppBar({ next, prev, today, props }) {
                     <Button
                         color="inherit"
                         onClick={() => {
-                            auth.login(() => {
-                                props.history.push("/");
-                            });
-                        }}>
-                        Login
-                    </Button>
-                    <Button
-                        color="inherit"
-                        onClick={() => {
                             auth.logout(() => {
                                 props.history.push("/login");
                             });
