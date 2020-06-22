@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -23,7 +23,9 @@ import { Alert } from "@material-ui/lab";
 
 // Components
 import SignAppBar from "../components/SignAppBar";
-import auth from "../components/auth";
+
+// helper
+import auth from "../helper/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
@@ -99,10 +101,14 @@ export default function Login(props) {
                     setToken(response.token);
                     auth.login(() => {
                         let cookies = new Cookies();
-                        cookies.set('token', response.token, { path: '/', httpOnly: true } );
+
+                        cookies.set("token", response.token, {
+                            path: "/",
+                            //httpOnly: true,
+                        });
+
                         props.history.push("/");
                     });
-
                 }
             })
             .catch((error) => {

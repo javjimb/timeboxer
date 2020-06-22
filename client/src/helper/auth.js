@@ -1,4 +1,4 @@
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 
 class Auth {
     constructor() {
@@ -18,7 +18,7 @@ class Auth {
     }
     getAuthHeader() {
         let cookies = new Cookies();
-        return  { 'x-access-token' : cookies.get('token')};
+        return { "x-access-token": cookies.get("token") };
     }
 }
 
