@@ -3,6 +3,7 @@ import Cookies from "universal-cookie";
 class Auth {
     constructor() {
         this.authenticated = false;
+        this.cookies = new Cookies();
     }
     login(cb) {
         this.authenticated = true;
@@ -14,11 +15,14 @@ class Auth {
         cb();
     }
     isAuthenticated() {
+        let token = this.cookies.get('token');
+        if (token) {
+            this.authenticated = true;
+        }
         return this.authenticated;
     }
     getAuthHeader() {
-        let cookies = new Cookies();
-        return { "x-access-token": cookies.get("token") };
+        return { "x-access-token": this.cookies.get("token") };
     }
 }
 
