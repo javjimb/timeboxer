@@ -11,7 +11,7 @@ import TodayIcon from "@material-ui/icons/Today";
 
 // Components
 
-import auth from "../components/auth";
+import auth from "../helper/auth";
 
 const useStyles = makeStyles((theme) => ({
     root: {
