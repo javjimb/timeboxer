@@ -1,6 +1,7 @@
 // Library
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { userContext } from "./userContext";
 
 // import 'typeface-roboto';
 
@@ -14,10 +15,17 @@ import SignUp from "../src/pages/SignUp";
 import { ProtectedRoute } from "./components/protected.route";
 import User from "../src/pages/User";
 
+// Services
+
+import UserService from "../src/services/UserService";
+
 function App() {
+    const [user, setUser] = useState({});
+
+    const useEffect = () => {};
     return (
         <Router>
-            <div className="App">
+            <userContext.Provider value={user}>
                 <Switch>
                     <ProtectedRoute exact path="/auth/me" component={User} />
                     <ProtectedRoute exact path="/" component={Main} />
@@ -25,7 +33,7 @@ function App() {
                     <Route path="/signup" component={SignUp}></Route>
                     <Route path="*" component={() => "404 Page not found"} />
                 </Switch>
-            </div>
+            </userContext.Provider>
         </Router>
     );
 }

@@ -16,6 +16,8 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 // Components
 
@@ -34,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         marginRight: theme.spacing(2),
+        backgroundColor: "white",
     },
 }));
 
@@ -142,18 +145,28 @@ export default function TBAppBar({ next, prev, today, props }) {
                                                         (handleClose,
                                                         handleAccountClick)
                                                     }>
-                                                    My account
+                                                    <Button
+                                                        startIcon={
+                                                            <AccountCircleIcon />
+                                                        }>
+                                                        My account
+                                                    </Button>
                                                 </MenuItem>
-                                                <MenuItem
-                                                    onClick={
-                                                        (handleClose,
-                                                        () => {
-                                                            auth.logout(
-                                                                handleLogoutClick
-                                                            );
-                                                        })
-                                                    }>
-                                                    Logout
+                                                <MenuItem>
+                                                    <Button
+                                                        startIcon={
+                                                            <ExitToAppIcon />
+                                                        }
+                                                        onClick={
+                                                            (handleClose,
+                                                            () => {
+                                                                auth.logout(
+                                                                    handleLogoutClick
+                                                                );
+                                                            })
+                                                        }>
+                                                        Logout
+                                                    </Button>
                                                 </MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>

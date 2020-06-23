@@ -44,7 +44,7 @@ export default function Main() {
     const [endTimestamp, setEndTimestamp] = useState(
         moment().endOf("day").unix()
     );
-    const [user, setUser] = useState({});
+
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
