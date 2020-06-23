@@ -19,4 +19,21 @@ export default {
         const response = await fetch(apiURL, requestOptions);
         return await response.json();
     },
+    async updateUser(id, name, surname, avatar) {
+        const requestOptions = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                ...auth.getAuthHeader(),
+            },
+            body: JSON.stringify({
+                _id: id,
+                name: name,
+                surname: surname,
+                avatar: avatar,
+            }),
+        };
+        const response = await fetch(apiURL, requestOptions);
+        return await response.json();
+    },
 };
