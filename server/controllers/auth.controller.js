@@ -31,7 +31,8 @@ class AuthController {
                 _id: user._id,
                 name: user.name,
                 surname: user.surname,
-                email: user.email
+                email: user.email,
+                avatar: user.avatar
             }
         };
 
@@ -44,7 +45,8 @@ class AuthController {
             (err, token) => {
                 if (err) throw err;
                 res.status(200).json({
-                    token: token
+                    token: token,
+                    user: payload.user
                 });
             }
         );
