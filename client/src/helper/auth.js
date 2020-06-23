@@ -12,10 +12,12 @@ class Auth {
 
     logout(cb) {
         this.authenticated = false;
+
+        this.cookies.remove("token");
         cb();
     }
     isAuthenticated() {
-        let token = this.cookies.get('token');
+        let token = this.cookies.get("token");
         if (token) {
             this.authenticated = true;
         }
