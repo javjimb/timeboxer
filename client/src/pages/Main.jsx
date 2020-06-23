@@ -8,6 +8,7 @@ import { Alert } from "@material-ui/lab";
 
 // Services
 import TaskService from "../services/TaskService";
+import UserService from "../services/UserService";
 
 // Components
 import Scheduler from "../components/schedule/Scheduler";
@@ -43,6 +44,7 @@ export default function Main() {
     const [endTimestamp, setEndTimestamp] = useState(
         moment().endOf("day").unix()
     );
+    const [user, setUser] = useState({});
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
