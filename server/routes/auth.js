@@ -30,7 +30,7 @@ const auth = require('../middleware/auth');
 router.post('/login', AuthController.login);
 
 /**
- * @api {post} /auth/me Me
+ * @api {get} /auth/me Me
  * @apiDescription Returns the authenticated user's data
  * @apiGroup Auth
  * @apiPermission authenticated
