@@ -12,12 +12,25 @@ const auth = require('../middleware/auth');
  * @apiParam {String} password User password
  *
  * @apiSuccess {String} token Access token
+ * @apiSuccess {Object} user Authenticated user data
+ * @apiSuccess {String} user._id User id
+ * @apiSuccess {String} user.name User name
+ * @apiSuccess {String} user.surname User surname
+ * @apiSuccess {String} user.email User email
+ * @apiSuccess {String} user.avatar User avatar image (base64 encoded)
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
- * {
- *  "token": "eyJhb8ciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlY2U4YTQ1MTZiYWQ0NDJiMDdhNmQwNyIsIm5hbWUiOiJKYXZpZXIiLCJzdXJuYW1lIjoiSmltZW5leiIsImVtYWlsIjoiamF2amltYkBnbWFpbC5jb20ifSwiaWF0IjoxNTkxMDI1NjI2LCJleHAiOjE1OTEwNjg4IjZ9.FEEEVvG4fBmZUjbs6aSleImm0AiPBx9rR0gIVfIJze0"
- * }
+ *   {
+ *      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlY2U4YTQ1MTZiYWQ0NDJiMDdhNmQwNyIsIm5hbWUiOiJKYXZpZXIiLCJzdXJuYW1lIjoiSmltZW5leiIsImVtYWlsIjoiamF2amltYkBnbWFpbC5jb20iLCJhdmF0YXIiOnt9fSwiaWF0IjoxNTkyOTIxNTQwLCJleHAiOjE1OTMwMDc5NDB9.sC-eFAnQ672V53f-kPqUL1f-kgvxfP5NeGvozcv9uZ0",
+ *      "user": {
+ *          "_id": "5ece8a4516bad442b07a6d07",
+ *          "email": "javjimb@gmail.com",
+ *          "name": "Javier",
+ *          "surname": "Jimenez",
+ *          "avatar": ""
+ *      }
+ *  }
  *
  * @apiErrorExample {json} Authorization
  *    HTTP/1.1 401 Unauthorized
