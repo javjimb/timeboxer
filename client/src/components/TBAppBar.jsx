@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import TodayIcon from "@material-ui/icons/Today";
+import { useHistory } from "react-router-dom";
 
 // Components
 
@@ -27,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TBAppBar({ next, prev, today, props }) {
     const classes = useStyles();
+    let history = useHistory();
+
+    function handleClick() {
+        history.push("/login");
+    }
 
     return (
         <div className={classes.root}>
@@ -54,9 +60,7 @@ export default function TBAppBar({ next, prev, today, props }) {
                     <Button
                         color="inherit"
                         onClick={() => {
-                            auth.logout(() => {
-                                props.history.push("/login");
-                            });
+                            auth.logout(handleClick);
                         }}>
                         Logout
                     </Button>
