@@ -1,4 +1,8 @@
+// Libraries
 import React from "react";
+import { useHistory } from "react-router-dom";
+
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,7 +12,6 @@ import Button from "@material-ui/core/Button";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import TodayIcon from "@material-ui/icons/Today";
-import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
@@ -45,7 +48,7 @@ export default function TBAppBar({ next, prev, today }) {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
 
-    console.log(window.location.pathname === '/auth/me');
+    console.log(window.location.pathname === "/auth/me");
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -85,6 +88,11 @@ export default function TBAppBar({ next, prev, today }) {
         history.push("/auth/me");
     }
 
+    const routeChange = () => {
+        let path = `/`;
+        history.push(path);
+    };
+
     return (
         <div className={classes.root}>
             <AppBar position="static" style={{ backgroundColor: "#3788d8" }}>
@@ -101,19 +109,28 @@ export default function TBAppBar({ next, prev, today }) {
                     </Typography>
                     {
                         // show calendar actions only when path is '/'
-                        window.location.pathname === '/' &&
+                        window.location.pathname === "/" && (
+                            <div>
+                                <IconButton color="inherit" onClick={prev}>
+                                    <NavigateBeforeIcon />
+                                </IconButton>
+                                <IconButton color="inherit" onClick={today}>
+                                    <TodayIcon />
+                                </IconButton>
+                                <IconButton color="inherit" onClick={next}>
+                                    <NavigateNextIcon />
+                                </IconButton>
+                            </div>
+                        )
+                    }
+                    {window.location.pathname === "/auth/me" && (
                         <div>
-                            <IconButton color="inherit" onClick={prev}>
-                                <NavigateBeforeIcon />
-                            </IconButton>
-                            <IconButton color="inherit" onClick={today}>
+                            <IconButton color="inherit" onClick={routeChange}>
                                 <TodayIcon />
                             </IconButton>
-                            <IconButton color="inherit" onClick={next}>
-                                <NavigateNextIcon />
-                            </IconButton>
                         </div>
-                    }
+                    )}
+
                     <div>
                         <Button
                             ref={anchorRef}
