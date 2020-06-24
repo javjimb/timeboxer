@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Services
 import TaskService from "../services/TaskService";

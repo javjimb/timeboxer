@@ -14,9 +14,9 @@ import Login from "../src/pages/Login";
 import SignUp from "../src/pages/SignUp";
 import { ProtectedRoute } from "./components/protected.route";
 import User from "../src/pages/User";
+import TBAppBar from "./components/TBAppBar";
 
 // Services
-
 import UserService from "../src/services/UserService";
 
 function App() {

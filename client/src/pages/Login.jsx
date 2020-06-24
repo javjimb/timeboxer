@@ -22,8 +22,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
 
 // Components
-import SignAppBar from "../components/SignAppBar";
-
+import TBAppBar from "../components/TBAppBar";
 // helper
 import auth from "../helper/auth";
 
@@ -131,7 +130,7 @@ export default function Login(props) {
                     {alertMessage}
                 </Alert>
             </Snackbar>
-            <SignAppBar />
+            <TBAppBar />
             <Grid container component="main" className={classes.root}>
                 <CssBaseline />
                 <Grid item xs={false} sm={4} md={7} className={classes.image} />

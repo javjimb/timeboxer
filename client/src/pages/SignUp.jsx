@@ -22,7 +22,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
 
 // Components
-import SignAppBar from "../components/SignAppBar";
+import TBAppBar from "../components/TBAppBar";
 
 function Copyright() {
     return (
@@ -111,7 +111,7 @@ function SignUp(props) {
                     {alertMessage}
                 </Alert>
             </Snackbar>
-            <SignAppBar />
+            <TBAppBar />
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
