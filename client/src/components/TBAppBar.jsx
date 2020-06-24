@@ -45,6 +45,8 @@ export default function TBAppBar({ next, prev, today }) {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
 
+    console.log(window.location.pathname === '/auth/me');
+
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -99,7 +101,7 @@ export default function TBAppBar({ next, prev, today }) {
                     </Typography>
                     {
                         // show calendar actions only when path is '/'
-                        window.location.pathname.match('^/$') != null &&
+                        window.location.pathname === '/' &&
                         <div>
                             <IconButton color="inherit" onClick={prev}>
                                 <NavigateBeforeIcon />
