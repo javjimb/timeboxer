@@ -114,7 +114,7 @@ export default function TBAppBar({ next, prev, today, props }) {
                             onClick={handleToggle}
                             color="inherit">
                             <Avatar
-                                alt="Remy Sharp"
+                                alt="Joan Doe"
                                 src="/static/images/avatar/1.jpg"
                             />
                         </Button>
