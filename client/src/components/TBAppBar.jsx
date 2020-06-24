@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function TBAppBar({ next, prev, today, props }) {
+export default function TBAppBar({ next, prev, today }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
@@ -97,15 +97,21 @@ export default function TBAppBar({ next, prev, today, props }) {
                     <Typography variant="h2" className={classes.title}>
                         Time Boxer
                     </Typography>
-                    <IconButton color="inherit" onClick={prev}>
-                        <NavigateBeforeIcon />
-                    </IconButton>
-                    <IconButton color="inherit" onClick={today}>
-                        <TodayIcon />
-                    </IconButton>
-                    <IconButton color="inherit" onClick={next}>
-                        <NavigateNextIcon />
-                    </IconButton>
+                    {
+                        // show calendar actions only when path is '/'
+                        window.location.pathname.match('^/$') != null &&
+                        <div>
+                            <IconButton color="inherit" onClick={prev}>
+                                <NavigateBeforeIcon />
+                            </IconButton>
+                            <IconButton color="inherit" onClick={today}>
+                                <TodayIcon />
+                            </IconButton>
+                            <IconButton color="inherit" onClick={next}>
+                                <NavigateNextIcon />
+                            </IconButton>
+                        </div>
+                    }
                     <div>
                         <Button
                             ref={anchorRef}
