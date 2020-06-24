@@ -13,18 +13,20 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: "center",
+        justifyContent: "space-around",
         "& > *": {
-            margin: theme.spacing(1),
-            width: "95%",
-            height: "95vh",
+            margin: "16px",
+            width: "40%",
+            height: "80%",
         },
     },
     paper: {
         display: "flex",
-        flexWrap: "nowrap",
         alignItems: "center",
         flexDirection: "column",
+        justifyContent: "space-between",
+        padding: "16px",
+        height: "100%",
     },
     large: {
         margin: theme.spacing(1),
@@ -33,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
         display: "flex",
-        flexWrap: "nowrap",
-        alignItems: "felx-start",
         flexDirection: "column",
+        padding: "16px",
+        margin: "16px",
     },
 }));
 
@@ -58,23 +60,34 @@ export default function User() {
                         Account created at: ....
                     </Typography>
                     <Typography variant="p">Last change at: ....</Typography>
-
+                </Paper>
+                <Paper>
                     <form className={classes.form}>
                         <TextField id="surname" label="Surname"></TextField>
                         <TextField id="name" label="Name"></TextField>
                         <TextField id="email" label="Email"></TextField>
-                        <TextField
-                            id="password"
-                            label="new password"></TextField>
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            style={{ backgroundColor: "#3788d8" }}
+                            style={{
+                                backgroundColor: "#3788d8",
+                                margin: "16px",
+                                width: "150px",
+                                alignSelf: "flex-end",
+                            }}
                             className={classes.submit}>
-                            Sign In
+                            Submit
                         </Button>
-                        <Button color="secondary">delete account</Button>
+                        <Button
+                            style={{
+                                alignSelf: "flex-end",
+                                fontSize: "13px",
+                                margin: "16px",
+                            }}
+                            color="secondary">
+                            delete account
+                        </Button>
                     </form>
                 </Paper>
             </div>
