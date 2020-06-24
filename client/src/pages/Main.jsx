@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Services
 import TaskService from "../services/TaskService";
@@ -15,6 +16,7 @@ import Scheduler from "../components/schedule/Scheduler";
 import AddTask from "../components/tasks/AddTask";
 import ScheduledTaskList from "../components/tasks/ScheduledTaskList";
 import TBAppBar from "../components/TBAppBar";
+import Loading from "../components/Loading";
 
 const _ = require("lodash");
 const moment = require("moment");
@@ -194,9 +196,7 @@ export default function Main() {
         <div>
             <TBAppBar next={goToNext} prev={goToPrevious} today={goToToday} />
             {loading ? (
-                <div className="loading">
-                    <h1>...loading</h1>{" "}
-                </div>
+                <Loading />
             ) : (
                 <div>
                     <div id="task-list" className={classes.root}>

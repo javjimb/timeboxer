@@ -53,14 +53,12 @@ export default function User() {
                     />
                     <Typography variant="h3">Surname Name</Typography>
                     <Typography variant="h6">user id: ...</Typography>
-                    <div>
-                        <Typography variant="p">
-                            Account created at: ....
-                        </Typography>
-                        <Typography variant="p">
-                            Last change at: ....
-                        </Typography>
-                    </div>
+
+                    <Typography variant="p">
+                        Account created at: ....
+                    </Typography>
+                    <Typography variant="p">Last change at: ....</Typography>
+
                     <form className={classes.form}>
                         <TextField id="surname" label="Surname"></TextField>
                         <TextField id="name" label="Name"></TextField>
