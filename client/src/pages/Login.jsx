@@ -79,6 +79,7 @@ export default function Login(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState("");
+    const [user, setUser] = useState("");
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const globalState = useContext(store);
@@ -102,16 +103,19 @@ export default function Login(props) {
                     setAlertMessage(response.errors);
                 } else {
                     setToken(response.token);
-
-                    dispatch({ type: "setUser", userData: response.user });
+                    setUser(response.user);
+                    dispatch({ type: "setLogin", userData: response.user });
 
                     auth.login(() => {
                         let cookies = new Cookies();
-
                         cookies.set("token", response.token, {
                             path: "/",
                             //httpOnly: true,
                         });
+                        cookies.set("user", response.user, {
+                            path: "/",
+                        });
+                        console.log(cookies);
 
                         props.history.push("/");
                     });

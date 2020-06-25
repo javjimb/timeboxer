@@ -80,8 +80,8 @@ export default function User() {
                 if (response.errors) {
                     console.log(response.errors);
                 } else {
-                    setUser(response.user);
-                    dispatch({ type: "setUser", userData: response.user });
+                    setUser(response);
+                    dispatch({ type: "login", userData: response });
                 }
             })
             .catch((error) => {
@@ -89,7 +89,7 @@ export default function User() {
             });
     };
 
-    console.log(globalState);
+    console.log("globalState:", globalState);
     return (
         <div>
             <TBAppBar />
@@ -101,7 +101,7 @@ export default function User() {
                                 globalState.state.user.surname +
                                 globalState.state.user.name
                             }
-                            src="/static/images/avatar/1.jpg"
+                            src={globalState.state.user.avatar}
                             className={classes.large}
                         />
                         <input

@@ -1,24 +1,29 @@
 import React, { createContext, useReducer } from "react";
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
+let user = cookies.get("user");
 const initialState = {
     user: {
-        _id: "5ece8a4516bad442b07a6d07",
-        email: "test@gmail.com",
-        name: "Joan",
-        surname: "Doe",
-        avatar: "",
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        surname: user.surname,
+        avatar: user.avatar,
     },
 };
+
 const store = createContext(initialState);
 const { Provider } = store;
 
 const StateProvider = ({ children }) => {
     const [state, dispatch] = useReducer((state, action) => {
         switch (action.type) {
-            case "setUser":
+            case "setLogin":
                 return { ...state, user: action.userData };
             default:
-                throw new Error();
+                // throw new Error();
+                return state;
         }
     }, initialState);
 
