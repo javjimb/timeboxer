@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import Cookies from "universal-cookie";
 
 // Services
@@ -20,6 +20,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
+
+import { store } from "../store";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -79,6 +81,8 @@ export default function Login(props) {
     const [token, setToken] = useState("");
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
+    const globalState = useContext(store);
+    const { dispatch } = globalState;
 
     const emailChangeHandler = (event) => {
         setEmail(event.target.value);
@@ -98,6 +102,9 @@ export default function Login(props) {
                     setAlertMessage(response.errors);
                 } else {
                     setToken(response.token);
+
+                    dispatch({ type: "setUser", userData: response.user });
+
                     auth.login(() => {
                         let cookies = new Cookies();
 
