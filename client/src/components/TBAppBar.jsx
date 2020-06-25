@@ -130,81 +130,82 @@ export default function TBAppBar({ next, prev, today }) {
                             </IconButton>
                         </div>
                     )}
-                    {window.location.pathname === "/" && (
-                        <div>
-                            <Button
-                                ref={anchorRef}
-                                aria-controls={
-                                    open ? "menu-list-grow" : undefined
-                                }
-                                aria-haspopup="true"
-                                onClick={handleToggle}
-                                color="inherit">
-                                <Avatar
-                                    alt="Joan Doe"
-                                    src="/static/images/avatar/1.jpg"
-                                />
-                            </Button>
-                            <Popper
-                                open={open}
-                                anchorEl={anchorRef.current}
-                                role={undefined}
-                                transition
-                                disablePortal>
-                                {({ TransitionProps, placement }) => (
-                                    <Grow
-                                        {...TransitionProps}
-                                        style={{
-                                            transformOrigin:
-                                                placement === "bottom"
-                                                    ? "center top"
-                                                    : "center bottom",
-                                        }}>
-                                        <Paper>
-                                            <ClickAwayListener
-                                                onClickAway={handleClose}>
-                                                <MenuList
-                                                    autoFocusItem={open}
-                                                    id="menu-list-grow"
-                                                    onKeyDown={
-                                                        handleListKeyDown
-                                                    }>
-                                                    <MenuItem
-                                                        onClick={
-                                                            (handleClose,
-                                                            handleAccountClick)
+                    {window.location.pathname !== "/login" &&
+                        window.location.pathname !== "/signup" && (
+                            <div>
+                                <Button
+                                    ref={anchorRef}
+                                    aria-controls={
+                                        open ? "menu-list-grow" : undefined
+                                    }
+                                    aria-haspopup="true"
+                                    onClick={handleToggle}
+                                    color="inherit">
+                                    <Avatar
+                                        alt="Joan Doe"
+                                        src="/static/images/avatar/1.jpg"
+                                    />
+                                </Button>
+                                <Popper
+                                    open={open}
+                                    anchorEl={anchorRef.current}
+                                    role={undefined}
+                                    transition
+                                    disablePortal>
+                                    {({ TransitionProps, placement }) => (
+                                        <Grow
+                                            {...TransitionProps}
+                                            style={{
+                                                transformOrigin:
+                                                    placement === "bottom"
+                                                        ? "center top"
+                                                        : "center bottom",
+                                            }}>
+                                            <Paper>
+                                                <ClickAwayListener
+                                                    onClickAway={handleClose}>
+                                                    <MenuList
+                                                        autoFocusItem={open}
+                                                        id="menu-list-grow"
+                                                        onKeyDown={
+                                                            handleListKeyDown
                                                         }>
-                                                        <Button
-                                                            startIcon={
-                                                                <AccountCircleIcon />
-                                                            }>
-                                                            My account
-                                                        </Button>
-                                                    </MenuItem>
-                                                    <MenuItem>
-                                                        <Button
-                                                            startIcon={
-                                                                <ExitToAppIcon />
-                                                            }
+                                                        <MenuItem
                                                             onClick={
                                                                 (handleClose,
-                                                                () => {
-                                                                    auth.logout(
-                                                                        handleLogoutClick
-                                                                    );
-                                                                })
+                                                                handleAccountClick)
                                                             }>
-                                                            Logout
-                                                        </Button>
-                                                    </MenuItem>
-                                                </MenuList>
-                                            </ClickAwayListener>
-                                        </Paper>
-                                    </Grow>
-                                )}
-                            </Popper>
-                        </div>
-                    )}
+                                                            <Button
+                                                                startIcon={
+                                                                    <AccountCircleIcon />
+                                                                }>
+                                                                My account
+                                                            </Button>
+                                                        </MenuItem>
+                                                        <MenuItem>
+                                                            <Button
+                                                                startIcon={
+                                                                    <ExitToAppIcon />
+                                                                }
+                                                                onClick={
+                                                                    (handleClose,
+                                                                    () => {
+                                                                        auth.logout(
+                                                                            handleLogoutClick
+                                                                        );
+                                                                    })
+                                                                }>
+                                                                Logout
+                                                            </Button>
+                                                        </MenuItem>
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Paper>
+                                        </Grow>
+                                    )}
+                                </Popper>
+                            </div>
+                        )}
                 </Toolbar>
             </AppBar>
         </div>
