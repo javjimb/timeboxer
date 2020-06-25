@@ -3,15 +3,28 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 let user = cookies.get("user");
-const initialState = {
-    user: {
-        _id: user._id,
-        email: user.email,
-        name: user.name,
-        surname: user.surname,
-        avatar: user.avatar,
-    },
-};
+let initialState = {};
+if (user) {
+    initialState = {
+        user: {
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+            surname: user.surname,
+            avatar: user.avatar,
+        },
+    };
+} else {
+    initialState = {
+        user: {
+            _id: "",
+            email: "",
+            name: "",
+            surname: "",
+            avatar: "",
+        },
+    };
+}
 
 const store = createContext(initialState);
 const { Provider } = store;
