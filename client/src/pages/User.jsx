@@ -81,7 +81,7 @@ export default function User() {
                     console.log(response.errors);
                 } else {
                     setUser(response);
-                    dispatch({ type: "login", userData: response });
+                    dispatch({ type: "saveUser", userData: response });
                 }
             })
             .catch((error) => {
