@@ -2,29 +2,10 @@ import React, { createContext, useReducer } from "react";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
-let user = cookies.get("user");
-let initialState = {};
-if (user) {
-    initialState = {
-        user: {
-            _id: user._id,
-            email: user.email,
-            name: user.name,
-            surname: user.surname,
-            avatar: user.avatar,
-        },
-    };
-} else {
-    initialState = {
-        user: {
-            _id: "",
-            email: "",
-            name: "",
-            surname: "",
-            avatar: "",
-        },
-    };
-}
+let user = cookies.get("user") || {};
+let initialState = {
+    user: user,
+};
 
 const store = createContext(initialState);
 const { Provider } = store;

@@ -20,6 +20,7 @@ class Auth {
     isAuthenticated() {
         let token = this.cookies.get("token");
         let user = this.cookies.get("user");
+        console.log("cookies:", this.cookies);
         if (token) {
             this.authenticated = true;
         }

@@ -65,9 +65,19 @@ export default function User() {
                 );
                 break;
             case "avatar":
-                setUser(
-                    Object.assign({}, user, { avatar: event.target.value })
-                );
+                let file = event.target.files[0];
+                let reader = new FileReader();
+
+                reader.onloadend = () => {
+                    console.log("image changed");
+                    setUser(
+                        Object.assign({}, user, {
+                            avatar: reader.result,
+                        })
+                    );
+                };
+                reader.readAsDataURL(file);
+
                 break;
             default:
                 break;
@@ -90,6 +100,7 @@ export default function User() {
     };
 
     console.log("globalState:", globalState);
+
     return (
         <div>
             <TBAppBar />
