@@ -32,7 +32,7 @@ const { Provider } = store;
 const StateProvider = ({ children }) => {
     const [state, dispatch] = useReducer((state, action) => {
         switch (action.type) {
-            case "setLogin":
+            case "saveUser":
                 return { ...state, user: action.userData };
             default:
                 // throw new Error();
