@@ -101,4 +101,25 @@ describe('User', () => {
         expect(response.body.name).toBe('Name change');
         expect(response.body.surname).toBe('Surname change');
     });
+
+    it('should be able to get a single user by its id', async () => {
+
+        let user = await UserService.createUser({
+            name : 'Jane',
+            surname : 'Doe',
+            email : 'jane@email.com',
+            password : 'password',
+        });
+
+        const response = await request.get('/users/' + user._id)
+            .set('x-access-token', accessToken)
+            .send()
+            .catch( e => {console.error(e)});
+
+        expect(response.status).toBe(200);
+        expect(response.body.name).not.toBeNull();
+        expect(response.body.surname).not.toBeNull();
+        expect(response.body.email).not.toBeNull();
+        expect(response.body.password).not.toBeNull();
+    });
 });

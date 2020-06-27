@@ -26,7 +26,7 @@ class emailService {
                     subject: "Timeboxer: Verify your email",
                     html: html,
                 }).then(info => {
-                    console.log("Message sent: %s", info.messageId);
+                    //console.log("Message sent: %s", info.messageId);
                 });
             }
         });
