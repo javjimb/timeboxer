@@ -77,5 +77,41 @@ router.post('/', UsersController.create);
  */
 router.put('/:id', auth, UsersController.update);
 
+/**
+ * @api {get} /users/:id Find a user
+ * @apiGroup User
+ * @apiPermission authenticated
+ * @apiParam {String} id User id
+ *
+ * @apiParam {id} id User id
+ * @apiSuccess {id} id User id
+ * @apiSuccess {String} name User name
+ * @apiSuccess {String} surname User surname
+ * @apiSuccess {String} avatar User avatar (base64)
+ * @apiSuccess {Date} updatedAt When the last update was made
+ * @apiSuccess {Date} createdAt When the user was created
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *       "_id": "5e9d4825e40a457a5cd02449",
+ *       name: 'Keara',
+ *       surname: 'Muller',
+ *       email: 'Gilberto19@hotmail.com',
+ *       createdAt: '2020-05-18T12:21:27.018Z',
+ *       updatedAt: '2020-05-18T12:21:27.018Z',
+ *    }
+ * @apiErrorExample {json} Task not found
+ *    HTTP/1.1 404 Not Found
+ *    {
+ *      "errors": [
+ *          {"msg": "Could not find user with id 5e9d4825e40a457a5cd02449"}
+ *      ]
+ *    }
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ */
+
+router.get('/:id', auth,  UsersController.getById);
+
 
 module.exports = router;

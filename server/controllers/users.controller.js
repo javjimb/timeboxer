@@ -59,6 +59,15 @@ class UsersController {
             res.send(result);
         })
     }
+
+    getById(req, res) {
+        UserService.findById(req.params.id).then((result) => {
+            result.password = undefined;
+            res.send(result);
+        }).catch( err => {
+            return res.status(404).json({ errors: [{ msg: 'Could not find user with id ' + req.params.id}] });
+        });
+    }
 }
 
 module.exports = new UsersController();
