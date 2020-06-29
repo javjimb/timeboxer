@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 
 // Services
@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 function SignUp(props) {
     const classes = useStyles();
     const [showSnackbar, setShowSnackbar] = useState(false);
+    const [showSnackbarSuccess, setShowSnackbarSuccess] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -86,7 +87,11 @@ function SignUp(props) {
                     setShowSnackbar(true);
                     setAlertMessage(response.errors);
                 } else {
-                    props.history.push("/login");
+                    setShowSnackbarSuccess(true);
+                    setAlertMessage(
+                        "You signed up successfully. You can login now."
+                    );
+                    setTimeout(() => props.history.push("/login"), 5000);
                 }
             })
             .catch((error) => {
@@ -103,10 +108,23 @@ function SignUp(props) {
             <Snackbar
                 open={showSnackbar}
                 autoHideDuration={3000}
-                onClose={onSnackbarClose}>
+                onClose={onSnackbarClose}
+                style={{ position: "fixed", top: 0 }}>
                 <Alert
                     onClose={onSnackbarClose}
                     severity="error"
+                    variant="filled">
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={showSnackbarSuccess}
+                autoHideDuration={3000}
+                onClose={onSnackbarClose}
+                style={{ position: "fixed", top: 0 }}>
+                <Alert
+                    onClose={onSnackbarClose}
+                    severity="success"
                     variant="filled">
                     {alertMessage}
                 </Alert>
