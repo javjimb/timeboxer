@@ -20,8 +20,7 @@
         "react-dom": "^16.13.1",
         "react-router-dom": "^5.2.0",
         "react-scripts": "3.4.1",
-        "typeface-roboto": "0.0.75",
-        "universal-cookie": "^4.0.3"
+        "typeface-roboto": "0.0.75"
     },
     "scripts": {
         "start": "PORT=3001 react-scripts start",

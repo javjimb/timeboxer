@@ -20,7 +20,6 @@ export default {
         return await response.json();
     },
     async updateUser(id, user) {
-        console.log(user);
         const requestOptions = {
             method: "PUT",
             headers: {
@@ -30,7 +29,7 @@ export default {
             body: JSON.stringify(user),
         };
         const response = await fetch(apiURL + "/" + id, requestOptions);
-        console.log(response);
+        // console.log(response);
         return await response.json();
     },
 };
