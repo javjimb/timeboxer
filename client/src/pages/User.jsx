@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
@@ -8,8 +8,7 @@ import Button from "@material-ui/core/Button";
 
 // Services
 import UserService from "../services/UserService";
-
-import { store } from "../store";
+import { userContext } from "../context/userContext";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -48,14 +47,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function User() {
     const classes = useStyles();
-    const globalState = useContext(store);
+    const globalState = useContext(userContext);
     const { dispatch } = globalState;
     const [user, setUser] = useState(globalState.state.user);
+
+    useEffect(() => {
+        const getUser = () => {
+            UserService.getUser(JSON.stringify(globalState.state.user._id))
+                .then((response) => {
+                    setUser(response.user);
+                })
+                .catch((error) => console.log(error));
+        };
+    }, []);
 
     const handleChange = (event, type) => {
         switch (type) {
             case "name":
-                console.log(user);
+                console.log("user:", user);
                 console.log(event.target.value);
                 setUser(Object.assign({}, user, { name: event.target.value }));
                 break;
@@ -108,11 +117,8 @@ export default function User() {
                 <Paper>
                     <form className={classes.form} onSubmit={changeUserData}>
                         <Avatar
-                            alt={
-                                globalState.state.user.surname +
-                                globalState.state.user.name
-                            }
-                            src={globalState.state.user.avatar}
+                            alt={user.surname + user.name}
+                            src={user.avatar}
                             className={classes.large}
                         />
                         <input
@@ -130,20 +136,17 @@ export default function User() {
                             }}
                         />
                         <Typography variant="h3">
-                            {globalState.state.user.name +
-                                " " +
-                                globalState.state.user.surname}
+                            {user.name + " " + user.surname}
                         </Typography>
                         <Typography variant="h6">
-                            user id: ${globalState.state.user._id}
+                            user id: ${user._id}
                         </Typography>
 
                         <Typography variant="subtitle1">
-                            Account created at: $
-                            {globalState.state.user.createdAt}
+                            Account created at: ${user.createdAt}
                         </Typography>
                         <Typography variant="subtitle1">
-                            Last change at: ${globalState.state.user.updatedAt}
+                            Last change at: ${user.updatedAt}
                         </Typography>
                         <TextField
                             id="name"

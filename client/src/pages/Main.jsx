@@ -246,6 +246,7 @@ export default function Main() {
                             {alertMessage}
                         </Alert>
                     </Snackbar>
+                    x
                 </div>
             )}
         </div>

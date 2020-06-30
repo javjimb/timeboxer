@@ -13,19 +13,21 @@ import Login from "../src/pages/Login";
 import SignUp from "../src/pages/SignUp";
 import { ProtectedRoute } from "./components/protected.route";
 import User from "../src/pages/User";
-
-// Services
-import UserService from "../src/services/UserService";
+import { StateProvider } from "../src/context/userContext";
 
 function App() {
+    const [user, setUser] = useState({});
     return (
         <Router>
             <Switch>
-                <ProtectedRoute exact path="/auth/me" component={User} />
-                <ProtectedRoute exact path="/" component={Main} />
-                <Route path="/login" component={Login}></Route>
-                <Route path="/signup" component={SignUp}></Route>
-                <Route path="*" component={() => "404 Page not found"} />
+                <StateProvider value={user}>
+                    <ProtectedRoute exact path="/auth/me" component={User} />
+                    <ProtectedRoute exact path="/" component={Main} />
+
+                    <Route path="/login" component={Login}></Route>
+                    <Route path="/signup" component={SignUp}></Route>
+                    <Route path="*" component={() => "404 Page not found"} />
+                </StateProvider>
             </Switch>
         </Router>
     );
