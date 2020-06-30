@@ -21,7 +21,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
 
-import { store } from "../store";
+import { userContext } from "../context/userContext";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -79,10 +79,10 @@ export default function Login(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState("");
-    const [user, setUser] = useState("");
+
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const globalState = useContext(store);
+    const globalState = useContext(userContext);
     const { dispatch } = globalState;
 
     const emailChangeHandler = (event) => {
@@ -103,20 +103,9 @@ export default function Login(props) {
                     setAlertMessage(response.errors);
                 } else {
                     setToken(response.token);
-                    setUser(response.user);
-                    dispatch({ type: "setLogin", userData: response.user });
-
                     auth.login(() => {
-                        let cookies = new Cookies();
-                        cookies.set("token", response.token, {
-                            path: "/",
-                            //httpOnly: true,
-                        });
-                        cookies.set("user", response.user, {
-                            path: "/",
-                        });
-                        console.log(cookies);
-
+                        localStorage.setItem("token", response.token);
+                        // console.log("token:", response.token);
                         props.history.push("/");
                     });
                 }
