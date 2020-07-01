@@ -31,11 +31,14 @@ class UsersController {
             return res.status(409).json({ errors: [{ msg: 'The email address is already registered'}] });
         }
 
-        UserService.createUser(req.body).then(async (result) => {
+        UserService.createUser(req.body).then(async (user) => {
 
-            emailService.sendWelcomeEmail(result);
+            // create a verification token for this user
+            let token = await UserService.generateVerificationToken(user)
 
-            res.status(201).send(result);
+            emailService.sendWelcomeEmail(user, token);
+
+            res.status(201).send(user);
         });
     }
 
