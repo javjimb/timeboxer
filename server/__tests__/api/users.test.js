@@ -1,10 +1,34 @@
 const supertest = require('supertest');
 const faker = require('faker');
+const jwt = require("jsonwebtoken");
 const app = require('../../App');
 const request = supertest(app);
 const UserService = require('../../services/userService');
 
 describe('User', () => {
+
+    let user = {};
+
+    beforeAll( async  () => {
+        const payload = {
+            user : {
+                _id: '5dbff32e367a343830cd2f49',
+                name: faker.name.firstName(),
+                surname: faker.name.lastName(),
+                email: faker.internet.email()
+            }
+        };
+
+        accessToken = await jwt.sign(
+            payload,
+            process.env.JWT_SECRET
+        );
+
+        UserService.findById = jest.fn().mockResolvedValue(payload.user);
+
+        // global user
+        user = payload.user;
+    });
 
     it('should be able to create user', async () => {
         let userData = {
@@ -54,5 +78,48 @@ describe('User', () => {
         expect(response.status).toBe(409);
         expect(response.body).toHaveProperty('errors');
         expect(response.body.errors[0].msg).toBe('The email address is already registered');
+    });
+
+    it('should be able to update a user', async () => {
+
+        let userData = {
+            name: faker.name.firstName(),
+            surname: faker.name.lastName(),
+            password: faker.internet.password(),
+            avatar: faker.image.avatar(),
+            email: faker.internet.email()
+        };
+
+        user = await  UserService.createUser(userData);
+
+        const response = await request.put('/users/' + user._id)
+            .set('x-access-token', accessToken)
+            .send({name: 'Name change', surname: 'Surname change'})
+            .catch( e => {console.error(e)});
+
+        expect(response.status).toBe(200);
+        expect(response.body.name).toBe('Name change');
+        expect(response.body.surname).toBe('Surname change');
+    });
+
+    it('should be able to get a single user by its id', async () => {
+
+        let user = await UserService.createUser({
+            name : 'Jane',
+            surname : 'Doe',
+            email : 'jane@email.com',
+            password : 'password',
+        });
+
+        const response = await request.get('/users/' + user._id)
+            .set('x-access-token', accessToken)
+            .send()
+            .catch( e => {console.error(e)});
+
+        expect(response.status).toBe(200);
+        expect(response.body.name).not.toBeNull();
+        expect(response.body.surname).not.toBeNull();
+        expect(response.body.email).not.toBeNull();
+        expect(response.body.password).not.toBeNull();
     });
 });

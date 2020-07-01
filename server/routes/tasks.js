@@ -1,11 +1,7 @@
 const express = require('express');
-const TasksController = require('../controllers/tasks.controller');
-const UsersController = require('../controllers/users.controller');
-const AuthController = require('../controllers/auth.controller');
-const auth = require('../middleware/auth');
-const { check } = require('express-validator');
-
 const router = new express.Router();
+const TasksController = require('../controllers/tasks.controller');
+const auth = require('../middleware/auth');
 
 /**
  * @apiDefine authenticated Needs an 'x-access-token' header
@@ -48,7 +44,7 @@ const router = new express.Router();
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.get('/tasks', auth, TasksController.getAll);
+router.get('/', auth, TasksController.getAll);
 
 /**
  * @api {get} /tasks/:id Find a task
@@ -87,7 +83,7 @@ router.get('/tasks', auth, TasksController.getAll);
  *    HTTP/1.1 500 Internal Server Error
  */
 
-router.get('/tasks/:id', auth,  TasksController.getById);
+router.get('/:id', auth,  TasksController.getById);
 
 /**
  * @api {post} /tasks Create a task
@@ -133,7 +129,7 @@ router.get('/tasks/:id', auth,  TasksController.getById);
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/tasks', auth, TasksController.create);
+router.post('/', auth, TasksController.create);
 
 /**
  * @api {put} /tasks/:id Update a task
@@ -172,7 +168,7 @@ router.post('/tasks', auth, TasksController.create);
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
-router.put('/tasks/:id', auth, TasksController.update);
+router.put('/:id', auth, TasksController.update);
 
 /**
  * @api {delete} /tasks/:id Remove a task
@@ -206,115 +202,6 @@ router.put('/tasks/:id', auth, TasksController.update);
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
-router.delete('/tasks/:id', auth, TasksController.delete);
-
-/**
- * @api {post} /users Create a user
- * @apiGroup User
- * @apiPermission none
- * @apiParam {String} email User email
- * @apiParam {String} password User password
- * @apiParam {String} [name] User name
- * @apiParam {String} [surname] User syrname
- *
- * @apiSuccess {String} _id User id
- * @apiSuccess {String} name User name
- * @apiSuccess {String} surname User surname
- * @apiSuccess {String} email User email
- * @apiSuccess {Date} updatedAt When the last update was made
- * @apiSuccess {Date} createdAt When the user was created
- * @apiSuccessExample {json} Success
- *    HTTP/1.1 201 Created
- *     {
- *     _id: '5ec27dc7cf8f3b536a3be300',
- *       name: 'Keara',
- *       surname: 'Muller',
- *       email: 'Gilberto19@hotmail.com',
- *       createdAt: '2020-05-18T12:21:27.018Z',
- *       updatedAt: '2020-05-18T12:21:27.018Z',
- *     }
- *
- * @apiErrorExample {json} Validation
- *    HTTP/1.1 422 Unprocessable Entity
- *    {
- *      "errors": [
- *         {
- *           "msg": "Email is required ",
- *           "param": "email",
- *           "location": "body"
- *         },
- *         {
- *           "value": "123",
- *           "msg": "Password must be at least 6 characters long",
- *           "param": "password",
- *           "location": "body"
- *         }
- *       ]
- *     }
- * @apiErrorExample {json} Server
- *    HTTP/1.1 500 Internal Server Error
- */
-router.post('/users', UsersController.create);
-
-/**
- * @api {post} /auth/login Login
- * @apiDescription Generates an authentication token for an existing user
- * @apiGroup Auth
- * @apiPermission none
- * @apiParam {String} email User email
- * @apiParam {String} password User password
- *
- * @apiSuccess {String} token Access token
- *
- * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
- * {
- *  "token": "eyJhb8ciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlY2U4YTQ1MTZiYWQ0NDJiMDdhNmQwNyIsIm5hbWUiOiJKYXZpZXIiLCJzdXJuYW1lIjoiSmltZW5leiIsImVtYWlsIjoiamF2amltYkBnbWFpbC5jb20ifSwiaWF0IjoxNTkxMDI1NjI2LCJleHAiOjE1OTEwNjg4IjZ9.FEEEVvG4fBmZUjbs6aSleImm0AiPBx9rR0gIVfIJze0"
- * }
- *
- * @apiErrorExample {json} Authorization
- *    HTTP/1.1 401 Unauthorized
- *  {
- *      "errors": "Invalid password"
- *  }
- * @apiErrorExample {json} Server
- *    HTTP/1.1 500 Internal Server Error
- */
-router.post('/auth/login', AuthController.login);
-
-/**
- * @api {post} /auth/me Me
- * @apiDescription Returns the authenticated user's data
- * @apiGroup Auth
- * @apiPermission authenticated
- * @apiHeader {String} x-access-token User access token
- *
- * @apiSuccess {String} _id User id
- * @apiSuccess {String} name User name
- * @apiSuccess {String} surname User surname
- * @apiSuccess {String} email User email
- * @apiSuccess {Date} createdAt When the user was created
- * @apiSuccess {Date} updatedAt When the last update was made
- *
- * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
- *  {
- *  "_id": "5ece8a4516bad442b07a6d07",
- *  "email": "william.amos@gmail.com",
- *  "name": "William",
- *  "surname": "Amos",
- *  "createdAt": "2020-05-27T15:41:57.865Z",
- *  "updatedAt": "2020-05-27T15:41:57.865Z",
- * }
- *
- * @apiErrorExample {json} Server
- *    HTTP/1.1 500 Internal Server Error
- *  {
- *      "errors": "Failed to authenticate token"
- *  }
- */
-router.get('/auth/me', auth, AuthController.me);
-
-
+router.delete('/:id', auth, TasksController.delete);
 
 module.exports = router;

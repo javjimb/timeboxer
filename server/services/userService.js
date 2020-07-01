@@ -27,7 +27,9 @@ class UserService {
     }
 
     async updateUser(id, update) {
-        return await UserModel.findByIdAndUpdate(id, update, { new: true, runValidators: true });
+        let user =  await UserModel.findByIdAndUpdate(id, update, { new: true, runValidators: true });
+        await UserModel.findByIdAndRemove(id);
+        return user;
     }
 }
 
