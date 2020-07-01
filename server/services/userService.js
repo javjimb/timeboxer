@@ -1,4 +1,6 @@
 const UserModel = require('../models/User');
+const TokenModel = require('../models/Token');
+const crypto = require('crypto');
 
 class UserService {
 
@@ -30,6 +32,13 @@ class UserService {
         let user =  await UserModel.findByIdAndUpdate(id, update, { new: true, runValidators: true });
         await UserModel.findByIdAndRemove(id);
         return user;
+    }
+
+    async generateVerificationToken(user) {
+        return new TokenModel({
+            user: user._id,
+            token: crypto.randomBytes(16).toString('hex')
+        });
     }
 }
 
