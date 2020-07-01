@@ -28,7 +28,7 @@ const StateProvider = (props) => {
         }
     }, initialState);
 
-    return <Provider value={{ state, dispatch }}>{children}</Provider>;
+    return <Provider value={{ state, dispatch }}>{props.children}</Provider>;
 };
 
 export { userContext, StateProvider };
