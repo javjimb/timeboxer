@@ -31,7 +31,8 @@ class AuthController {
                 _id: user._id,
                 name: user.name,
                 surname: user.surname,
-                email: user.email
+                email: user.email,
+                avatar: user.avatar
             }
         };
 
@@ -39,12 +40,13 @@ class AuthController {
             payload,
             process.env.JWT_SECRET,
             {
-                expiresIn: 3600 * 12
+                expiresIn: 3600 * 24
             },
             (err, token) => {
                 if (err) throw err;
                 res.status(200).json({
-                    token: token
+                    token: token,
+                    user: payload.user
                 });
             }
         );
@@ -60,7 +62,7 @@ class AuthController {
             res.status(200).send(user);
         } catch (err) {
             console.error(err);
-            return res.status(500).json({ errors: [{ msg: 'Failed to authenticate token'}] });
+            return res.status(403).json({ errors: [{ msg: 'Failed to authenticate token'}] });
         }
     }
 }

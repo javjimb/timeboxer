@@ -8,7 +8,7 @@ module.exports = function(req, res, next) {
     }
     jwt.verify(token, process.env.JWT_SECRET, ( err, decoded) => {
         if (err) {
-            return res.status(500).json({ errors: [{ msg: 'Failed to authenticate token'}] });
+            return res.status(403).json({ errors: [{ msg: 'Failed to authenticate token'}] });
         }
         UserService.findById(decoded.user._id).then(user => {
             req.user = user;

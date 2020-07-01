@@ -1,5 +1,6 @@
 const UserService = require('../services/userService');
 const { check, validationResult } = require('express-validator');
+const emailService = require('../services/emailService');
 
 class UsersController {
 
@@ -30,7 +31,10 @@ class UsersController {
             return res.status(409).json({ errors: [{ msg: 'The email address is already registered'}] });
         }
 
-        UserService.createUser(req.body).then((result) => {
+        UserService.createUser(req.body).then(async (result) => {
+
+            emailService.sendWelcomeEmail(result);
+
             res.status(201).send(result);
         });
     }
@@ -54,6 +58,15 @@ class UsersController {
         UserService.deleteUser(req.params.id).then((result) => {
             res.send(result);
         })
+    }
+
+    getById(req, res) {
+        UserService.findById(req.params.id).then((result) => {
+            result.password = undefined;
+            res.send(result);
+        }).catch( err => {
+            return res.status(404).json({ errors: [{ msg: 'Could not find user with id ' + req.params.id}] });
+        });
     }
 }
 
