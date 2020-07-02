@@ -48,9 +48,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function User() {
     const classes = useStyles();
-    const globalState = useContext(userContext);
-    const { dispatch } = globalState;
-    const [user, setUser] = useState(globalState.state.user);
+    const {user, dispatch} = useContext(userContext);
+
+    console.warn(user);
 
     // useEffect(() => {
     //     const getUser = () => {
@@ -67,12 +67,14 @@ export default function User() {
             case "name":
                 console.log("user:", user);
                 console.log(event.target.value);
-                setUser(Object.assign({}, user, { name: event.target.value }));
+               // setUser(Object.assign({}, user, { name: event.target.value }));
                 break;
             case "surname":
+                /*
                 setUser(
                     Object.assign({}, user, { surname: event.target.value })
                 );
+                */
                 break;
             case "avatar":
                 let file = event.target.files[0];
@@ -80,11 +82,13 @@ export default function User() {
 
                 reader.onloadend = () => {
                     console.log("image changed");
+                    /*
                     setUser(
                         Object.assign({}, user, {
                             avatar: reader.result,
                         })
                     );
+                    */
                 };
                 reader.readAsDataURL(file);
 
@@ -100,7 +104,7 @@ export default function User() {
                 if (response.errors) {
                     console.log(response.errors);
                 } else {
-                    setUser(response);
+                   // setUser(response);
                     dispatch({ type: "saveUser", userData: response });
                 }
             })
@@ -109,7 +113,6 @@ export default function User() {
             });
     };
 
-    console.log("globalState:", globalState);
 
     return (
         <div>
@@ -119,10 +122,10 @@ export default function User() {
                     <form className={classes.form} onSubmit={changeUserData}>
                         <Avatar
                             alt={
-                                globalState.state.user.surname +
-                                globalState.state.user.name
+                                user.surname +
+                                user.name
                             }
-                            src={globalState.state.user.avatar}
+                            src={user.avatar}
                             className={classes.large}
                         />
                         <input
