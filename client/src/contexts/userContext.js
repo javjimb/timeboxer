@@ -7,7 +7,7 @@ const userContext = createContext();
 const { Provider } = userContext;
 
 const StateProvider = (props) => {
-    const [state, dispatch] = useReducer(
+    const [user, dispatch] = useReducer(
         (state, action) => {
             switch (action.type) {
                 case "saveUser":
@@ -18,13 +18,16 @@ const StateProvider = (props) => {
             }
         },
         {},
-        () => {
-            console.log(localStorage.getItem("token"));
-            return localStorage.getItem("token") ? AuthService.getUser() : {};
+        async () => {
+            let user;
+            if (localStorage.getItem("token")) {
+                user = await AuthService.getUser();
+            }
+            return user || {};
         }
     );
 
-    return <Provider value={{ state, dispatch }}>{props.children}</Provider>;
+    return <Provider value={{ user, dispatch }}>{props.children}</Provider>;
 };
 
 export { userContext, StateProvider };

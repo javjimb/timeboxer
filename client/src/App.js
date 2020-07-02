@@ -16,9 +16,9 @@ import User from "../src/pages/User";
 import { StateProvider } from "./contexts/userContext";
 
 function App() {
-    const [user, setUser] = useState({});
+    //const [user, setUser] = useState({});
     return (
-        <StateProvider value={user}>
+        <StateProvider>
             <Router>
                 <Switch>
                     <ProtectedRoute exact path="/auth/me" component={User} />
