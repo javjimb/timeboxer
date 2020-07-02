@@ -7,8 +7,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 // Services
+import AuthService from "../services/AuthService";
 import UserService from "../services/UserService";
-import { userContext } from "../context/userContext";
+import { userContext } from "../contexts/userContext";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -53,7 +54,7 @@ export default function User() {
 
     useEffect(() => {
         const getUser = () => {
-            UserService.getUser(JSON.stringify(globalState.state.user._id))
+            AuthService.getUser()
                 .then((response) => {
                     setUser(response.user);
                 })
