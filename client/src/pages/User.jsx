@@ -52,15 +52,15 @@ export default function User() {
     const { dispatch } = globalState;
     const [user, setUser] = useState(globalState.state.user);
 
-    useEffect(() => {
-        const getUser = () => {
-            AuthService.getUser()
-                .then((response) => {
-                    setUser(response.user);
-                })
-                .catch((error) => console.log(error));
-        };
-    }, []);
+    // useEffect(() => {
+    //     const getUser = () => {
+    //         AuthService.getUser()
+    //             .then((response) => {
+    //                 setUser(response.user);
+    //             })
+    //             .catch((error) => console.log(error));
+    //     };
+    // }, []);
 
     const handleChange = (event, type) => {
         switch (type) {
@@ -118,8 +118,11 @@ export default function User() {
                 <Paper>
                     <form className={classes.form} onSubmit={changeUserData}>
                         <Avatar
-                            alt={user.surname + user.name}
-                            src={user.avatar}
+                            alt={
+                                globalState.state.user.surname +
+                                globalState.state.user.name
+                            }
+                            src={globalState.state.user.avatar}
                             className={classes.large}
                         />
                         <input
