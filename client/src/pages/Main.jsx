@@ -180,7 +180,7 @@ export default function Main() {
         TaskService.getAllTasks({ fromTimestamp: startTimestamp })
             .then((response) => {
                 setTaskList(response.tasks);
-                setLoading(false);
+                // setLoading(false);
             })
 
             .catch((error) => console.error(error));
