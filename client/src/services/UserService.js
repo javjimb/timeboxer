@@ -18,7 +18,7 @@ export default {
                 surname: surname,
             }),
         };
-        const response = await fetch(apiURL, requestOptions);
+        const response = await fetch(apiURL + "/users", requestOptions);
         return await response.json();
     },
     async updateUser(id, user) {
@@ -30,7 +30,7 @@ export default {
             },
             body: JSON.stringify(user),
         };
-        const response = await fetch(apiURL + "/" + id, requestOptions);
+        const response = await fetch(apiURL + "/users/" + id, requestOptions);
         // console.log(response);
         return await response.json();
     },
