@@ -1,6 +1,7 @@
 import auth from "../helper/auth";
+require("dotenv").config();
 
-const apiURL = "http://localhost:5000/auth/";
+const apiURL = process.env.API_URL + "/auth";
 
 export default {
     async loginUser(email, password) {

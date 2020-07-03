@@ -1,5 +1,7 @@
 import auth from "../helper/auth";
-const apiURL = "http://localhost:5000/tasks/";
+require("dotenv").config();
+
+const apiURL = process.env.API_URL + "/tasks";
 const querystring = require("querystring");
 
 export default {
