@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function User() {
     const classes = useStyles();
-    const {user, dispatch} = useContext(userContext);
+    const { user, dispatch } = useContext(userContext);
 
     console.warn(user);
 
@@ -67,7 +67,7 @@ export default function User() {
             case "name":
                 console.log("user:", user);
                 console.log(event.target.value);
-               // setUser(Object.assign({}, user, { name: event.target.value }));
+                // setUser(Object.assign({}, user, { name: event.target.value }));
                 break;
             case "surname":
                 /*
@@ -104,7 +104,7 @@ export default function User() {
                 if (response.errors) {
                     console.log(response.errors);
                 } else {
-                   // setUser(response);
+                    // setUser(response);
                     dispatch({ type: "saveUser", userData: response });
                 }
             })
@@ -113,7 +113,6 @@ export default function User() {
             });
     };
 
-
     return (
         <div>
             <TBAppBar />
@@ -121,10 +120,7 @@ export default function User() {
                 <Paper>
                     <form className={classes.form} onSubmit={changeUserData}>
                         <Avatar
-                            alt={
-                                user.surname +
-                                user.name
-                            }
+                            alt={user.surname + user.name}
                             src={user.avatar}
                             className={classes.large}
                         />
