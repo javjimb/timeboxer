@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import Cookies from "universal-cookie";
 
 // Services
 import AuthService from "../services/AuthService";
