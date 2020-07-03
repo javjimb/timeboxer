@@ -16,13 +16,14 @@ export default {
                 password: password,
             }),
         };
-        const response = await fetch(apiURL + "login", requestOptions);
+        console.log(apiURL);
+        const response = await fetch(apiURL + "/login", requestOptions);
         return await response.json();
     },
     async getUser() {
-        const response = await fetch(apiURL + "me", {
+        const response = await fetch(apiURL + "/me", {
             headers: auth.getAuthHeader(),
         });
-        return  response.json();
+        return response.json();
     },
 };

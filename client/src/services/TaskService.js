@@ -20,7 +20,10 @@ export default {
             },
             body: JSON.stringify(newData),
         };
-        const response = await fetch(apiURL + task_id, requestOptions);
+        const response = await fetch(
+            apiURL + "/tasks/" + task_id,
+            requestOptions
+        );
         return await response.json();
     },
     /**
@@ -31,7 +34,7 @@ export default {
     async getAllTasks(params) {
         let queryString = querystring.stringify(params);
         console.warn(auth.getAuthHeader());
-        const response = await fetch(apiURL + "?" + queryString, {
+        const response = await fetch(apiURL + "/tasks" + "?" + queryString, {
             headers: auth.getAuthHeader(),
         });
         return await response.json();
@@ -50,7 +53,10 @@ export default {
                 ...auth.getAuthHeader(),
             },
         };
-        const response = await fetch(apiURL + task_id, requestOptions);
+        const response = await fetch(
+            apiURL + "/tasks/" + task_id,
+            requestOptions
+        );
         return await response.json();
     },
 
