@@ -13,12 +13,12 @@ import Login from "../src/pages/Login";
 import SignUp from "../src/pages/SignUp";
 import { ProtectedRoute } from "./components/protected.route";
 import User from "../src/pages/User";
-import { StateProvider } from "./contexts/userContext";
+import UserContextProvider from "./contexts/userContext";
 
 function App() {
     //const [user, setUser] = useState({});
     return (
-        <StateProvider>
+        <UserContextProvider>
             <Router>
                 <Switch>
                     <ProtectedRoute exact path="/auth/me" component={User} />
@@ -28,7 +28,7 @@ function App() {
                     <Route path="*" component={() => "404 Page not found"} />
                 </Switch>
             </Router>
-        </StateProvider>
+        </UserContextProvider>
     );
 }
 

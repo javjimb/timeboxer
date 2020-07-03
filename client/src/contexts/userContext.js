@@ -3,31 +3,28 @@ import React, { createContext, useReducer, useEffect } from "react";
 // Services
 import AuthService from "../services/AuthService";
 
-const userContext = createContext();
+export const userContext = createContext();
 const { Provider } = userContext;
 
-const StateProvider = (props) => {
+const UserContextProvider =  (props) => {
+
     const [user, dispatch] = useReducer(
         (state, action) => {
             switch (action.type) {
                 case "saveUser":
-                    return { ...state, user: action.userData };
+                    return { ...state, ...action.userData };
                 default:
-                    // throw new Error();
                     return state;
             }
-        },
-        {},
-        async () => {
-            let user;
-            if (localStorage.getItem("token")) {
-                user = await AuthService.getUser();
-            }
-            return user || {};
-        }
-    );
+        }, {});
+
+    useEffect(() => {
+        AuthService.getUser().then(user => {
+            dispatch( { type: 'saveUser', userData: user} );
+        })
+    },[])
 
     return <Provider value={{ user, dispatch }}>{props.children}</Provider>;
 };
 
-export { userContext, StateProvider };
+export default UserContextProvider;

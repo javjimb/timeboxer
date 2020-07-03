@@ -51,9 +51,10 @@ class AuthController {
             },
             (err, token) => {
                 if (err) throw err;
+                user.password = undefined;
                 res.status(200).json({
                     token: token,
-                    user: payload.user,
+                    user: user,
                 });
             }
         );

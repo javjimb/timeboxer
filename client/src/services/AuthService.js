@@ -23,6 +23,6 @@ export default {
         const response = await fetch(apiURL + "me", {
             headers: auth.getAuthHeader(),
         });
-        return await response.json();
+        return  response.json();
     },
 };
