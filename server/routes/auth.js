@@ -53,6 +53,7 @@ router.post('/login', AuthController.login);
  * @apiSuccess {String} name User name
  * @apiSuccess {String} surname User surname
  * @apiSuccess {String} email User email
+ * @apiSuccess {Boolean} isVerified Whether the user has been verified
  * @apiSuccess {Date} createdAt When the user was created
  * @apiSuccess {Date} updatedAt When the last update was made
  *
@@ -63,6 +64,7 @@ router.post('/login', AuthController.login);
  *  "email": "william.amos@gmail.com",
  *  "name": "William",
  *  "surname": "Amos",
+ *  "isVerified": false,
  *  "createdAt": "2020-05-27T15:41:57.865Z",
  *  "updatedAt": "2020-05-27T15:41:57.865Z",
  * }
