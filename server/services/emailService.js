@@ -19,6 +19,11 @@ class emailService {
     }
 
     sendWelcomeEmail(user, token) {
+        // do not send if in test mode
+        if (process.env.NODE_ENV === 'test') {
+            return;
+        }
+        
         let that = this;
         ejs.renderFile('./emails/' + "welcome.ejs", { user: user, token: token, appUrl: this.appUrl }, function (err, html) {
             if (err) {
