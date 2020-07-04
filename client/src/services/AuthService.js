@@ -1,7 +1,7 @@
 import auth from "../helper/auth";
 require("dotenv").config();
 
-const apiURL = process.env.API_URL + "/auth";
+const apiURL = process.env.REACT_APP_API_URL + "/auth";
 
 export default {
     async loginUser(email, password) {

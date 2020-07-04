@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
@@ -49,32 +49,28 @@ const useStyles = makeStyles((theme) => ({
 export default function User() {
     const classes = useStyles();
     const { user, dispatch } = useContext(userContext);
+    const [formData, setFormData] = useState(user);
+
+    // const useEffect = () => {
+    //     AuthService.getUser();
+    // };
 
     console.warn(user);
-
-    // useEffect(() => {
-    //     const getUser = () => {
-    //         AuthService.getUser()
-    //             .then((response) => {
-    //                 setUser(response.user);
-    //             })
-    //             .catch((error) => console.log(error));
-    //     };
-    // }, []);
 
     const handleChange = (event, type) => {
         switch (type) {
             case "name":
                 console.log("user:", user);
                 console.log(event.target.value);
-                // setUser(Object.assign({}, user, { name: event.target.value }));
+                setFormData(
+                    Object.assign({}, formData, { name: event.target.value })
+                );
                 break;
             case "surname":
-                /*
-                setUser(
-                    Object.assign({}, user, { surname: event.target.value })
+                setFormData(
+                    Object.assign({}, formData, { surname: event.target.value })
                 );
-                */
+
                 break;
             case "avatar":
                 let file = event.target.files[0];
@@ -82,13 +78,12 @@ export default function User() {
 
                 reader.onloadend = () => {
                     console.log("image changed");
-                    /*
-                    setUser(
-                        Object.assign({}, user, {
+
+                    setFormData(
+                        Object.assign({}, formData, {
                             avatar: reader.result,
                         })
                     );
-                    */
                 };
                 reader.readAsDataURL(file);
 
@@ -104,7 +99,7 @@ export default function User() {
                 if (response.errors) {
                     console.log(response.errors);
                 } else {
-                    // setUser(response);
+                    // setFormData(response);
                     dispatch({ type: "saveUser", userData: response });
                 }
             })
@@ -154,20 +149,20 @@ export default function User() {
                         <TextField
                             id="name"
                             label="Name"
-                            value={user.name}
+                            value={formData.name}
                             onChange={(event) => {
                                 handleChange(event, "name");
                             }}></TextField>
                         <TextField
                             id="surname"
                             label="Surname"
-                            value={user.surname}
+                            value={formData.surname}
                             onChange={(event) => {
                                 handleChange(event, "surname");
                             }}></TextField>
                         <TextField
                             id="email"
-                            label={user.email}
+                            label={formData.email}
                             disabled></TextField>
 
                         <Button

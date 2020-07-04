@@ -1,7 +1,7 @@
 import auth from "../helper/auth";
 require("dotenv").config();
 
-const apiURL = process.env.API_URL + "/users";
+const apiURL = process.env.REACT_APP_API_URL + "/users";
 
 export default {
     async createUser(email, password, name, surname) {
@@ -18,7 +18,7 @@ export default {
                 surname: surname,
             }),
         };
-        const response = await fetch(apiURL + "/users", requestOptions);
+        const response = await fetch(apiURL, requestOptions);
         return await response.json();
     },
     async updateUser(id, user) {
@@ -30,7 +30,7 @@ export default {
             },
             body: JSON.stringify(user),
         };
-        const response = await fetch(apiURL + "/users/" + id, requestOptions);
+        const response = await fetch(apiURL + "/" + id, requestOptions);
         // console.log(response);
         return await response.json();
     },
