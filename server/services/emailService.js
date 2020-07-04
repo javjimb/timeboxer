@@ -5,7 +5,7 @@ require('dotenv').config();
 class emailService {
     constructor() {
 
-        this.appUrl = process.env.APP_URL + ':' + process.env.NODE_PORT;
+        this.appUrl = process.env.APP_URL + ':' + process.env.CLIENT_PORT;
 
         this.transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
@@ -23,7 +23,7 @@ class emailService {
         if (process.env.NODE_ENV === 'test') {
             return;
         }
-        
+
         let that = this;
         ejs.renderFile('./emails/' + "welcome.ejs", { user: user, token: token, appUrl: this.appUrl }, function (err, html) {
             if (err) {
