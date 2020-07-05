@@ -1,4 +1,6 @@
 const UserModel = require('../models/User');
+const TokenModel = require('../models/Token');
+const crypto = require('crypto');
 
 class UserService {
 
@@ -27,9 +29,24 @@ class UserService {
     }
 
     async updateUser(id, update) {
-        let user =  await UserModel.findByIdAndUpdate(id, update, { new: true, runValidators: true });
-        await UserModel.findByIdAndRemove(id);
+        let user = await UserModel.findByIdAndUpdate(id, update, { new: true, runValidators: true })
+            .catch(e => {console.log(e)});
+        user.password = undefined;
         return user;
+    }
+
+    async generateVerificationToken(user) {
+        let token = new TokenModel({
+            user: user._id,
+            token: crypto.randomBytes(16).toString('hex')
+        });
+        token.save();
+        return token;
+    }
+
+    async findVerificationToken(token) {
+        let result = await TokenModel.findOne({token: token});
+        return result;
     }
 }
 
