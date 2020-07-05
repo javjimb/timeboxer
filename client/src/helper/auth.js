@@ -1,5 +1,3 @@
-import Cookies from "universal-cookie";
-
 class Auth {
     constructor() {
         this.authenticated = false;

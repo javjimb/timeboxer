@@ -21,7 +21,10 @@ const userSchema = new Schema(
         avatar: {
             data: Buffer,
             contentType: String
-        }
+        },
+        isVerified: { type: Boolean, default: false },
+        passwordResetToken: String,
+        passwordResetExpires: String
     },
     {
         timestamps: true

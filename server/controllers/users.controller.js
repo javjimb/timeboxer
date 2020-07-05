@@ -1,6 +1,8 @@
 const UserService = require('../services/userService');
 const { check, validationResult } = require('express-validator');
 const emailService = require('../services/emailService');
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 class UsersController {
 
@@ -31,16 +33,31 @@ class UsersController {
             return res.status(409).json({ errors: [{ msg: 'The email address is already registered'}] });
         }
 
-        UserService.createUser(req.body).then(async (result) => {
+        const session = await mongoose.startSession();
+        //session.startTransaction();
 
-            emailService.sendWelcomeEmail(result);
+        try {
 
-            res.status(201).send(result);
-        });
+            UserService.createUser(req.body).then(async (user) => {
+
+                // create a verification token for this user
+                let token = await UserService.generateVerificationToken(user)
+
+                emailService.sendWelcomeEmail(user, token);
+
+                //await session.commitTransaction();
+
+                res.status(201).send(user);
+            });
+        } catch (e) {
+            //await session.abortTransaction();
+            return res.status(500).json({ errors: [{ msg: 'Failed to register user', error: e}] });
+        } finally {
+            //session.endSession();
+        }
     }
 
     update(req, res) {
-
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
@@ -66,6 +83,26 @@ class UsersController {
             res.send(result);
         }).catch( err => {
             return res.status(404).json({ errors: [{ msg: 'Could not find user with id ' + req.params.id}] });
+        });
+    }
+
+    async verify(req, res) {
+
+        let token = await UserService.findVerificationToken(req.body.token);
+        if (!token) {
+            return res.status(400).send({ errors: [{ msg: 'Could not find user token'}] });
+        }
+
+        // verify ownership of the token
+        if (token.user._id.toString() !== req.user._id) {
+            return res.status(400).send({ errors: [{ msg: 'Invalid request'}] });
+        }
+
+        // if all good verify the user
+        UserService.updateUser(token.user._id.toString(), {isVerified: true}).then((result) => {
+            res.send(result);
+        }).catch( err => {
+            return res.status(500).json({ errors: [{ msg: 'Could not verify user'}] });
         });
     }
 }

@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import Cookies from "universal-cookie";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -21,7 +20,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
 
-import { userContext } from "../context/userContext";
+import { userContext } from "../contexts/userContext";
 
 // Components
 import TBAppBar from "../components/TBAppBar";

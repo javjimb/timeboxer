@@ -1,6 +1,7 @@
 import auth from "../helper/auth";
+require("dotenv").config();
 
-const apiURL = "http://localhost:5000/auth/";
+const apiURL = process.env.REACT_APP_API_URL + "/auth";
 
 export default {
     async loginUser(email, password) {
@@ -15,13 +16,14 @@ export default {
                 password: password,
             }),
         };
-        const response = await fetch(apiURL + "login", requestOptions);
+        console.log(apiURL);
+        const response = await fetch(apiURL + "/login", requestOptions);
         return await response.json();
     },
     async getUser() {
-        const response = await fetch(apiURL + "me", {
+        const response = await fetch(apiURL + "/me", {
             headers: auth.getAuthHeader(),
         });
-        return await response.json();
+        return response.json();
     },
 };

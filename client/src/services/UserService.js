@@ -1,5 +1,7 @@
 import auth from "../helper/auth";
-const apiURL = "http://localhost:5000/users";
+require("dotenv").config();
+
+const apiURL = process.env.REACT_APP_API_URL + "/users";
 
 export default {
     async createUser(email, password, name, surname) {

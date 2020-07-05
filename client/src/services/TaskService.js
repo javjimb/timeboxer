@@ -1,5 +1,7 @@
 import auth from "../helper/auth";
-const apiURL = "http://localhost:5000/tasks/";
+require("dotenv").config();
+
+const apiURL = process.env.REACT_APP_API_URL + "/tasks";
 const querystring = require("querystring");
 
 export default {
@@ -18,7 +20,7 @@ export default {
             },
             body: JSON.stringify(newData),
         };
-        const response = await fetch(apiURL + task_id, requestOptions);
+        const response = await fetch(apiURL + "/" + task_id, requestOptions);
         return await response.json();
     },
     /**
@@ -28,6 +30,7 @@ export default {
      */
     async getAllTasks(params) {
         let queryString = querystring.stringify(params);
+        console.warn(auth.getAuthHeader());
         const response = await fetch(apiURL + "?" + queryString, {
             headers: auth.getAuthHeader(),
         });
@@ -47,7 +50,7 @@ export default {
                 ...auth.getAuthHeader(),
             },
         };
-        const response = await fetch(apiURL + task_id, requestOptions);
+        const response = await fetch(apiURL + "/" + task_id, requestOptions);
         return await response.json();
     },
 
