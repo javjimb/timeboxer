@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,6 +13,7 @@ import { userContext } from "../contexts/userContext";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
+import Loading from "../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,19 +50,18 @@ const useStyles = makeStyles((theme) => ({
 export default function User() {
     const classes = useStyles();
     const { user, dispatch } = useContext(userContext);
-    const [formData, setFormData] = useState(user);
+    const [formData, setFormData] = useState({});
+    const [loading, setLoading] = useState(true);
 
-    // const useEffect = () => {
-    //     AuthService.getUser();
-    // };
-
-    console.warn(user);
+    useEffect(() => {
+        console.log("user:", user);
+        setFormData(user);
+        setLoading(false);
+    });
 
     const handleChange = (event, type) => {
         switch (type) {
             case "name":
-                console.log("user:", user);
-                console.log(event.target.value);
                 setFormData(
                     Object.assign({}, formData, { name: event.target.value })
                 );
@@ -99,7 +99,7 @@ export default function User() {
                 if (response.errors) {
                     console.log(response.errors);
                 } else {
-                    // setFormData(response);
+                    setFormData(response);
                     dispatch({ type: "saveUser", userData: response });
                 }
             })
@@ -111,85 +111,92 @@ export default function User() {
     return (
         <div>
             <TBAppBar />
-            <div className={classes.root}>
-                <Paper>
-                    <form className={classes.form} onSubmit={changeUserData}>
-                        <Avatar
-                            alt={user.surname + user.name}
-                            src={user.avatar}
-                            className={classes.large}
-                        />
-                        <input
-                            accept="image/*"
-                            className="fileUpload"
-                            type="file"
-                            style={{
-                                width: "100%",
-                                marginTop: "16px",
-                                paddingBottom: "10px",
-                                borderBottom: "1px solid darkgrey",
-                            }}
-                            onChange={(event) => {
-                                handleChange(event, "avatar");
-                            }}
-                        />
-                        <Typography variant="h3">
-                            {user.name + " " + user.surname}
-                        </Typography>
-                        <Typography variant="h6">
-                            user id: ${user._id}
-                        </Typography>
+            {loading ? (
+                <Loading />
+            ) : (
+                <div className={classes.root}>
+                    <Paper>
+                        <form
+                            className={classes.form}
+                            onSubmit={changeUserData}>
+                            <Avatar
+                                alt="user name"
+                                src={user.avatar}
+                                className={classes.large}
+                            />
+                            <input
+                                accept="image/*"
+                                className="fileUpload"
+                                type="file"
+                                style={{
+                                    width: "100%",
+                                    marginTop: "16px",
+                                    paddingBottom: "10px",
+                                    borderBottom: "1px solid darkgrey",
+                                }}
+                                onChange={(event) => {
+                                    handleChange(event, "avatar");
+                                }}
+                            />
+                            <Typography variant="h3">
+                                {user.name + " " + user.surname}
+                            </Typography>
+                            <Typography variant="h6">
+                                user id: ${user._id}
+                            </Typography>
 
-                        <Typography variant="subtitle1">
-                            Account created at: ${user.createdAt}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            Last change at: ${user.updatedAt}
-                        </Typography>
-                        <TextField
-                            id="name"
-                            label="Name"
-                            value={formData.name}
-                            onChange={(event) => {
-                                handleChange(event, "name");
-                            }}></TextField>
-                        <TextField
-                            id="surname"
-                            label="Surname"
-                            value={formData.surname}
-                            onChange={(event) => {
-                                handleChange(event, "surname");
-                            }}></TextField>
-                        <TextField
-                            id="email"
-                            label={formData.email}
-                            disabled></TextField>
+                            <Typography variant="subtitle1">
+                                Account created at: ${user.createdAt}
+                            </Typography>
+                            <Typography variant="subtitle1">
+                                Last change at: ${user.updatedAt}
+                            </Typography>
+                            <TextField
+                                id="name"
+                                type="text"
+                                // label="Name"
+                                value={formData.name}
+                                onChange={(event) => {
+                                    handleChange(event, "name");
+                                }}></TextField>
+                            <TextField
+                                id="surname"
+                                type="text"
+                                value={formData.surname}
+                                onChange={(event) => {
+                                    handleChange(event, "surname");
+                                }}></TextField>
+                            <TextField
+                                id="email"
+                                label={formData.email}
+                                disabled></TextField>
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            style={{
-                                backgroundColor: "#3788d8",
-                                margin: "16px",
-                                width: "150px",
-                                alignSelf: "flex-end",
-                            }}
-                            className={classes.submit}>
-                            Submit
-                        </Button>
-                        <Button
-                            style={{
-                                alignSelf: "flex-end",
-                                fontSize: "13px",
-                                margin: "16px",
-                            }}
-                            color="secondary">
-                            delete account
-                        </Button>
-                    </form>
-                </Paper>
-            </div>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                style={{
+                                    backgroundColor: "#3788d8",
+                                    margin: "16px",
+                                    width: "150px",
+                                    alignSelf: "flex-end",
+                                }}
+                                className={classes.submit}>
+                                Submit
+                            </Button>
+                            <Button
+                                style={{
+                                    alignSelf: "flex-end",
+                                    fontSize: "13px",
+                                    margin: "16px",
+                                }}
+                                color="secondary">
+                                delete account
+                            </Button>
+                        </form>
+                    </Paper>
+                </div>
+            )}
         </div>
     );
 }
