@@ -21,7 +21,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Snackbar from "@material-ui/core/Snackbar";
 
 // Components
 
@@ -51,9 +50,7 @@ export default function TBAppBar({ next, prev, today }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
-    const { user, dispatch } = useContext(userContext);
-
-    console.log(window.location.pathname === "/auth/me");
+    const { user } = useContext(userContext);
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
