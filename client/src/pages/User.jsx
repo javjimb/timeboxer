@@ -15,6 +15,8 @@ import { userContext } from "../contexts/userContext";
 import TBAppBar from "../components/TBAppBar";
 import Loading from "../components/Loading";
 
+const _ = require("lodash");
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -54,10 +56,12 @@ export default function User() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("user:", user);
-        setFormData(user);
-        setLoading(false);
-    });
+        if (!_.isEmpty(user)) {
+            console.log("user:", user);
+            setFormData(user);
+            setLoading(false);
+        }
+    }, [user]);
 
     const handleChange = (event, type) => {
         switch (type) {
@@ -94,7 +98,7 @@ export default function User() {
     };
     const changeUserData = (event) => {
         event.preventDefault();
-        UserService.updateUser(user._id, user)
+        UserService.updateUser(formData._id, formData)
             .then((response) => {
                 if (response.errors) {
                     console.log(response.errors);
@@ -121,7 +125,7 @@ export default function User() {
                             onSubmit={changeUserData}>
                             <Avatar
                                 alt="user name"
-                                src={user.avatar}
+                                src={formData.avatar}
                                 className={classes.large}
                             />
                             <input
@@ -156,16 +160,16 @@ export default function User() {
                                 type="text"
                                 // label="Name"
                                 value={formData.name}
-                                onChange={(event) => {
-                                    handleChange(event, "name");
-                                }}></TextField>
+                                onChange={(event) =>
+                                    handleChange(event, "name")
+                                }></TextField>
                             <TextField
                                 id="surname"
                                 type="text"
                                 value={formData.surname}
-                                onChange={(event) => {
-                                    handleChange(event, "surname");
-                                }}></TextField>
+                                onChange={(event) =>
+                                    handleChange(event, "surname")
+                                }></TextField>
                             <TextField
                                 id="email"
                                 label={formData.email}
