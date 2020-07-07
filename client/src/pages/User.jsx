@@ -1,4 +1,8 @@
+// Libraries
 import React, { useContext, useState, useEffect } from "react";
+import moment from "moment";
+
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
@@ -118,15 +122,25 @@ export default function User() {
                 <Loading />
             ) : (
                 <div className={classes.root}>
+                    <Paper className={classes.form}>
+                        <Avatar
+                            alt="user name"
+                            src={formData.avatar}
+                            className={classes.large}
+                        />
+                        <Typography variant="h3">
+                            {user.name + " " + user.surname}
+                        </Typography>
+
+                        <Typography variant="subtitle1">
+                            Joined:{" "}
+                            {moment(user.createdAt).format("MMMM DD, YYYY")}
+                        </Typography>
+                    </Paper>
                     <Paper>
                         <form
                             className={classes.form}
                             onSubmit={changeUserData}>
-                            <Avatar
-                                alt="user name"
-                                src={formData.avatar}
-                                className={classes.large}
-                            />
                             <input
                                 accept="image/*"
                                 className="fileUpload"
@@ -141,19 +155,7 @@ export default function User() {
                                     handleChange(event, "avatar");
                                 }}
                             />
-                            <Typography variant="h3">
-                                {user.name + " " + user.surname}
-                            </Typography>
-                            <Typography variant="h6">
-                                user id: ${user._id}
-                            </Typography>
 
-                            <Typography variant="subtitle1">
-                                Account created at: ${user.createdAt}
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                Last change at: ${user.updatedAt}
-                            </Typography>
                             <TextField
                                 id="name"
                                 type="text"
