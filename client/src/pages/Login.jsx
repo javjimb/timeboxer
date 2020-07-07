@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -19,8 +19,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
-
-import { userContext } from "../contexts/userContext";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -81,8 +79,6 @@ export default function Login(props) {
 
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const globalState = useContext(userContext);
-    const { dispatch } = globalState;
 
     const emailChangeHandler = (event) => {
         setEmail(event.target.value);
