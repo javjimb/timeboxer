@@ -1,5 +1,5 @@
 // Libraries
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 // Material UI
@@ -28,6 +28,9 @@ import Snackbar from "@material-ui/core/Snackbar";
 // helper
 import auth from "../helper/auth";
 
+// Services
+import { userContext } from "../contexts/userContext";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -48,6 +51,7 @@ export default function TBAppBar({ next, prev, today }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+    const { user, dispatch } = useContext(userContext);
 
     console.log(window.location.pathname === "/auth/me");
 
@@ -143,8 +147,8 @@ export default function TBAppBar({ next, prev, today }) {
                                     onClick={handleToggle}
                                     color="inherit">
                                     <Avatar
-                                        alt="Joan Doe"
-                                        src="/static/images/avatar/1.jpg"
+                                        alt={user.surname + " " + user.name}
+                                        src={user.avatar}
                                     />
                                 </Button>
                                 <Popper
