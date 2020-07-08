@@ -9,6 +9,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
 // Services
 import UserService from "../services/UserService";
@@ -38,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         padding: "16px",
         height: "100%",
+        maxHeight: "500px",
+        minHeight: "500px",
     },
     large: {
         margin: theme.spacing(1),
@@ -49,7 +53,17 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         padding: "16px",
         margin: "16px",
+        width: "100%",
+        justifyContent: "space-around",
     },
+    input: {
+        display: "none",
+        width: "100%",
+        // visibility: "hidden",
+        height: "50px",
+        borderBottom: "1px solid darkgrey",
+    },
+    dragText: {},
 }));
 
 export default function User() {
@@ -122,12 +136,43 @@ export default function User() {
                 <Loading />
             ) : (
                 <div className={classes.root}>
-                    <Paper className={classes.form}>
+                    <Paper className={classes.paper}>
                         <Avatar
                             alt="user name"
                             src={formData.avatar}
                             className={classes.large}
                         />
+                        <input
+                            id="contained-button-file"
+                            accept="image/*"
+                            className={classes.input}
+                            type="file"
+                            onChange={(event) => {
+                                handleChange(event, "avatar");
+                            }}
+                        />
+                        <label htmlFor="contained-button-file">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                component="span">
+                                Change profile picture
+                            </Button>
+                        </label>
+                        <input
+                            accept="image/*"
+                            className={classes.input}
+                            id="icon-button-file"
+                            type="file"
+                        />
+                        <label htmlFor="icon-button-file">
+                            <IconButton
+                                color="primary"
+                                aria-label="upload picture"
+                                component="span">
+                                <PhotoCamera />
+                            </IconButton>
+                        </label>
                         <Typography variant="h3">
                             {user.name + " " + user.surname}
                         </Typography>
@@ -137,25 +182,10 @@ export default function User() {
                             {moment(user.createdAt).format("MMMM DD, YYYY")}
                         </Typography>
                     </Paper>
-                    <Paper>
+                    <Paper className={classes.paper}>
                         <form
                             className={classes.form}
                             onSubmit={changeUserData}>
-                            <input
-                                accept="image/*"
-                                className="fileUpload"
-                                type="file"
-                                style={{
-                                    width: "100%",
-                                    marginTop: "16px",
-                                    paddingBottom: "10px",
-                                    borderBottom: "1px solid darkgrey",
-                                }}
-                                onChange={(event) => {
-                                    handleChange(event, "avatar");
-                                }}
-                            />
-
                             <TextField
                                 id="name"
                                 type="text"
