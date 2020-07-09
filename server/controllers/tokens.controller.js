@@ -11,8 +11,14 @@ class TokensController {
             return res.status(400).send({ errors: [{ msg: 'Could not find user token'}] });
         }
 
+        let user = await UserService.findByEmail(req.body.email);
+
+        if (!user) {
+            return res.status(404).json({ errors: "Invalid email address" });
+        }
+
         // verify ownership of the token
-        if (token.user._id.toString() !== req.user._id) {
+        if (token.user._id.toString() !== user._id.toString()) {
             return res.status(400).send({ errors: [{ msg: 'Invalid request'}] });
         }
 
