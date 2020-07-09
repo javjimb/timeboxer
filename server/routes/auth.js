@@ -37,6 +37,12 @@ const auth = require('../middleware/auth');
  *  {
  *      "errors": "Invalid password"
  *  }
+ *
+ * @apiErrorExample {json} Verification
+ *    HTTP/1.1 403 Not verified
+ *  {
+ *      "errors": "Account has not been verified"
+ *  }
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */

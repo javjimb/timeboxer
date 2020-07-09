@@ -85,26 +85,6 @@ class UsersController {
             return res.status(404).json({ errors: [{ msg: 'Could not find user with id ' + req.params.id}] });
         });
     }
-
-    async verify(req, res) {
-
-        let token = await UserService.findVerificationToken(req.body.token);
-        if (!token) {
-            return res.status(400).send({ errors: [{ msg: 'Could not find user token'}] });
-        }
-
-        // verify ownership of the token
-        if (token.user._id.toString() !== req.user._id) {
-            return res.status(400).send({ errors: [{ msg: 'Invalid request'}] });
-        }
-
-        // if all good verify the user
-        UserService.updateUser(token.user._id.toString(), {isVerified: true}).then((result) => {
-            res.send(result);
-        }).catch( err => {
-            return res.status(500).json({ errors: [{ msg: 'Could not verify user'}] });
-        });
-    }
 }
 
 module.exports = new UsersController();

@@ -27,6 +27,7 @@ class App {
         this.express.use('/users', require('./routes/users'));
         this.express.use('/auth', require('./routes/auth'));
         this.express.use('/tasks', require('./routes/tasks'));
+        this.express.use('/tokens', require('./routes/tokens'));
     }
 }
 
