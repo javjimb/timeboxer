@@ -18,7 +18,8 @@ import Verification from "../src/pages/Verification";
 
 function App() {
     //const [user, setUser] = useState({});
-    return (
+    //localhost:3000/user/verify/181cb18d423414c098739444e4c277f7/cilo@mailinator.com
+    http: return (
         <UserContextProvider>
             <Router>
                 <Switch>
@@ -27,7 +28,7 @@ function App() {
                     <Route path="/login" component={Login}></Route>
                     <Route path="/signup" component={SignUp}></Route>
                     <Route
-                        path="/user/verify?/:token"
+                        path="/user/verify/:token/:email"
                         component={Verification}></Route>
                     <Route path="*" component={() => "404 Page not found"} />
                 </Switch>
