@@ -24,9 +24,11 @@ class AuthController {
         let user = await UserService.findByEmail(req.body.email);
 
         if (!user) {
-            return res
-                .status(401)
-                .json({ errors: "Could not find email address registered" });
+            return res.status(401).json({ errors: "Could not find email address registered" });
+        }
+
+        if (!user.isVerified) {
+            return res.status(403).json({ errors: "Account has not been verified"});
         }
 
         let isMatch = await user.comparePassword(req.body.password);
