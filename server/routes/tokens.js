@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
  * @api {put} /tokens Verify token
  * @apiDescription Verifies a token of an non verified user account
  * @apiGroup Verification Token
- * @apiPermission authenticated
+ * @apiPermission none
  * @apiParam {String} token Verification token
  *
  * @apiSuccessExample {json} Success
@@ -37,13 +37,14 @@ const auth = require('../middleware/auth');
  *      ]
  *    }
  */
-router.put('/:token', auth, TokensController.verify);
+router.put('/:token', TokensController.verify);
 
 /**
  * @api {post} /tokens Re-send token
  * @apiDescription Sends a new token via email to a registered email address
  * @apiGroup Verification Token
  * @apiParam {String} email Registered email address
+ * @apiPermission none
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 204 No Content
