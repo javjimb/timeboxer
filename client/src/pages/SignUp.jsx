@@ -87,7 +87,7 @@ function SignUp(props) {
                 } else {
                     setShowSnackbarSuccess(true);
                     setAlertMessage(
-                        "You signed up successfully. You can login now."
+                        "You signed up successfully. Check your email to verify before login."
                     );
                     setTimeout(() => props.history.push("/login"), 5000);
                 }
