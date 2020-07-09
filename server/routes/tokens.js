@@ -10,6 +10,7 @@ const auth = require('../middleware/auth');
  * @apiGroup Verification Token
  * @apiPermission none
  * @apiParam {String} token Verification token
+ * @apiParam {String} email Registered email address
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
@@ -37,7 +38,7 @@ const auth = require('../middleware/auth');
  *      ]
  *    }
  */
-router.put('/:token', TokensController.verify);
+router.put('/', TokensController.verify);
 
 /**
  * @api {post} /tokens Re-send token
