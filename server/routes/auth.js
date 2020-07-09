@@ -18,6 +18,7 @@ const auth = require('../middleware/auth');
  * @apiSuccess {String} user.surname User surname
  * @apiSuccess {String} user.email User email
  * @apiSuccess {String} user.avatar User avatar image (base64 encoded)
+ * @apiSuccess {String} user.isVerified Whether the user is verified
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
@@ -28,7 +29,8 @@ const auth = require('../middleware/auth');
  *          "email": "javjimb@gmail.com",
  *          "name": "Javier",
  *          "surname": "Jimenez",
- *          "avatar": ""
+ *          "avatar": "",
+ *          "isVerified" : true
  *      }
  *  }
  *
