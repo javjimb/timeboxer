@@ -54,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
         padding: "16px",
         margin: "16px",
         width: "100%",
-        justifyContent: "space-around",
+        height: "500px",
+        justifyContent: "space-between",
     },
     input: {
         display: "none",
@@ -63,7 +64,10 @@ const useStyles = makeStyles((theme) => ({
         height: "50px",
         borderBottom: "1px solid darkgrey",
     },
-    dragText: {},
+    btns: {
+        display: "flex",
+        justifyContent: "space-between",
+    },
 }));
 
 export default function User() {
@@ -142,6 +146,7 @@ export default function User() {
                             src={formData.avatar}
                             className={classes.large}
                         />
+
                         <input
                             id="contained-button-file"
                             accept="image/*"
@@ -151,32 +156,34 @@ export default function User() {
                                 handleChange(event, "avatar");
                             }}
                         />
-                        <label htmlFor="contained-button-file">
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                component="span">
-                                Change profile picture
-                            </Button>
-                        </label>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            id="icon-button-file"
-                            type="file"
-                        />
-                        <label htmlFor="icon-button-file">
-                            <IconButton
-                                color="primary"
-                                aria-label="upload picture"
-                                component="span">
-                                <PhotoCamera />
-                            </IconButton>
-                        </label>
+                        {user.avatar ? (
+                            <label htmlFor="contained-button-file">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="span"
+                                    style={{
+                                        backgroundColor: "#3788d8",
+                                    }}>
+                                    Change profile picture
+                                </Button>
+                            </label>
+                        ) : (
+                            <label htmlFor="contained-button-file">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="span"
+                                    style={{
+                                        backgroundColor: "#3788d8",
+                                    }}>
+                                    Add profile picture
+                                </Button>
+                            </label>
+                        )}
                         <Typography variant="h3">
                             {user.name + " " + user.surname}
                         </Typography>
-
                         <Typography variant="subtitle1">
                             Joined:{" "}
                             {moment(user.createdAt).format("MMMM DD, YYYY")}
@@ -189,45 +196,51 @@ export default function User() {
                             <TextField
                                 id="name"
                                 type="text"
-                                // label="Name"
+                                label="Name"
                                 value={formData.name}
+                                variant="outlined"
                                 onChange={(event) =>
                                     handleChange(event, "name")
                                 }></TextField>
                             <TextField
+                                label="Surname"
                                 id="surname"
                                 type="text"
                                 value={formData.surname}
+                                variant="outlined"
                                 onChange={(event) =>
                                     handleChange(event, "surname")
                                 }></TextField>
                             <TextField
                                 id="email"
                                 label={formData.email}
+                                variant="outlined"
                                 disabled></TextField>
-
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                style={{
-                                    backgroundColor: "#3788d8",
-                                    margin: "16px",
-                                    width: "150px",
-                                    alignSelf: "flex-end",
-                                }}
-                                className={classes.submit}>
-                                Submit
-                            </Button>
-                            <Button
-                                style={{
-                                    alignSelf: "flex-end",
-                                    fontSize: "13px",
-                                    margin: "16px",
-                                }}
-                                color="secondary">
-                                delete account
-                            </Button>
+                            <div className={classes.btns}>
+                                <Button
+                                    style={{
+                                        alignSelf: "flex-end",
+                                        fontSize: "13px",
+                                        margin: "16px",
+                                    }}
+                                    color="secondary">
+                                    delete account
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    style={{
+                                        backgroundColor: "#3788d8",
+                                        margin: "16px",
+                                        width: "150px",
+                                        alignSelf: "flex-end",
+                                        color: "white",
+                                    }}
+                                    className={classes.submit}>
+                                    Save
+                                </Button>
+                            </div>
                         </form>
                     </Paper>
                 </div>
