@@ -17,6 +17,8 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Snackbar from "@material-ui/core/Snackbar";
+import { Alert } from "@material-ui/lab";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "space-between",
     },
 }));
 
@@ -47,6 +50,8 @@ export default function Verification(props) {
     const [token, setToken] = useState(props.match.params.token);
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
+    const [showSnackbar, setShowSnackbar] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
 
     useEffect(() => {
         TokenService.verifyUser(
@@ -74,6 +79,17 @@ export default function Verification(props) {
         TokenService.resend(props.match.params.email)
             .then((response) => response.json)
             .catch((error) => console.log(error));
+        setShowSnackbar(true);
+        setAlertMessage(
+            "The verification link has been resent. Please check your emails."
+        );
+    };
+    const handleClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setShowSnackbar(false);
     };
 
     return (
@@ -101,7 +117,7 @@ export default function Verification(props) {
                         square>
                         <div className={classes.paper}>
                             <Typography component="h1" variant="h5">
-                                Verification
+                                Email Verification
                             </Typography>
 
                             <Grid container>
@@ -115,10 +131,35 @@ export default function Verification(props) {
                                     </Grid>
                                 ) : (
                                     <Grid item xs>
-                                        <Button onClick={resendToken}>
+                                        <Alert severity="error">
                                             Ups, something went wrong! Resend
                                             verification link.
+                                        </Alert>
+                                        <Button
+                                            variant="contained"
+                                            style={{
+                                                backgroundColor: "#3788d8",
+                                                color: "white",
+                                                justifySelf: "flex-end",
+                                                margin: "16px 0px",
+                                                float: "right",
+                                            }}
+                                            onClick={resendToken}>
+                                            Click to resend
                                         </Button>
+                                        <Snackbar
+                                            open={showSnackbar}
+                                            anchorOrigin={{
+                                                vertical: "top",
+                                                horizontal: "right",
+                                            }}
+                                            onClose={handleClose}>
+                                            <Alert
+                                                onClose={handleClose}
+                                                severity="success">
+                                                {alertMessage}
+                                            </Alert>
+                                        </Snackbar>
                                     </Grid>
                                 )}
                             </Grid>
