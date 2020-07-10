@@ -1,5 +1,6 @@
 // Library
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -40,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
+    },
+    button: {
+        backgroundColor: "#3788d8",
+        color: "white",
+        justifySelf: "flex-end",
+        margin: "16px 0px",
+        float: "right",
     },
 }));
 
@@ -91,6 +99,10 @@ export default function Verification(props) {
 
         setShowSnackbar(false);
     };
+    let history = useHistory();
+    const routeChange = () => {
+        history.push(`/login`);
+    };
 
     return (
         <div>
@@ -122,30 +134,28 @@ export default function Verification(props) {
 
                             <Grid container>
                                 {verify ? (
-                                    <Grid item>
-                                        <Link href="/login" variant="body2">
-                                            {
-                                                "Your email ia verified! Click here to login"
-                                            }
-                                        </Link>
+                                    <Grid item xs style={{ marginTop: "16px" }}>
+                                        <Alert severity="success">
+                                            Your email is verified!
+                                        </Alert>
+                                        <Button
+                                            className={classes.button}
+                                            variant="contained"
+                                            onClick={routeChange}>
+                                            Login
+                                        </Button>
                                     </Grid>
                                 ) : (
-                                    <Grid item xs>
+                                    <Grid item xs style={{ marginTop: "16px" }}>
                                         <Alert severity="error">
                                             Ups, something went wrong! Resend
                                             verification link.
                                         </Alert>
                                         <Button
+                                            className={classes.button}
                                             variant="contained"
-                                            style={{
-                                                backgroundColor: "#3788d8",
-                                                color: "white",
-                                                justifySelf: "flex-end",
-                                                margin: "16px 0px",
-                                                float: "right",
-                                            }}
                                             onClick={resendToken}>
-                                            Click to resend
+                                            Resend link
                                         </Button>
                                         <Snackbar
                                             open={showSnackbar}
