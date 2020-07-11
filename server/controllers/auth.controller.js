@@ -1,8 +1,10 @@
 const UserService = require("../services/userService");
+const ExternalAuthService = require("../services/externalAuthService");
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
 class AuthController {
+
     async login(req, res) {
         await check("email")
             .not()
@@ -76,6 +78,82 @@ class AuthController {
                 .status(403)
                 .json({ errors: [{ msg: "Failed to authenticate token" }] });
         }
+    }
+
+    async facebook(req, res) {
+        await check("email")
+            .not()
+            .isEmpty()
+            .withMessage("Invalid email")
+            .run(req);
+
+        await check("provider_id")
+            .not()
+            .isEmpty()
+            .withMessage("Invalid provider id")
+            .run(req);
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(401).json({ errors: errors.array() });
+        }
+
+        let user = await UserService.findByEmail(req.body.email);
+
+        // create a new user if not found
+        if (!user) {
+            user = await UserService.createUser({
+               name: req.body.name,
+               surname: req.body.surname,
+               email: req.body.email,
+               avatar: req.body.avatar,
+               isVerified: true,
+               password: Math.random().toString(36).slice(-6)
+            });
+        }
+
+        let externalAuth = await ExternalAuthService.getAll({
+            provider: "facebook",
+        });
+
+        if (externalAuth.length > 0 && externalAuth[0].user.toString() !== user._id.toString()) {
+            return res.status(401).json({ errors: "Could not validate external authentication" });
+        }
+
+        if (!externalAuth) {
+            externalAuth = await ExternalAuthService.create({
+                user: user._id,
+                email: req.body.email,
+                provider: 'facebook',
+                providerId: req.body.provider_id
+            });
+        }
+
+        const payload = {
+            user: {
+                _id: user._id,
+                name: user.name,
+                surname: user.surname,
+                email: user.email,
+            },
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            {
+                expiresIn: 3600 * 24,
+            },
+            (err, token) => {
+                if (err) throw err;
+                user.password = undefined;
+                res.status(200).json({
+                    token: token,
+                    user: user,
+                });
+            }
+        );
     }
 }
 
