@@ -1,4 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import FacebookLogin from "react-facebook-login";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -19,8 +21,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
-
-import { userContext } from "../contexts/userContext";
+import Divider from "@material-ui/core/Divider";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -46,6 +47,7 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
     root: {
         height: "100vh",
+        width: "100%",
     },
     image: {
         backgroundImage: `url(${timeBoxer})`,
@@ -71,6 +73,16 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    facebook: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        margin: "16px",
+    },
+    divider: {
+        width: "45%",
+    },
 }));
 
 export default function Login(props) {
@@ -81,8 +93,6 @@ export default function Login(props) {
 
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const globalState = useContext(userContext);
-    const { dispatch } = globalState;
 
     const emailChangeHandler = (event) => {
         setEmail(event.target.value);
@@ -104,7 +114,6 @@ export default function Login(props) {
                     setToken(response.token);
                     auth.login(() => {
                         localStorage.setItem("token", response.token);
-                        // console.log("token:", response.token);
                         props.history.push("/");
                     });
                 }
@@ -114,6 +123,9 @@ export default function Login(props) {
                 setAlertMessage(error);
                 console.log(error);
             });
+    };
+    const responseFacebook = (response) => {
+        console.log(response);
     };
 
     return (
@@ -192,9 +204,12 @@ export default function Login(props) {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                style={{ backgroundColor: "#3788d8" }}
+                                style={{
+                                    backgroundColor: "#3788d8",
+                                    color: "white",
+                                }}
                                 className={classes.submit}>
-                                Sign In
+                                Login
                             </Button>
                             <Grid container>
                                 <Grid item xs>
@@ -208,11 +223,27 @@ export default function Login(props) {
                                     </Link>
                                 </Grid>
                             </Grid>
-                            <Box mt={5}>
-                                <Copyright />
-                            </Box>
                         </form>
+
+                        <div className={classes.facebook}>
+                            <Divider className={classes.divider} />
+                            <Typography variant="body2">OR</Typography>
+                            <Divider className={classes.divider} />
+                        </div>
+                        <div>
+                            <FacebookLogin
+                                appId="579380102972326"
+                                autoLoad={true}
+                                fields="last_name,first_name,email,picture"
+                                onClick={responseFacebook}
+                                callback={responseFacebook}
+                                style={{ margin: "16px auto 16px auto" }}
+                            />
+                        </div>
                     </div>
+                    <Box mt={5}>
+                        <Copyright />
+                    </Box>
                 </Grid>
             </Grid>
         </div>

@@ -118,38 +118,4 @@ router.put('/:id', auth, UsersController.update);
 
 router.get('/:id', auth,  UsersController.getById);
 
-/**
- * @api {post} /users/verify Verify user
- * @apiGroup User
- * @apiPermission authenticated
- * @apiParam {String} token Verification token
- *
- * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
- *    {
- *       "_id": "5e9d4825e40a457a5cd02449",
- *       name: 'Keara',
- *       surname: 'Muller',
- *       email: 'Gilberto19@hotmail.com',
- *       isVerified: true,
- *       createdAt: '2020-05-18T12:21:27.018Z',
- *       updatedAt: '2020-05-18T12:21:27.018Z',
- *    }
- * @apiErrorExample {json} Missing or invalid token
- *    HTTP/1.1 400 Bad Request
- *    {
- *      "errors": [
- *          {"msg": "Could not find user token"}
- *      ]
- *    }
- * @apiErrorExample {json} Verification error
- *    HTTP/1.1 500 Internal Server Error
- *    {
- *      "errors": [
- *          {"msg": "Could not verify user"}
- *      ]
- *    }
- */
-router.post('/verify/:token', auth, UsersController.verify);
-
 module.exports = router;

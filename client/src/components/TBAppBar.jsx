@@ -21,7 +21,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Snackbar from "@material-ui/core/Snackbar";
 
 // Components
 
@@ -51,9 +50,7 @@ export default function TBAppBar({ next, prev, today }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
-    const { user, dispatch } = useContext(userContext);
-
-    console.log(window.location.pathname === "/auth/me");
+    const { user } = useContext(userContext);
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -98,6 +95,32 @@ export default function TBAppBar({ next, prev, today }) {
         history.push(path);
     };
 
+    // show AppBar elements according to pathname
+
+    const home = "/";
+    const userProfile = "/auth/me";
+    const login = "/login";
+    const signup = "/signup";
+    const verify = "/user/verify";
+    var showAvatar = false;
+    var showCalendarActions = false;
+
+    if (
+        ![login, signup].includes(window.location.pathname) &&
+        !window.location.pathname.includes(verify)
+    ) {
+        showAvatar = true;
+    }
+
+    if (
+        ![login, signup, userProfile].includes(window.location.pathname) &&
+        !window.location.pathname.includes(verify)
+    ) {
+        showCalendarActions = true;
+    }
+
+    var showCalendar = window.location.pathname.includes(userProfile);
+
     return (
         <div className={classes.root}>
             <AppBar position="static" style={{ backgroundColor: "#3788d8" }}>
@@ -114,7 +137,7 @@ export default function TBAppBar({ next, prev, today }) {
                     </Typography>
                     {
                         // show calendar actions only when path is '/'
-                        window.location.pathname === "/" && (
+                        showCalendarActions ? (
                             <div>
                                 <IconButton color="inherit" onClick={prev}>
                                     <NavigateBeforeIcon />
@@ -126,91 +149,96 @@ export default function TBAppBar({ next, prev, today }) {
                                     <NavigateNextIcon />
                                 </IconButton>
                             </div>
+                        ) : (
+                            <React.Fragment />
                         )
                     }
-                    {window.location.pathname === "/auth/me" && (
+                    {showCalendar ? (
                         <div>
                             <IconButton color="inherit" onClick={routeChange}>
                                 <TodayIcon />
                             </IconButton>
                         </div>
+                    ) : (
+                        <React.Fragment />
                     )}
-                    {window.location.pathname !== "/login" &&
-                        window.location.pathname !== "/signup" && (
-                            <div>
-                                <Button
-                                    ref={anchorRef}
-                                    aria-controls={
-                                        open ? "menu-list-grow" : undefined
-                                    }
-                                    aria-haspopup="true"
-                                    onClick={handleToggle}
-                                    color="inherit">
-                                    <Avatar
-                                        alt={user.surname + " " + user.name}
-                                        src={user.avatar}
-                                    />
-                                </Button>
-                                <Popper
-                                    open={open}
-                                    anchorEl={anchorRef.current}
-                                    role={undefined}
-                                    transition
-                                    disablePortal>
-                                    {({ TransitionProps, placement }) => (
-                                        <Grow
-                                            {...TransitionProps}
-                                            style={{
-                                                transformOrigin:
-                                                    placement === "bottom"
-                                                        ? "center top"
-                                                        : "center bottom",
-                                            }}>
-                                            <Paper>
-                                                <ClickAwayListener
-                                                    onClickAway={handleClose}>
-                                                    <MenuList
-                                                        autoFocusItem={open}
-                                                        id="menu-list-grow"
-                                                        onKeyDown={
-                                                            handleListKeyDown
+                    {showAvatar ? (
+                        <div>
+                            <Button
+                                ref={anchorRef}
+                                aria-controls={
+                                    open ? "menu-list-grow" : undefined
+                                }
+                                aria-haspopup="true"
+                                onClick={handleToggle}
+                                color="inherit">
+                                <Avatar
+                                    alt={user.surname + " " + user.name}
+                                    src={user.avatar}
+                                />
+                            </Button>
+                            <Popper
+                                open={open}
+                                anchorEl={anchorRef.current}
+                                role={undefined}
+                                transition
+                                disablePortal>
+                                {({ TransitionProps, placement }) => (
+                                    <Grow
+                                        {...TransitionProps}
+                                        style={{
+                                            transformOrigin:
+                                                placement === "bottom"
+                                                    ? "center top"
+                                                    : "center bottom",
+                                        }}>
+                                        <Paper>
+                                            <ClickAwayListener
+                                                onClickAway={handleClose}>
+                                                <MenuList
+                                                    autoFocusItem={open}
+                                                    id="menu-list-grow"
+                                                    onKeyDown={
+                                                        handleListKeyDown
+                                                    }>
+                                                    <MenuItem
+                                                        onClick={
+                                                            (handleClose,
+                                                            handleAccountClick)
                                                         }>
-                                                        <MenuItem
+                                                        <Button
+                                                            startIcon={
+                                                                <AccountCircleIcon />
+                                                            }>
+                                                            My account
+                                                        </Button>
+                                                    </MenuItem>
+                                                    <MenuItem>
+                                                        <Button
+                                                            startIcon={
+                                                                <ExitToAppIcon />
+                                                            }
                                                             onClick={
                                                                 (handleClose,
-                                                                handleAccountClick)
+                                                                () => {
+                                                                    auth.logout(
+                                                                        handleLogoutClick
+                                                                    );
+                                                                })
                                                             }>
-                                                            <Button
-                                                                startIcon={
-                                                                    <AccountCircleIcon />
-                                                                }>
-                                                                My account
-                                                            </Button>
-                                                        </MenuItem>
-                                                        <MenuItem>
-                                                            <Button
-                                                                startIcon={
-                                                                    <ExitToAppIcon />
-                                                                }
-                                                                onClick={
-                                                                    (handleClose,
-                                                                    () => {
-                                                                        auth.logout(
-                                                                            handleLogoutClick
-                                                                        );
-                                                                    })
-                                                                }>
-                                                                Logout
-                                                            </Button>
-                                                        </MenuItem>
-                                                    </MenuList>
-                                                </ClickAwayListener>
-                                            </Paper>
-                                        </Grow>
-                                    )}
-                                </Popper>
-                            </div>
-                        )}
+                                                            Logout
+                                                        </Button>
+                                                    </MenuItem>
+                                                </MenuList>
+                                            </ClickAwayListener>
+                                        </Paper>
+                                    </Grow>
+                                )}
+                            </Popper>
+                        </div>
+                    ) : (
+                        <React.Fragment />
+                    )}
                 </Toolbar>
             </AppBar>
         </div>

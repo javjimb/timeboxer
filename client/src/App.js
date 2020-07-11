@@ -1,5 +1,5 @@
 // Library
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // import 'typeface-roboto';
@@ -14,10 +14,12 @@ import SignUp from "../src/pages/SignUp";
 import { ProtectedRoute } from "./components/protected.route";
 import User from "../src/pages/User";
 import UserContextProvider from "./contexts/userContext";
+import Verification from "../src/pages/Verification";
 
 function App() {
     //const [user, setUser] = useState({});
-    return (
+    //localhost:3000/user/verify/181cb18d423414c098739444e4c277f7/cilo@mailinator.com
+    http: return (
         <UserContextProvider>
             <Router>
                 <Switch>
@@ -25,6 +27,9 @@ function App() {
                     <ProtectedRoute exact path="/" component={Main} />
                     <Route path="/login" component={Login}></Route>
                     <Route path="/signup" component={SignUp}></Route>
+                    <Route
+                        path="/user/verify/:token/:email"
+                        component={Verification}></Route>
                     <Route path="*" component={() => "404 Page not found"} />
                 </Switch>
             </Router>

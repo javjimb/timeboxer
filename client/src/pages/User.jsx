@@ -1,19 +1,26 @@
+// Libraries
 import React, { useContext, useState, useEffect } from "react";
+import moment from "moment";
+
+// Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
 // Services
-import AuthService from "../services/AuthService";
 import UserService from "../services/UserService";
 import { userContext } from "../contexts/userContext";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
 import Loading from "../components/Loading";
+
+const _ = require("lodash");
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         padding: "16px",
         height: "100%",
+        maxHeight: "500px",
+        minHeight: "500px",
     },
     large: {
         margin: theme.spacing(1),
@@ -44,6 +53,20 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         padding: "16px",
         margin: "16px",
+        width: "100%",
+        height: "500px",
+        justifyContent: "space-between",
+    },
+    input: {
+        display: "none",
+        width: "100%",
+        // visibility: "hidden",
+        height: "50px",
+        borderBottom: "1px solid darkgrey",
+    },
+    btns: {
+        display: "flex",
+        justifyContent: "space-between",
     },
 }));
 
@@ -54,10 +77,12 @@ export default function User() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("user:", user);
-        setFormData(user);
-        setLoading(false);
-    });
+        if (!_.isEmpty(user)) {
+            console.log("user:", user);
+            setFormData(user);
+            setLoading(false);
+        }
+    }, [user]);
 
     const handleChange = (event, type) => {
         switch (type) {
@@ -94,7 +119,7 @@ export default function User() {
     };
     const changeUserData = (event) => {
         event.preventDefault();
-        UserService.updateUser(user._id, user)
+        UserService.updateUser(formData._id, formData)
             .then((response) => {
                 if (response.errors) {
                     console.log(response.errors);
@@ -115,84 +140,107 @@ export default function User() {
                 <Loading />
             ) : (
                 <div className={classes.root}>
-                    <Paper>
+                    <Paper className={classes.paper}>
+                        <Avatar
+                            alt="user name"
+                            src={formData.avatar}
+                            className={classes.large}
+                        />
+
+                        <input
+                            id="contained-button-file"
+                            accept="image/*"
+                            className={classes.input}
+                            type="file"
+                            onChange={(event) => {
+                                handleChange(event, "avatar");
+                            }}
+                        />
+                        {user.avatar ? (
+                            <label htmlFor="contained-button-file">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="span"
+                                    style={{
+                                        backgroundColor: "#3788d8",
+                                    }}>
+                                    Change profile picture
+                                </Button>
+                            </label>
+                        ) : (
+                            <label htmlFor="contained-button-file">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    component="span"
+                                    style={{
+                                        backgroundColor: "#3788d8",
+                                    }}>
+                                    Add profile picture
+                                </Button>
+                            </label>
+                        )}
+                        <Typography variant="h3">
+                            {user.name + " " + user.surname}
+                        </Typography>
+                        <Typography variant="subtitle1">
+                            Joined:{" "}
+                            {moment(user.createdAt).format("MMMM DD, YYYY")}
+                        </Typography>
+                    </Paper>
+                    <Paper className={classes.paper}>
                         <form
                             className={classes.form}
                             onSubmit={changeUserData}>
-                            <Avatar
-                                alt="user name"
-                                src={user.avatar}
-                                className={classes.large}
-                            />
-                            <input
-                                accept="image/*"
-                                className="fileUpload"
-                                type="file"
-                                style={{
-                                    width: "100%",
-                                    marginTop: "16px",
-                                    paddingBottom: "10px",
-                                    borderBottom: "1px solid darkgrey",
-                                }}
-                                onChange={(event) => {
-                                    handleChange(event, "avatar");
-                                }}
-                            />
-                            <Typography variant="h3">
-                                {user.name + " " + user.surname}
-                            </Typography>
-                            <Typography variant="h6">
-                                user id: ${user._id}
-                            </Typography>
-
-                            <Typography variant="subtitle1">
-                                Account created at: ${user.createdAt}
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                Last change at: ${user.updatedAt}
-                            </Typography>
                             <TextField
                                 id="name"
                                 type="text"
-                                // label="Name"
+                                label="Name"
                                 value={formData.name}
-                                onChange={(event) => {
-                                    handleChange(event, "name");
-                                }}></TextField>
+                                variant="outlined"
+                                onChange={(event) =>
+                                    handleChange(event, "name")
+                                }></TextField>
                             <TextField
+                                label="Surname"
                                 id="surname"
                                 type="text"
                                 value={formData.surname}
-                                onChange={(event) => {
-                                    handleChange(event, "surname");
-                                }}></TextField>
+                                variant="outlined"
+                                onChange={(event) =>
+                                    handleChange(event, "surname")
+                                }></TextField>
                             <TextField
                                 id="email"
                                 label={formData.email}
+                                variant="outlined"
                                 disabled></TextField>
-
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                style={{
-                                    backgroundColor: "#3788d8",
-                                    margin: "16px",
-                                    width: "150px",
-                                    alignSelf: "flex-end",
-                                }}
-                                className={classes.submit}>
-                                Submit
-                            </Button>
-                            <Button
-                                style={{
-                                    alignSelf: "flex-end",
-                                    fontSize: "13px",
-                                    margin: "16px",
-                                }}
-                                color="secondary">
-                                delete account
-                            </Button>
+                            <div className={classes.btns}>
+                                <Button
+                                    style={{
+                                        alignSelf: "flex-end",
+                                        fontSize: "13px",
+                                        margin: "16px",
+                                    }}
+                                    color="secondary">
+                                    delete account
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    style={{
+                                        backgroundColor: "#3788d8",
+                                        margin: "16px",
+                                        width: "150px",
+                                        alignSelf: "flex-end",
+                                        color: "white",
+                                    }}
+                                    className={classes.submit}>
+                                    Save
+                                </Button>
+                            </div>
                         </form>
                     </Paper>
                 </div>
