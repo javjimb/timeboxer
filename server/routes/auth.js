@@ -18,6 +18,7 @@ const auth = require('../middleware/auth');
  * @apiSuccess {String} user.surname User surname
  * @apiSuccess {String} user.email User email
  * @apiSuccess {String} user.avatar User avatar image (base64 encoded)
+ * @apiSuccess {String} user.isVerified Whether the user is verified
  *
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
@@ -25,10 +26,11 @@ const auth = require('../middleware/auth');
  *      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlY2U4YTQ1MTZiYWQ0NDJiMDdhNmQwNyIsIm5hbWUiOiJKYXZpZXIiLCJzdXJuYW1lIjoiSmltZW5leiIsImVtYWlsIjoiamF2amltYkBnbWFpbC5jb20iLCJhdmF0YXIiOnt9fSwiaWF0IjoxNTkyOTIxNTQwLCJleHAiOjE1OTMwMDc5NDB9.sC-eFAnQ672V53f-kPqUL1f-kgvxfP5NeGvozcv9uZ0",
  *      "user": {
  *          "_id": "5ece8a4516bad442b07a6d07",
- *          "email": "javjimb@gmail.com",
- *          "name": "Javier",
- *          "surname": "Jimenez",
- *          "avatar": ""
+ *          "email": "pedroximenez@gmail.com",
+ *          "name": "Pedro",
+ *          "surname": "Ximenez",
+ *          "avatar": "",
+ *          "isVerified" : true
  *      }
  *  }
  *
@@ -36,6 +38,12 @@ const auth = require('../middleware/auth');
  *    HTTP/1.1 401 Unauthorized
  *  {
  *      "errors": "Invalid password"
+ *  }
+ *
+ * @apiErrorExample {json} Verification
+ *    HTTP/1.1 403 Not verified
+ *  {
+ *      "errors": "Account has not been verified"
  *  }
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
@@ -76,5 +84,51 @@ router.post('/login', AuthController.login);
  *  }
  */
 router.get('/me', auth, AuthController.me);
+
+/**
+ * @api {post} /auth/facebook Facebook
+ * @apiDescription Authenticates or creates a new user with a facebook id
+ * @apiGroup Auth
+ * @apiPermission none
+ * @apiParam {String} email User email
+ * @apiParam {String} provider_id Facebook user id
+ * @apiParam {String} [name] User name
+ * @apiParam {String} [surname] User surname
+ * @apiParam {String} [avatar] User avatar
+ *
+ * @apiSuccess {String} token Access token
+ * @apiSuccess {Object} user Authenticated user data
+ * @apiSuccess {String} user._id User id
+ * @apiSuccess {String} user.name User name
+ * @apiSuccess {String} user.surname User surname
+ * @apiSuccess {String} user.email User email
+ * @apiSuccess {String} user.avatar User avatar image (base64 encoded)
+ * @apiSuccess {String} user.isVerified Whether the user is verified
+ *
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *   {
+ *      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlY2U4YTQ1MTZiYWQ0NDJiMDdhNmQwNyIsIm5hbWUiOiJKYXZpZXIiLCJzdXJuYW1lIjoiSmltZW5leiIsImVtYWlsIjoiamF2amltYkBnbWFpbC5jb20iLCJhdmF0YXIiOnt9fSwiaWF0IjoxNTkyOTIxNTQwLCJleHAiOjE1OTMwMDc5NDB9.sC-eFAnQ672V53f-kPqUL1f-kgvxfP5NeGvozcv9uZ0",
+ *      "user": {
+ *          "_id": "5ece8a4516bad442b07a6d07",
+ *          "email": "pedroximenez@gmail.com",
+ *          "name": "Pedro",
+ *          "surname": "Ximenez",
+ *          "avatar": "",
+ *          "isVerified" : true
+ *      }
+ *  }
+ *
+ * @apiErrorExample {json} Authorization
+ *    HTTP/1.1 401 Unauthorized
+ *  {
+ *      "errors": "Could not validate external authentication"
+ *  }
+ *
+ * @apiErrorExample {json} Server
+ *    HTTP/1.1 500 Internal Server Error
+ */
+
+router.post('/facebook', AuthController.facebook);
 
 module.exports = router;
