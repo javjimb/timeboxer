@@ -84,6 +84,8 @@ const useStyles = makeStyles((theme) => ({
         width: "45%",
     },
 }));
+require("dotenv").config();
+const appId = process.env.REACT_APP_FB_APP_ID;
 
 export default function Login(props) {
     const classes = useStyles();
@@ -232,8 +234,8 @@ export default function Login(props) {
                         </div>
                         <div>
                             <FacebookLogin
-                                appId="579380102972326"
-                                autoLoad={true}
+                                appId={appId}
+                                autoLoad={false}
                                 fields="last_name,first_name,email,picture"
                                 onClick={responseFacebook}
                                 callback={responseFacebook}
