@@ -91,8 +91,6 @@ export default function Login(props) {
     const classes = useStyles();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState("");
-
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
@@ -113,7 +111,6 @@ export default function Login(props) {
                     setShowSnackbar(true);
                     setAlertMessage(response.errors);
                 } else {
-                    setToken(response.token);
                     auth.login(() => {
                         localStorage.setItem("token", response.token);
                         props.history.push("/");
@@ -128,6 +125,30 @@ export default function Login(props) {
     };
     const responseFacebook = (response) => {
         console.log(response);
+
+        const data = {
+            email: response.email,
+            provider_id: response.id,
+            provider: "facebook",
+            surname: response.last_name,
+            name: response.first_name,
+            avatar: response.profile_pic,
+        };
+        console.log("response von FB:", response);
+        console.log("data  object for socialLogin:", data);
+
+        AuthService.socialLogin(data)
+            .then((response) => {
+                auth.login(() => {
+                    localStorage.setItem("token", response.token);
+                    props.history.push("/");
+                });
+            })
+            .catch((error) => {
+                setShowSnackbar(true);
+                setAlertMessage(error);
+                console.log(error);
+            });
     };
 
     return (
@@ -237,7 +258,6 @@ export default function Login(props) {
                                 appId={appId}
                                 autoLoad={false}
                                 fields="last_name,first_name,email,picture"
-                                onClick={responseFacebook}
                                 callback={responseFacebook}
                                 style={{ margin: "16px auto 16px auto" }}
                             />

@@ -26,4 +26,17 @@ export default {
         });
         return response.json();
     },
+    async socialLogin(data) {
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                ...auth.getAuthHeader(),
+            },
+            body: JSON.stringify(data),
+        };
+        console.log(apiURL);
+        const response = await fetch(apiURL + "/social", requestOptions);
+        return await response.json();
+    },
 };
