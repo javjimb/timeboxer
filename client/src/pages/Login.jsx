@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 require("dotenv").config();
 const appId = process.env.REACT_APP_FB_APP_ID;
+const imageToBase64 = require("image-to-base64");
 
 export default function Login(props) {
     const classes = useStyles();
@@ -123,7 +124,7 @@ export default function Login(props) {
                 console.log(error);
             });
     };
-    const responseFacebook = (response) => {
+    const responseFacebook = async (response) => {
         console.log(response);
 
         const data = {
@@ -132,10 +133,11 @@ export default function Login(props) {
             provider: "facebook",
             surname: response.last_name,
             name: response.first_name,
-            avatar: response.profile_pic,
+            avatar: response.picture.data.url,
         };
-        console.log("response von FB:", response);
-        console.log("data  object for socialLogin:", data);
+
+        let base64String = await imageToBase64(response.picture.data.url);
+        data.avatar = "data:image/jpeg;base64," + base64String;
 
         AuthService.socialLogin(data)
             .then((response) => {
