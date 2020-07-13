@@ -60,6 +60,7 @@ export default function Verification(props) {
     const [error, setError] = useState("");
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
+    const [provider, setProvider] = useState("");
 
     useEffect(() => {
         TokenService.verifyUser(
