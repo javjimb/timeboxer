@@ -114,9 +114,10 @@ describe('Auth', () => {
 
     it('should be able to register with facebook', async () => {
 
-        const response = await request.post('/auth/facebook').send({
+        const response = await request.post('/auth/social').send({
             email: faker.internet.email(),
             provider_id: faker.random.uuid(),
+            provider: 'facebook',
             name: faker.name.firstName(),
             surname: faker.name.lastName(),
             avatar: faker.image.avatar(),
@@ -147,9 +148,10 @@ describe('Auth', () => {
             providerId: faker.random.uuid()
         });
 
-        const response = await request.post('/auth/facebook').send({
+        const response = await request.post('/auth/social').send({
             email: user.email,
             provider_id: externalAuth.providerId,
+            provider: "facebook"
         });
 
         expect(response.status).toBe(200);
