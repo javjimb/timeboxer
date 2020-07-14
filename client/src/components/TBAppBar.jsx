@@ -97,7 +97,6 @@ export default function TBAppBar({ next, prev, today }) {
 
     // show AppBar elements according to pathname
 
-    const home = "/";
     const userProfile = "/auth/me";
     const login = "/login";
     const signup = "/signup";
