@@ -13,7 +13,6 @@ import TokenService from "../services/TokenService";
 
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -55,12 +54,8 @@ export default function Verification(props) {
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
     const [verify, setVerify] = useState(false);
-    const [token, setToken] = useState(props.match.params.token);
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState("");
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const [provider, setProvider] = useState("");
 
     useEffect(() => {
         TokenService.verifyUser(
@@ -69,20 +64,14 @@ export default function Verification(props) {
         )
             .then((response) => {
                 if (response.email) {
-                    setEmail(response.email);
-                    setToken(response.token);
                     setVerify(true);
-                    setLoading(false);
-                } else {
-                    setLoading(false);
-                    setError(response.error);
                 }
             })
             .catch((error) => {
                 console.log(error);
-                setError(error);
-            });
-    }, []);
+            })
+            .finally(() => setLoading(false));
+    }, [props.match.params.token, props.match.params.email]);
 
     const resendToken = () => {
         TokenService.resend(props.match.params.email)
@@ -149,7 +138,7 @@ export default function Verification(props) {
                                 ) : (
                                     <Grid item xs style={{ marginTop: "16px" }}>
                                         <Alert severity="error">
-                                            Ups, something went wrong! Resend
+                                            Oops, something went wrong! Resend
                                             verification link.
                                         </Alert>
                                         <Button
