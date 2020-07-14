@@ -1,5 +1,7 @@
+// Libraries
 import React, { useState } from "react";
 import FacebookLogin from "react-facebook-login";
+import GoogleLogin from "react-google-login";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -76,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    facebook: {
+    dividerBox: {
         width: "100%",
         display: "flex",
         justifyContent: "space-around",
@@ -85,6 +87,12 @@ const useStyles = makeStyles((theme) => ({
     },
     divider: {
         width: "45%",
+    },
+    socialButtonBox: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
 }));
 
@@ -148,7 +156,34 @@ export default function Login(props) {
             .catch((error) => {
                 setShowSnackbar(true);
                 setAlertMessage(error);
-                console.log(error);
+                console.error(error);
+            });
+    };
+
+    const responseGoogle = async (response) => {
+        console.log(response);
+        const data = {
+            email: response.profileObj.email,
+            provider_id: response.profileObj.googleId,
+            provider: "google",
+            surname: response.profileObj.familyName,
+            name: response.profileObj.givenName,
+            avatar: response.profileObj.imageUrl,
+        };
+
+        let base64String = await imageToBase64(response.profileObj.imageUrl);
+        data.avatar = "data:image/jpeg;base64," + base64String;
+        AuthService.socialLogin(data)
+            .then((response) => {
+                auth.login(() => {
+                    localStorage.setItem("token", response.token);
+                    props.history.push("/");
+                });
+            })
+            .catch((error) => {
+                setShowSnackbar(true);
+                setAlertMessage(error);
+                console.error(error);
             });
     };
 
@@ -249,18 +284,25 @@ export default function Login(props) {
                             </Grid>
                         </form>
 
-                        <div className={classes.facebook}>
+                        <div className={classes.dividerBox}>
                             <Divider className={classes.divider} />
                             <Typography variant="body2">OR</Typography>
                             <Divider className={classes.divider} />
                         </div>
-                        <div>
+                        <div className={classes.socialButtonBox}>
                             <FacebookLogin
                                 appId={appId}
                                 autoLoad={false}
                                 fields="last_name,first_name,email,picture"
                                 callback={responseFacebook}
                                 style={{ margin: "16px auto 16px auto" }}
+                            />
+                            <GoogleLogin
+                                clientId="514364102040-5fqkqmb3cqhd8iab2iks63mgh5m5hfe8.apps.googleusercontent.com"
+                                buttonText="Login"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={"single_host_origin"}
                             />
                         </div>
                     </div>
