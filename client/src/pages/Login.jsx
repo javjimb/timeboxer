@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import FacebookLogin from "react-facebook-login";
 
 // Services
@@ -30,6 +29,10 @@ import auth from "../helper/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
+
+require("dotenv").config();
+const appId = process.env.REACT_APP_FB_APP_ID;
+const imageToBase64 = require("image-to-base64");
 
 function Copyright() {
     return (
@@ -84,9 +87,6 @@ const useStyles = makeStyles((theme) => ({
         width: "45%",
     },
 }));
-require("dotenv").config();
-const appId = process.env.REACT_APP_FB_APP_ID;
-const imageToBase64 = require("image-to-base64");
 
 export default function Login(props) {
     const classes = useStyles();

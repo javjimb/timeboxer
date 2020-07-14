@@ -17,9 +17,7 @@ import UserContextProvider from "./contexts/userContext";
 import Verification from "../src/pages/Verification";
 
 function App() {
-    //const [user, setUser] = useState({});
-    //localhost:3000/user/verify/181cb18d423414c098739444e4c277f7/cilo@mailinator.com
-    http: return (
+    return (
         <UserContextProvider>
             <Router>
                 <Switch>
