@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState } from "react";
-import FacebookLogin from "react-facebook-login";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import GoogleLogin from "react-google-login";
 
 // Services
@@ -23,6 +23,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
 import Divider from "@material-ui/core/Divider";
+import FacebookIcon from "@material-ui/icons/Facebook";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -31,6 +32,7 @@ import auth from "../helper/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
+import google from "../images/google_icon.png";
 
 require("dotenv").config();
 const appId = process.env.REACT_APP_FB_APP_ID;
@@ -93,6 +95,26 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
+    },
+    socialButton: {
+        padding: "6px 16px",
+        fontSize: "0.875rem",
+        width: "100%",
+        boxSizing: "border-box",
+        transition:
+            "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+        fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+        fontWeight: 500,
+        lineHeight: 1.75,
+        border: "1px solid rgb(254,255,204)",
+        borderRadius: "4px",
+        letterSpacing: "0.02857em",
+        textTransform: "uppercase",
+        boxShadow:
+            "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "16px",
     },
 }));
 
@@ -295,10 +317,37 @@ export default function Login(props) {
                                 autoLoad={false}
                                 fields="last_name,first_name,email,picture"
                                 callback={responseFacebook}
-                                style={{ margin: "16px auto 16px auto" }}
+                                render={(renderProps) => (
+                                    <button
+                                        className={classes.socialButton}
+                                        onClick={renderProps.onClick}>
+                                        <FacebookIcon color="primary" />
+                                        Continue with facebook
+                                    </button>
+                                )}
+                                style={{
+                                    margin: "16px auto 16px auto",
+                                    fontFamily: "Roboto, sans-serif",
+                                }}
                             />
                             <GoogleLogin
                                 clientId="514364102040-5fqkqmb3cqhd8iab2iks63mgh5m5hfe8.apps.googleusercontent.com"
+                                render={(renderProps) => (
+                                    <button
+                                        className={classes.socialButton}
+                                        onClick={renderProps.onClick}
+                                        disabled={renderProps.disabled}>
+                                        <img
+                                            src={google}
+                                            style={{
+                                                width: "1.2em",
+                                                height: "1.2em",
+                                                margin: "0.2em",
+                                            }}
+                                        />
+                                        Continue with Google
+                                    </button>
+                                )}
                                 buttonText="Login"
                                 onSuccess={responseGoogle}
                                 onFailure={responseGoogle}
