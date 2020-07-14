@@ -104,25 +104,24 @@ export default function Login(props) {
     const onSnackbarClose = (event) => {
         setShowSnackbar(false);
     };
-    const loginUser = (event) => {
+    const loginUser = async (event) => {
         event.preventDefault();
-        AuthService.loginUser(email, password)
-            .then((response) => {
-                if (response.errors) {
-                    setShowSnackbar(true);
-                    setAlertMessage(response.errors);
-                } else {
-                    auth.login(() => {
-                        localStorage.setItem("token", response.token);
-                        props.history.push("/");
-                    });
-                }
-            })
-            .catch((error) => {
+        try {
+            let response = await AuthService.loginUser(email, password);
+
+            if (response.errors) {
                 setShowSnackbar(true);
-                setAlertMessage(error);
-                console.log(error);
-            });
+                setAlertMessage(response.errors);
+            } else {
+                auth.login(() => {
+                    localStorage.setItem("token", response.token);
+                    props.history.push("/");
+                });
+            }
+        } catch (error) {
+            setShowSnackbar(true);
+            setAlertMessage(error);
+        }
     };
     const responseFacebook = async (response) => {
         console.log(response);
