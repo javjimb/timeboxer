@@ -2,3 +2,5 @@ node_modules
 .idea
 server/public/apidoc
 package-lock.json
+docker
+
