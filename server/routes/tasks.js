@@ -1,13 +1,18 @@
 const express = require('express');
-const TasksController = require('../controllers/tasks.controller');
-const { check } = require('express-validator');
-
 const router = new express.Router();
+const TasksController = require('../controllers/tasks.controller');
+const auth = require('../middleware/auth');
+
+/**
+ * @apiDefine authenticated Needs an 'x-access-token' header
+ *      An access token for an existing user can be generated with the endpoint:  Auth -> Login
+ */
 
 /**
  * @api {get} /tasks List all tasks
  * @apiName GetTasks
  * @apiGroup Tasks
+ * @apiPermission authenticated
  * @apiParam {String="new","in-progress","scheduled","completed"} [status] Task status
  * @apiParam {Number} [fromTimestamp] Scheduled tasks after this date (Unix timestamp)
  * @apiParam {Number} [untilTimestamp] Scheduled tasks until this date (Unix timestamp)
@@ -39,11 +44,12 @@ const router = new express.Router();
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.get('/tasks', TasksController.getAll);
+router.get('/', auth, TasksController.getAll);
 
 /**
  * @api {get} /tasks/:id Find a task
  * @apiGroup Tasks
+ * @apiPermission authenticated
  * @apiParam {String} id Task id
  *
  * @apiSuccess {String} _id Task id
@@ -77,11 +83,12 @@ router.get('/tasks', TasksController.getAll);
  *    HTTP/1.1 500 Internal Server Error
  */
 
-router.get('/tasks/:id', TasksController.getById);
+router.get('/:id', auth,  TasksController.getById);
 
 /**
  * @api {post} /tasks Create a task
  * @apiGroup Tasks
+ * @apiPermission authenticated
  * @apiParam {String} name Task name
  * @apiParam {Number} duration Task duration
  * @apiParam {String="new","in-progress","scheduled","completed"} [status=new] Status of the task
@@ -122,15 +129,12 @@ router.get('/tasks/:id', TasksController.getById);
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/tasks', [
-        check('name').not().isEmpty().withMessage('Task name cannot be empty')
-    ],
-    TasksController.create
-);
+router.post('/', auth, TasksController.create);
 
 /**
  * @api {put} /tasks/:id Update a task
  * @apiGroup Tasks
+ * @apiPermission authenticated
  * @apiParam {id} id Task id
  * @apiParam {String} [name] Task name
  * @apiParam {Number} [duration] Task duration
@@ -164,16 +168,12 @@ router.post('/tasks', [
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
-router.put('/tasks/:id', [
-        check('name').optional().not().isEmpty().withMessage('Task name cannot be empty'),
-        check('status').optional().isIn(['new', 'in-progress', 'completed', 'scheduled']).withMessage('Invalid task status')
-    ],
-    TasksController.update
-);
+router.put('/:id', auth, TasksController.update);
 
 /**
  * @api {delete} /tasks/:id Remove a task
  * @apiGroup Tasks
+ * @apiPermission authenticated
  * @apiParam {id} id Task id
  *
  * @apiSuccessExample {json} Success
@@ -202,6 +202,6 @@ router.put('/tasks/:id', [
  * @apiErrorExample {json} Server
  *    HTTP/1.1 500 Internal Server Error
  */
-router.delete('/tasks/:id', TasksController.delete);
+router.delete('/:id', auth, TasksController.delete);
 
 module.exports = router;
