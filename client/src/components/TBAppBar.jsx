@@ -97,23 +97,25 @@ export default function TBAppBar({ next, prev, today }) {
 
     // show AppBar elements according to pathname
 
-    const home = "/";
     const userProfile = "/auth/me";
     const login = "/login";
     const signup = "/signup";
     const verify = "/user/verify";
+    const password = "/password";
     var showAvatar = false;
     var showCalendarActions = false;
 
     if (
-        ![login, signup].includes(window.location.pathname) &&
+        ![login, signup, password].includes(window.location.pathname) &&
         !window.location.pathname.includes(verify)
     ) {
         showAvatar = true;
     }
 
     if (
-        ![login, signup, userProfile].includes(window.location.pathname) &&
+        ![login, signup, userProfile, password].includes(
+            window.location.pathname
+        ) &&
         !window.location.pathname.includes(verify)
     ) {
         showCalendarActions = true;
