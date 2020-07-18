@@ -15,11 +15,10 @@ import { ProtectedRoute } from "./components/protected.route";
 import User from "../src/pages/User";
 import UserContextProvider from "./contexts/userContext";
 import Verification from "../src/pages/Verification";
+import Password from "./pages/Password";
 
 function App() {
-    //const [user, setUser] = useState({});
-    //localhost:3000/user/verify/181cb18d423414c098739444e4c277f7/cilo@mailinator.com
-    http: return (
+    return (
         <UserContextProvider>
             <Router>
                 <Switch>
@@ -30,6 +29,7 @@ function App() {
                     <Route
                         path="/user/verify/:token/:email"
                         component={Verification}></Route>
+                    <Route path="/password" component={Password}></Route>
                     <Route path="*" component={() => "404 Page not found"} />
                 </Switch>
             </Router>

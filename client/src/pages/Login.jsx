@@ -1,6 +1,7 @@
+// Libraries
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import FacebookLogin from "react-facebook-login";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import GoogleLogin from "react-google-login";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -22,6 +23,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
 import Divider from "@material-ui/core/Divider";
+import FacebookIcon from "@material-ui/icons/Facebook";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
@@ -30,6 +32,11 @@ import auth from "../helper/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
+import google from "../images/google_icon.png";
+
+require("dotenv").config();
+const appId = process.env.REACT_APP_FB_APP_ID;
+const imageToBase64 = require("image-to-base64");
 
 function Copyright() {
     return (
@@ -73,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    facebook: {
+    dividerBox: {
         width: "100%",
         display: "flex",
         justifyContent: "space-around",
@@ -83,14 +90,38 @@ const useStyles = makeStyles((theme) => ({
     divider: {
         width: "45%",
     },
+    socialButtonBox: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    socialButton: {
+        padding: "6px 16px",
+        fontSize: "0.875rem",
+        width: "100%",
+        boxSizing: "border-box",
+        transition:
+            "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+        fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+        fontWeight: 500,
+        lineHeight: 1.75,
+        border: "1px solid rgb(254,255,204)",
+        borderRadius: "4px",
+        letterSpacing: "0.02857em",
+        textTransform: "uppercase",
+        boxShadow:
+            "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "16px",
+    },
 }));
 
 export default function Login(props) {
     const classes = useStyles();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState("");
-
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
@@ -103,29 +134,78 @@ export default function Login(props) {
     const onSnackbarClose = (event) => {
         setShowSnackbar(false);
     };
-    const loginUser = (event) => {
+    const loginUser = async (event) => {
         event.preventDefault();
-        AuthService.loginUser(email, password)
+        try {
+            let response = await AuthService.loginUser(email, password);
+
+            if (response.errors) {
+                setShowSnackbar(true);
+                setAlertMessage(response.errors);
+            } else {
+                auth.login(() => {
+                    localStorage.setItem("token", response.token);
+                    props.history.push("/");
+                });
+            }
+        } catch (error) {
+            setShowSnackbar(true);
+            setAlertMessage(error);
+        }
+    };
+    const responseFacebook = async (response) => {
+
+        const data = {
+            email: response.email,
+            provider_id: response.id,
+            provider: "facebook",
+            surname: response.last_name,
+            name: response.first_name,
+            avatar: response.picture.data.url,
+        };
+
+        let base64String = await imageToBase64(response.picture.data.url);
+        data.avatar = "data:image/jpeg;base64," + base64String;
+
+        AuthService.socialLogin(data)
             .then((response) => {
-                if (response.errors) {
-                    setShowSnackbar(true);
-                    setAlertMessage(response.errors);
-                } else {
-                    setToken(response.token);
-                    auth.login(() => {
-                        localStorage.setItem("token", response.token);
-                        props.history.push("/");
-                    });
-                }
+                auth.login(() => {
+                    localStorage.setItem("token", response.token);
+                    props.history.push("/");
+                });
             })
             .catch((error) => {
                 setShowSnackbar(true);
                 setAlertMessage(error);
-                console.log(error);
+                console.error(error);
             });
     };
-    const responseFacebook = (response) => {
+
+    const responseGoogle = async (response) => {
         console.log(response);
+        const data = {
+            email: response.profileObj.email,
+            provider_id: response.profileObj.googleId,
+            provider: "google",
+            surname: response.profileObj.familyName,
+            name: response.profileObj.givenName,
+            avatar: response.profileObj.imageUrl,
+        };
+
+        let base64String = await imageToBase64(response.profileObj.imageUrl);
+        data.avatar = "data:image/jpeg;base64," + base64String;
+        AuthService.socialLogin(data)
+            .then((response) => {
+                auth.login(() => {
+                    localStorage.setItem("token", response.token);
+                    props.history.push("/");
+                });
+            })
+            .catch((error) => {
+                setShowSnackbar(true);
+                setAlertMessage(error);
+                console.error(error);
+            });
     };
 
     return (
@@ -213,7 +293,7 @@ export default function Login(props) {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
+                                    <Link href="/password" variant="body2">
                                         Forgot password?
                                     </Link>
                                 </Grid>
@@ -225,19 +305,52 @@ export default function Login(props) {
                             </Grid>
                         </form>
 
-                        <div className={classes.facebook}>
+                        <div className={classes.dividerBox}>
                             <Divider className={classes.divider} />
                             <Typography variant="body2">OR</Typography>
                             <Divider className={classes.divider} />
                         </div>
-                        <div>
+                        <div className={classes.socialButtonBox}>
                             <FacebookLogin
-                                appId="579380102972326"
-                                autoLoad={true}
+                                appId={appId}
+                                autoLoad={false}
                                 fields="last_name,first_name,email,picture"
-                                onClick={responseFacebook}
                                 callback={responseFacebook}
-                                style={{ margin: "16px auto 16px auto" }}
+                                render={(renderProps) => (
+                                    <button
+                                        className={classes.socialButton}
+                                        onClick={renderProps.onClick}>
+                                        <FacebookIcon color="primary" />
+                                        Continue with facebook
+                                    </button>
+                                )}
+                                style={{
+                                    margin: "16px auto 16px auto",
+                                    fontFamily: "Roboto, sans-serif",
+                                }}
+                            />
+                            <GoogleLogin
+                                clientId="514364102040-5fqkqmb3cqhd8iab2iks63mgh5m5hfe8.apps.googleusercontent.com"
+                                render={(renderProps) => (
+                                    <button
+                                        className={classes.socialButton}
+                                        onClick={renderProps.onClick}
+                                        disabled={renderProps.disabled}>
+                                        <img
+                                            src={google}
+                                            style={{
+                                                width: "1.2em",
+                                                height: "1.2em",
+                                                margin: "0.2em",
+                                            }}
+                                        />
+                                        Continue with Google
+                                    </button>
+                                )}
+                                buttonText="Login"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={"single_host_origin"}
                             />
                         </div>
                     </div>

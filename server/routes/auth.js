@@ -86,12 +86,13 @@ router.post('/login', AuthController.login);
 router.get('/me', auth, AuthController.me);
 
 /**
- * @api {post} /auth/facebook Facebook
- * @apiDescription Authenticates or creates a new user with a facebook id
+ * @api {post} /auth/social Social
+ * @apiDescription Authenticates or creates a new user with a social login
  * @apiGroup Auth
  * @apiPermission none
  * @apiParam {String} email User email
- * @apiParam {String} provider_id Facebook user id
+ * @apiParam {String} provider_id Provider user id
+ * @apiParam {String="facebook","google"} provider Provider name
  * @apiParam {String} [name] User name
  * @apiParam {String} [surname] User surname
  * @apiParam {String} [avatar] User avatar
@@ -129,6 +130,6 @@ router.get('/me', auth, AuthController.me);
  *    HTTP/1.1 500 Internal Server Error
  */
 
-router.post('/facebook', AuthController.facebook);
+router.post('/social', AuthController.social);
 
 module.exports = router;

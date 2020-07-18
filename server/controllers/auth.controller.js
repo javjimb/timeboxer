@@ -80,7 +80,7 @@ class AuthController {
         }
     }
 
-    async facebook(req, res) {
+    async social(req, res) {
         await check("email")
             .not()
             .isEmpty()
@@ -91,6 +91,12 @@ class AuthController {
             .not()
             .isEmpty()
             .withMessage("Invalid provider id")
+            .run(req);
+
+        await check("provider")
+            .not()
+            .isEmpty()
+            .withMessage("Invalid provider")
             .run(req);
 
         const errors = validationResult(req);
@@ -114,7 +120,7 @@ class AuthController {
         }
 
         let externalAuth = await ExternalAuthService.getAll({
-            provider: "facebook",
+            provider: req.body.provider,
         });
 
         if (externalAuth.length > 0 && externalAuth[0].user.toString() !== user._id.toString()) {
@@ -125,7 +131,7 @@ class AuthController {
             externalAuth = await ExternalAuthService.create({
                 user: user._id,
                 email: req.body.email,
-                provider: 'facebook',
+                provider: req.body.provider,
                 providerId: req.body.provider_id
             });
         }
