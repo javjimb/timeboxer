@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const databaseHelper = require('./helpers/database');
 const bodyParser = require('body-parser');
+const colors = require('colors');
 
 class App {
     constructor() {
@@ -16,7 +17,10 @@ class App {
     }
 
     database() {
-        databaseHelper.connect();
+        databaseHelper.connect()
+            .catch((error) => {
+                console.log(colors.red('Failed to connect to DB: ' + error.message));
+            });
     }
 
     middlewares() {
