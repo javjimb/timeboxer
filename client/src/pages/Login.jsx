@@ -154,7 +154,6 @@ export default function Login(props) {
         }
     };
     const responseFacebook = async (response) => {
-        console.log(response);
 
         const data = {
             email: response.email,
