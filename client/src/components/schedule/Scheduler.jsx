@@ -24,13 +24,12 @@ export default class Scheduler extends React.Component {
        };
    }
    componentDidMount() {
-      //this.convertTasksToSchedulerEvents();
+      this.convertTasksToSchedulerEvents();
    }
 
    componentDidUpdate(prevProps, prevState, snapshot) {
        // redraw the calendar events when the prop is updated
        if (!_.isEqual(this.props.taskList, prevProps.taskList)) {
-           console.info('updated');
            this.convertTasksToSchedulerEvents();
        }
    }
@@ -62,12 +61,16 @@ export default class Scheduler extends React.Component {
    convertTasksToSchedulerEvents() {
        let events = [];
        this.props.taskList.forEach((task) => {
-           if (task.status === 'scheduled') {
+           console.log(task.status);
+           if (task.status === 'scheduled' || task.status == 'completed') {
                events.push({
                    title: task.name,
                    id: task._id,
                    start: moment.unix(task.start).toDate(),
                    end: moment.unix(task.end).toDate(),
+                   backgroundColor: task.status === 'scheduled' ? '#3788D8' : '#cacacc',
+                   borderColor: task.status === 'scheduled' ? '#3788D8' : '#cacacc',
+                   textColor: task.status === 'scheduled' ? 'white' : '#7d7e80',
                });
            }
        });
