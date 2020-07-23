@@ -153,6 +153,7 @@ export default class Scheduler extends React.Component {
                    eventDrop={this.eventDrop}
                    eventResize={this.eventResize}
                    datesRender={this.props.onDateChange}
+                   nowIndicator={true}
                    header={{
                        //left: 'prev,next today',
                        left: '',
