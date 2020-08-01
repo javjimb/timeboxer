@@ -29,11 +29,12 @@ class UsersController {
 
         // check for duplicates
         let user = await UserService.findByEmail(req.body.email);
+
         if (user) {
             return res.status(409).json({ errors: [{ msg: 'The email address is already registered'}] });
         }
 
-        const session = await mongoose.startSession();
+        //const session = await mongoose.startSession();
         //session.startTransaction();
 
         try {

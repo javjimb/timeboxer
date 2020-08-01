@@ -1,18 +1,28 @@
-version: "3"
+version: "3.7"
+
 services:
   frontend:
     build: ./client
     ports:
-      - "3000:3000"
+      #   - "3000:3000"
+      - "80:80"
     stdin_open: true
+    volumes:
+      - "./client:/usr/src/app"
+      - "/usr/src/app/node_modules"
     depends_on:
       - backend
   backend:
     build: ./server
-    ports:
-      - "5000:5000"
+    #ports:
+     # - "5000:5000"
+    volumes:
+      - "./server:/usr/src/app"
+      - "/usr/src/app/node_modules"
     links:
       - mongo
+    #depends_on:
+     # - frontend
   mongo:
     hostname: mongo
     restart: always
@@ -21,3 +31,10 @@ services:
       - '27017:27017'
     volumes:
       - "./docker/mongo/data:/data/db"
+  #web:
+   # image: nginx:1.17
+   # ports:
+    #  - 80:80
+    #volumes:
+      #- ./nginx/index.html:/var/www/myapp/index.html
+      #- ./nginx/site.conf:/etc/nginx/conf.d/site.conf
