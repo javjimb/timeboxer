@@ -6,7 +6,7 @@ COPY package*.json ./
 # Bundle app source
 COPY . .
 # Install app dependencies
-RUN npm install -g nodemon
+#RUN npm install -g nodemon
 RUN npm install
 EXPOSE 5000
 CMD [ "npm", "run", "server" ]
