@@ -3,3 +3,8 @@ node_modules
 server/public/apidoc
 package-lock.json
 docker/mongo/*
+
+# env files
+server/config/development/.env
+server/config/production/.env
+client/.env
