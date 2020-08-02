@@ -4,7 +4,6 @@ services:
   frontend:
     build: ./client
     ports:
-      #   - "3000:3000"
       - "80:80"
     stdin_open: true
     volumes:
@@ -12,17 +11,17 @@ services:
       - "/usr/src/app/node_modules"
     depends_on:
       - backend
+    environment:
+      - NODE_ENV=production
   backend:
     build: ./server
-    #ports:
-     # - "5000:5000"
     volumes:
       - "./server:/usr/src/app"
       - "/usr/src/app/node_modules"
     links:
       - mongo
-    #depends_on:
-     # - frontend
+    environment:
+      - NODE_ENV=production
   mongo:
     hostname: mongo
     restart: always
@@ -31,10 +30,3 @@ services:
       - '27017:27017'
     volumes:
       - "./docker/mongo/data:/data/db"
-  #web:
-   # image: nginx:1.17
-   # ports:
-    #  - 80:80
-    #volumes:
-      #- ./nginx/index.html:/var/www/myapp/index.html
-      #- ./nginx/site.conf:/etc/nginx/conf.d/site.conf
