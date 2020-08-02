@@ -6,7 +6,7 @@
     "scripts": {
         "client": "HTTPS=true npm run start --prefix ../client",
         "server": "nodemon server.js",
-        "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+        "dev": "NODE_ENV=development concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
         "test": "NODE_ENV=test jest",
         "docs": "apidoc -e \"(node_modules|public)\" -o public/apidoc"
     },
