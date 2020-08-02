@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const apiURL = process.env.REACT_APP_API_URL + "/tokens/";
 
 export default {
