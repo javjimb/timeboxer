@@ -18,6 +18,8 @@ import UserContextProvider from "./contexts/userContext";
 import Verification from "../src/pages/Verification";
 import Password from "./pages/Password";
 
+require('dotenv').config();
+
 function App() {
     return (
         <UserContextProvider>

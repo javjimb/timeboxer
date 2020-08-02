@@ -34,7 +34,6 @@ import auth from "../helper/auth";
 import timeBoxer from "../images/time-head.jpg";
 import google from "../images/google_icon.png";
 
-require("dotenv").config();
 const appId = process.env.REACT_APP_FB_APP_ID;
 const imageToBase64 = require("image-to-base64");
 
