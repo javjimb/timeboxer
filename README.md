@@ -11,6 +11,8 @@ A simple app to practice the [Timeboxing](https://en.wikipedia.org/wiki/Timeboxi
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 -   Clone this repository
+-   Rename client/.env.example to client/.env and modify settings for your development environment
+-   Rename server/development/.env.example to server/development/.env and modify settings for your development environment
 -   Install the required dependencies:
 
 ```
