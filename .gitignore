@@ -8,3 +8,4 @@ docker/mongo/*
 server/config/development/.env
 server/config/production/.env
 client/.env
+client/.env-production

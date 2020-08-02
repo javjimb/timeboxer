@@ -5,8 +5,12 @@ FROM node:alpine as builder
 WORKDIR /usr/src/app
 # Install app dependencies
 RUN npm install -g react-scripts
+
+# Copy .env file
+COPY .env-production ./.env
+
 COPY package*.json ./
-#COPY package*.json ./usr/src/app/
+
 # Install dependencies
 RUN npm install
 # Copy app source code
