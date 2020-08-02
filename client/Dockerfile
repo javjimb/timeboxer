@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 RUN npm install -g react-scripts
 
 # Copy .env file
-COPY .env-production ./.env
+COPY .env ./.env
 
 COPY package*.json ./
 
