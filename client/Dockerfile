@@ -27,5 +27,5 @@ RUN npm run build
 FROM nginx
 #COPY --from=builder /usr/src/app /usr/share/nginx/html
 COPY --from=builder /usr/src/app /var/www/myapp
-COPY ./docker/nginx/site.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx/development.conf /etc/nginx/conf.d/default.conf
 

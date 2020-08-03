@@ -2,10 +2,13 @@ node_modules
 .idea
 server/public/apidoc
 package-lock.json
-docker/mongo/*
 
 # env files
 server/config/development/.env
 server/config/production/.env
 client/.env
 client/.env-production
+
+# docker
+docker/mongo/*
+client/docker/nginx/production.conf
