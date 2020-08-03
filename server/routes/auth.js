@@ -10,6 +10,7 @@ const auth = require('../middleware/auth');
  * @apiPermission none
  * @apiParam {String} email User email
  * @apiParam {String} password User password
+ * @apiParam {Boolean} remember=false When true, the authentication token is valid for 30 days
  *
  * @apiSuccess {String} token Access token
  * @apiSuccess {Object} user Authenticated user data
