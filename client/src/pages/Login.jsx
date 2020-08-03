@@ -328,6 +328,7 @@ export default function Login(props) {
                                     fontFamily: "Roboto, sans-serif",
                                 }}
                             />
+                            {/*
                             <GoogleLogin
                                 clientId="514364102040-5fqkqmb3cqhd8iab2iks63mgh5m5hfe8.apps.googleusercontent.com"
                                 render={(renderProps) => (
@@ -351,6 +352,7 @@ export default function Login(props) {
                                 onFailure={responseGoogle}
                                 cookiePolicy={"single_host_origin"}
                             />
+                            */}
                         </div>
                     </div>
                     <Box mt={5}>
