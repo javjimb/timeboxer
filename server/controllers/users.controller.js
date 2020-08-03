@@ -1,8 +1,6 @@
 const UserService = require('../services/userService');
 const { check, validationResult } = require('express-validator');
 const emailService = require('../services/emailService');
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 
 class UsersController {
 

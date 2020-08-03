@@ -47,11 +47,14 @@ class AuthController {
             },
         };
 
+        // expire after one hour if chosen not to remember
+        let expires = req.body.remember ? 3600 * 24 * 30 : 3600;
+
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
             {
-                expiresIn: 3600 * 24,
+                expiresIn: expires,
             },
             (err, token) => {
                 if (err) throw err;
