@@ -2,7 +2,9 @@ import React, { createContext, useReducer, useEffect } from "react";
 
 // Services
 import AuthService from "../services/AuthService";
-// import { unregister } from "../helper/interceptor";
+
+// Helpers
+import auth from "../helper/auth";
 
 export const userContext = createContext();
 const { Provider } = userContext;
@@ -18,9 +20,11 @@ const UserContextProvider = (props) => {
     }, {});
 
     useEffect(() => {
-        AuthService.getUser().then((user) => {
-            dispatch({ type: "saveUser", userData: user });
-        });
+        if (auth.isAuthenticated()) {
+            AuthService.getUser().then((user) => {
+                dispatch({ type: "saveUser", userData: user });
+            });
+        }
     }, []);
 
     return <Provider value={{ user, dispatch }}>{props.children}</Provider>;
