@@ -21,6 +21,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ForwardIcon from "@material-ui/icons/Forward";
 
 // Components
 
@@ -104,8 +105,10 @@ export default function TBAppBar({ next, prev, today }) {
     const password = "/password";
     var showAvatar = false;
     var showCalendarActions = false;
+    let isLandingPage = window.location.pathname === '/';
 
     if (
+        !isLandingPage &&
         ![login, signup, password].includes(window.location.pathname) &&
         !window.location.pathname.includes(verify)
     ) {
@@ -113,6 +116,7 @@ export default function TBAppBar({ next, prev, today }) {
     }
 
     if (
+        !isLandingPage &&
         ![login, signup, userProfile, password].includes(
             window.location.pathname
         ) &&
@@ -137,6 +141,15 @@ export default function TBAppBar({ next, prev, today }) {
                     <Typography variant="h2" className={classes.title}>
                         Time Boxer
                     </Typography>
+                    {isLandingPage ? (
+                        <div>
+                            <IconButton color="inherit" onClick={() => history.push("/app")}>
+                                <ForwardIcon />
+                            </IconButton>
+                        </div>
+                    ) : (
+                        <React.Fragment />
+                    )}
                     {
                         // show calendar actions only when path is '/'
                         showCalendarActions ? (
