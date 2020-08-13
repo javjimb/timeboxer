@@ -1,0 +1,44 @@
+body {
+    font-family: Lato,"Helvetica Neue",Helvetica,sans-serif;
+}
+h4 {
+    font-size: 20px;
+    font-weight: 400;
+}
+h1 {
+    font-size: 38px;
+    font-weight: 400;
+}
+a, a:visited {
+    text-decoration: none;
+    color: #3788D8;
+}
+.header {
+    padding: 60px;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
+}
+.header-image img {
+    width: 760px;
+    border: 1px solid rgb(202, 202, 204);
+}
+.header-image {
+    text-align: center;
+    background-color: #fff;
+    padding-bottom: 60px;
+}
+.content-white {
+    color: white;
+    padding: 60px;
+    width: 100%;
+    height: 400px;
+    background-color: #3788D8;
+}
+.content-gray {
+    padding: 60px;
+    width: 100%;
+    text-align: center;
+    height: 400px;
+    background-color: #F4F4F4;
+}

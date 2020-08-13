@@ -12,6 +12,7 @@ import "./App.css";
 import Main from "../src/pages/Main";
 import Login from "../src/pages/Login";
 import SignUp from "../src/pages/SignUp";
+import Info from "../src/pages/Info";
 import { ProtectedRoute } from "./components/protected.route";
 import User from "../src/pages/User";
 import UserContextProvider from "./contexts/userContext";
@@ -26,7 +27,8 @@ function App() {
             <Router>
                 <Switch>
                     <ProtectedRoute exact path="/auth/me" component={User} />
-                    <ProtectedRoute exact path="/" component={Main} />
+                    <ProtectedRoute exact path="/app" component={Main} />
+                    <Route exact path="/" component={Info} />
                     <Route path="/login" component={Login}></Route>
                     <Route path="/signup" component={SignUp}></Route>
                     <Route
