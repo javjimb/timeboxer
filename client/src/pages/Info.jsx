@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { withRouter, useHistory } from "react-router-dom";
 
 // CSS
@@ -7,24 +7,9 @@ import './Info.css';
 // Material UI
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import TBAppBar from "../components/TBAppBar";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="#">
-                Time Boxer
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-}
 
 function Info(props) {
 

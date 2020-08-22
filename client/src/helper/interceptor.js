@@ -13,7 +13,7 @@ export const unregister = fetchIntercept.register({
 
     response: function (response) {
         // Jump to Login page if 401 or 403 error
-        if (response.status == 401 || response.status == 403) {
+        if (response.status === 401 || response.status === 403) {
             history.push("/login");
         }
         return response;
