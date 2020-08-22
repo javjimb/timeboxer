@@ -35,7 +35,7 @@ describe('Task', () => {
         user = payload.user;
     });
 
-    it('should be able to get a list of tasks', async () => {
+    it('should be able to get a list of tasks', async done => {
 
         // use the service to create some tasks
         TaskService.createTask({name : 'Task 1', user: user._id});
@@ -49,9 +49,10 @@ describe('Task', () => {
 
         expect(response.status).toBe(200);
         expect(response.body.tasks).toHaveLength(3);
+        done();
     });
 
-    it('should be able to get a single task by its id', async () => {
+    it('should be able to get a single task by its id', async done => {
 
         let timestamp = moment.now();
 
@@ -73,9 +74,10 @@ describe('Task', () => {
         expect(response.body.start).toBe(timestamp);
         expect(response.body.duration).toBe(2);
         expect(response.body.status).toBe('new');
+        done();
     });
 
-    it('should get 404 status code when fetching non existing id', async () => {
+    it('should get 404 status code when fetching non existing id', async done => {
 
         const response = await request.get('/tasks/invalid-id')
             .set('x-access-token', accessToken)
@@ -83,9 +85,10 @@ describe('Task', () => {
             .catch( e => {console.error(e)});
 
         expect(response.status).toBe(404);
+        done();
     });
 
-    it('should not be able to create task without a name', async () => {
+    it('should not be able to create task without a name', async done => {
         const response = await request.post('/tasks').send({})
             .set('x-access-token', accessToken)
             .send()
@@ -94,9 +97,10 @@ describe('Task', () => {
         expect(response.status).toBe(422);
         expect(response.body).toHaveProperty('errors');
         expect(response.body.errors[0].msg).toBe('Task name cannot be empty');
+        done();
     });
 
-    it('should be able to create task', async () => {
+    it('should be able to create task', async done => {
         const response = await request.post('/tasks')
             .set('x-access-token', accessToken)
             .send({
@@ -108,9 +112,10 @@ describe('Task', () => {
         expect(response.status).toBe(201);
         expect(response.body.name).toBe('Jest new task');
         expect(response.body.duration).toBe(1);
+        done();
     });
 
-    it('should not be able to update task with invalid values', async () => {
+    it('should not be able to update task with invalid values', async done => {
 
         const task = await TaskService.createTask({ name: 'Task test'});
 
@@ -125,9 +130,10 @@ describe('Task', () => {
         expect(response.status).toBe(500);
         expect(response.body).toHaveProperty('errors');
         expect(response.body.errors).toHaveLength(2);
+        done();
     });
 
-    it('should be able to update a task', async () => {
+    it('should be able to update a task', async done => {
 
         const task = await TaskService.createTask({name : 'Task 1', user: user._id});
 
@@ -138,9 +144,10 @@ describe('Task', () => {
 
         expect(response.status).toBe(200);
         expect(response.body.name).toBe('Name change');
+        done();
     });
 
-    it('should be able to delete task', async () => {
+    it('should be able to delete task', async done => {
 
         const task = await TaskService.createTask({name : 'Task 1', user: user._id});
 
@@ -154,9 +161,10 @@ describe('Task', () => {
         // make sure the task has been deleted
         const result = await TaskService.getTaskById(task._id);
         expect(result).toBeNull();
+        done();
     });
 
-    it('should be able to get a list of tasks between dates', async () => {
+    it('should be able to get a list of tasks between dates', async done => {
 
         let now = moment();
         let fromTimestamp = now.startOf('day').unix();
@@ -184,5 +192,6 @@ describe('Task', () => {
             .catch( e => {console.error(e)});
 
         expect(response.body.tasks).toHaveLength(2);
+        done();
     });
 });

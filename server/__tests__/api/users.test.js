@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const app = require('../../App');
 const request = supertest(app);
 const UserService = require('../../services/userService');
+const UserFactory = require('../../__mocks__/factories/user.factory');
 
 describe('User', () => {
 
@@ -11,12 +12,7 @@ describe('User', () => {
 
     beforeAll( async  () => {
         const payload = {
-            user : {
-                _id: '5dbff32e367a343830cd2f49',
-                name: faker.name.firstName(),
-                surname: faker.name.lastName(),
-                email: faker.internet.email()
-            }
+            user : UserFactory.generate()
         };
 
         accessToken = await jwt.sign(
@@ -30,14 +26,9 @@ describe('User', () => {
         user = payload.user;
     });
 
-    it('should be able to create user', async () => {
-        let userData = {
-            name: faker.name.firstName(0),
-            surname: faker.name.lastName(0),
-            email: faker.internet.email(),
-            password: faker.internet.password(),
-            avatar: faker.image.avatar()
-        };
+    it('should be able to create user', async done => {
+
+        let userData = UserFactory.generate({});
         const response = await request.post('/users').send(userData);
 
         expect(response.status).toBe(201);
@@ -45,32 +36,23 @@ describe('User', () => {
         expect(response.body.surname).toBe(userData.surname);
         expect(response.body.email).toBe(userData.email);
         expect(response.body).not.toHaveProperty('password');
+        done();
     });
 
-    it('should not create a user without required data', async () => {
-        let userData = {
-            name: faker.name.firstName(0),
-            surname: faker.name.lastName(0),
-            password: '123',
-            avatar: faker.image.avatar()
-        };
+    it('should not create a user without required data', async done => {
+        let userData = UserFactory.generate({password: '123', email: ''});
         const response = await request.post('/users').send(userData);
 
         expect(response.status).toBe(422);
         expect(response.body).toHaveProperty('errors');
         expect(response.body.errors[0].msg).toBe('Email is required');
         expect(response.body.errors[1].msg).toBe('Password must be at least 6 characters long');
+        done();
     });
 
-    it('should not create a duplicate user', async () => {
+    it('should not create a duplicate user', async done => {
         let email = faker.internet.email();
-        let userData = {
-            name: faker.name.firstName(),
-            surname: faker.name.lastName(),
-            password: faker.internet.password(),
-            avatar: faker.image.avatar(),
-            email: email
-        };
+        let userData = UserFactory.generate({email: email});
 
         await UserService.createUser(userData);
         const response = await request.post('/users').send(userData);
@@ -78,17 +60,11 @@ describe('User', () => {
         expect(response.status).toBe(409);
         expect(response.body).toHaveProperty('errors');
         expect(response.body.errors[0].msg).toBe('The email address is already registered');
+        done();
     });
 
-    it('should be able to update a user', async () => {
-
-        let userData = {
-            name: faker.name.firstName(),
-            surname: faker.name.lastName(),
-            password: faker.internet.password(),
-            avatar: faker.image.avatar(),
-            email: faker.internet.email()
-        };
+    it('should be able to update a user', async done => {
+        let userData = UserFactory.generate({});
 
         user = await  UserService.createUser(userData);
 
@@ -100,16 +76,13 @@ describe('User', () => {
         expect(response.status).toBe(200);
         expect(response.body.name).toBe('Name change');
         expect(response.body.surname).toBe('Surname change');
+        done();
     });
 
-    it('should be able to get a single user by its id', async () => {
+    it('should be able to get a single user by its id', async done => {
 
-        let user = await UserService.createUser({
-            name : 'Jane',
-            surname : 'Doe',
-            email : 'jane@email.com',
-            password : 'password',
-        });
+        let userData = UserFactory.generate({});
+        let user = await UserService.createUser(userData);
 
         const response = await request.get('/users/' + user._id)
             .set('x-access-token', accessToken)
@@ -121,5 +94,6 @@ describe('User', () => {
         expect(response.body.surname).not.toBeNull();
         expect(response.body.email).not.toBeNull();
         expect(response.body.password).not.toBeNull();
+        done();
     });
 });
