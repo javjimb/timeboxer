@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 let salt = 10;
 
 const userSchema = new Schema(
@@ -10,8 +11,14 @@ const userSchema = new Schema(
         email: {
             type: String,
             required: true,
-            unique: 1,
-            trim: true
+            unique: true,
+            trim: true,
+            lowercase: true,
+            validate(value) {
+                if (!validator.isEmail(value)) {
+                    throw new Error("Invalid email");
+                }
+            }
         },
         password: {
             type: String,
