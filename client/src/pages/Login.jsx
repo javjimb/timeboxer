@@ -144,7 +144,7 @@ export default function Login(props) {
             } else {
                 auth.login(() => {
                     localStorage.setItem("token", response.token);
-                    props.history.push("/");
+                    props.history.push("/app");
                 });
             }
         } catch (error) {
@@ -170,7 +170,7 @@ export default function Login(props) {
             .then((response) => {
                 auth.login(() => {
                     localStorage.setItem("token", response.token);
-                    props.history.push("/");
+                    props.history.push("/app");
                 });
             })
             .catch((error) => {
@@ -197,7 +197,7 @@ export default function Login(props) {
             .then((response) => {
                 auth.login(() => {
                     localStorage.setItem("token", response.token);
-                    props.history.push("/");
+                    props.history.push("/app");
                 });
             })
             .catch((error) => {
