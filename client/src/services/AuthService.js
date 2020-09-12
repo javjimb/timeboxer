@@ -15,7 +15,6 @@ export default {
                 password: password,
             }),
         };
-        console.log(apiURL);
         const response = await fetch(apiURL + "/login", requestOptions);
         return await response.json();
     },
