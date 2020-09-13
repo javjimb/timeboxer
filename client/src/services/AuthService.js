@@ -33,7 +33,6 @@ export default {
             },
             body: JSON.stringify(data),
         };
-        console.log(apiURL);
         const response = await fetch(apiURL + "/social", requestOptions);
         return await response.json();
     },
