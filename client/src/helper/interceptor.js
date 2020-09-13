@@ -1,4 +1,5 @@
 import fetchIntercept from "fetch-intercept";
+import  auth from '../helper/auth';
 import history from "./history.js";
 
 export const unregister = fetchIntercept.register({
@@ -14,7 +15,7 @@ export const unregister = fetchIntercept.register({
     response: function (response) {
         // Jump to Login page if 401 or 403 error
         if (response.status === 401 || response.status === 403) {
-            history.push("/login");
+            auth.logout(() => {history.push("/login");})
         }
         return response;
     },
