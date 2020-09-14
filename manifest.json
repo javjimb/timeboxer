@@ -1,0 +1,8 @@
+{
+  "short_name": "Time Boxer",
+  "name": "Time Boxer App",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
