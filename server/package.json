@@ -9,7 +9,8 @@
         "dev": "NODE_ENV=development concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
         "test": "NODE_ENV=test jest",
         "docs": "apidoc -e \"(node_modules|public)\" -o public/apidoc",
-        "start": "node server.js"
+        "start": "node server.js",
+        "publishheroku": "cd ../ && git subtree push --prefix server heroku master"
     },
     "keywords": [],
     "author": "Javier Jimenez Blasco <javjimb@gmail.com>",
