@@ -5,9 +5,6 @@ const connect = async () => {
         await mongoose.connect(
             process.env.NODE_ENV === 'test' ? global.__DB_URL__ : process.env.MONGODB_URI,
             {
-                authSource: 'admin',
-                user: process.env.MONGODB_USERNAME,
-                pass: process.env.MONGODB_PASSWORD,
                 useNewUrlParser: true,
                 useCreateIndex: true,
                 useFindAndModify: false,
