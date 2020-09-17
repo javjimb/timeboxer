@@ -7,8 +7,8 @@ app.use(function(req, res, next) {
     res.send('404: File Not Found');
 });
 
-app.listen(process.env.NODE_PORT, () => {
-    console.log('App running on port ' + process.env.NODE_PORT);
+app.listen(process.env.PORT || process.env.NODE_PORT, () => {
+    console.log('App running on port ' + process.env.PORT || process.env.NODE_PORT);
 });
 
 /*
