@@ -30,3 +30,4 @@ services:
       - '27017:27017'
     volumes:
       - "./docker/mongo/data:/data/db"
+    command: [--auth]

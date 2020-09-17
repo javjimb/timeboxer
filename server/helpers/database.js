@@ -2,10 +2,8 @@ const mongoose = require('mongoose');
 
 const connect = async () => {
     if (mongoose.connection.readyState === 0) {
-        let DB_URI = 'mongodb://' + process.env.MONGODB_HOST + ':' + process.env.MONGODB_PORT + '/' + process.env.MONGODB_DATABASE;
-        console.log(DB_URI);
         await mongoose.connect(
-            process.env.NODE_ENV === 'test' ? global.__DB_URL__ : DB_URI,
+            process.env.NODE_ENV === 'test' ? global.__DB_URL__ : process.env.MONGODB_URI,
             {
                 authSource: 'admin',
                 user: process.env.MONGODB_USERNAME,
