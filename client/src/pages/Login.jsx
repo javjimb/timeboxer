@@ -163,8 +163,12 @@ export default function Login(props) {
             avatar: response.picture.data.url,
         };
 
-        let base64String = await imageToBase64(response.picture.data.url);
-        data.avatar = "data:image/jpeg;base64," + base64String;
+        try {
+            let base64String = await imageToBase64(response.picture.data.url);
+            data.avatar = "data:image/jpeg;base64," + base64String;
+        } catch (e) {
+            console.error(e);
+        }
 
         AuthService.socialLogin(data)
             .then((response) => {
