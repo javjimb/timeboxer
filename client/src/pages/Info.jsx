@@ -1,5 +1,7 @@
 import React from "react";
 import { withRouter, useHistory } from "react-router-dom";
+import Footer from "../components/footer/Footer";
+
 
 // CSS
 import './Info.css';
@@ -52,6 +54,7 @@ function Info(props) {
                         Log in
                     </Button>
                 </div>
+            <Footer />
         </div>
     );
 }

@@ -27,6 +27,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
+import Footer from "../components/footer/Footer"
 // helper
 import auth from "../helper/auth";
 
@@ -36,19 +37,6 @@ import google from "../images/google_icon.png";
 
 const appId = process.env.REACT_APP_FB_APP_ID;
 const imageToBase64 = require("image-to-base64");
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="#">
-                Time Boxer
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -114,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         marginBottom: "16px",
-    },
+    }
 }));
 
 export default function Login(props) {
@@ -358,10 +346,8 @@ export default function Login(props) {
                             />
                             */}
                         </div>
+                        <Footer  />
                     </div>
-                    <Box mt={5}>
-                        <Copyright />
-                    </Box>
                 </Grid>
             </Grid>
         </div>

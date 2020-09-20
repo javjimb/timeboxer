@@ -17,6 +17,7 @@ import User from "../src/pages/User";
 import UserContextProvider from "./contexts/userContext";
 import Verification from "../src/pages/Verification";
 import Password from "./pages/Password";
+import Privacy from "./pages/PrivacyPolicy";
 
 require('dotenv').config();
 
@@ -34,6 +35,7 @@ function App() {
                         path="/user/verify/:token/:email"
                         component={Verification}></Route>
                     <Route path="/password" component={Password}></Route>
+                    <Route path="/privacy" component={Privacy}></Route>
                     <Route path="*" component={() => "404 Page not found"} />
                 </Switch>
             </Router>

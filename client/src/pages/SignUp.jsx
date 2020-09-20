@@ -21,19 +21,7 @@ import { Alert } from "@material-ui/lab";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="#">
-                Time Boxer
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-}
+import Footer from "../components/footer/Footer";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -218,9 +206,7 @@ function SignUp(props) {
                         </Grid>
                     </form>
                 </div>
-                <Box mt={5}>
-                    <Copyright />
-                </Box>
+                <Footer />
             </Container>
         </div>
     );
