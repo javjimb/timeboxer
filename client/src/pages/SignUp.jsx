@@ -202,7 +202,10 @@ function SignUp(props) {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            style={{ backgroundColor: "#3788d8" }}
+                            style={{
+                                backgroundColor: "#3788d8",
+                                color: "white",
+                            }}
                             className={classes.submit}>
                             Sign Up
                         </Button>

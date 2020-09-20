@@ -1,6 +1,6 @@
 // Libraries
 import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -91,13 +91,7 @@ export default function TBAppBar({ next, prev, today }) {
         history.push("/auth/me");
     }
 
-    const routeChange = () => {
-        let path = `/`;
-        history.push(path);
-    };
-
     // show AppBar elements according to pathname
-
     const userProfile = "/auth/me";
     const login = "/login";
     const signup = "/signup";
@@ -132,11 +126,13 @@ export default function TBAppBar({ next, prev, today }) {
             <AppBar position="static" style={{ backgroundColor: "#3788d8" }}>
                 <Toolbar>
                     <div>
-                        <img
-                            src="https://res.cloudinary.com/dcmfiobqe/image/upload/v1590138327/timeboxer_white_p74w3f.png"
-                            alt="logo"
-                            style={{ height: "80px", padding: "3px" }}
-                        />
+                        <Link to="/">
+                            <img
+                                src="https://res.cloudinary.com/dcmfiobqe/image/upload/v1590138327/timeboxer_white_p74w3f.png"
+                                alt="logo"
+                                style={{ height: "80px", padding: "3px" }}
+                            />
+                        </Link>
                     </div>
                     <Typography variant="h2" className={classes.title}>
                         Time Boxer
@@ -170,9 +166,11 @@ export default function TBAppBar({ next, prev, today }) {
                     }
                     {showCalendar ? (
                         <div>
-                            <IconButton color="inherit" onClick={routeChange}>
-                                <TodayIcon />
-                            </IconButton>
+                            <Link to="/app">
+                                <IconButton color="inherit" >
+                                    <TodayIcon />
+                                </IconButton>
+                            </Link>
                         </div>
                     ) : (
                         <React.Fragment />

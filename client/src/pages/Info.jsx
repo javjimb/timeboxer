@@ -6,8 +6,6 @@ import './Info.css';
 
 // Material UI
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
 import TBAppBar from "../components/TBAppBar";
 
@@ -46,6 +44,10 @@ function Info(props) {
                     <Button
                         variant="contained"
                         color="primary"
+                        style={{
+                            backgroundColor: "#3788d8",
+                            color: "white",
+                        }}
                         onClick={() => history.push("/login")}>
                         Log in
                     </Button>
