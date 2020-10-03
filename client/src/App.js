@@ -18,6 +18,7 @@ import UserContextProvider from "./contexts/userContext";
 import Verification from "../src/pages/Verification";
 import Password from "./pages/Password";
 import Privacy from "./pages/PrivacyPolicy";
+import interceptor from "./helper/interceptor";
 
 require('dotenv').config();
 
