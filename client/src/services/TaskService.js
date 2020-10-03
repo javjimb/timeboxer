@@ -29,7 +29,6 @@ export default {
      */
     async getAllTasks(params) {
         let queryString = querystring.stringify(params);
-        console.warn(auth.getAuthHeader());
         const response = await fetch(apiURL + "?" + queryString, {
             headers: auth.getAuthHeader(),
         });
