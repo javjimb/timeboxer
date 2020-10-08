@@ -8,6 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UnscheduledTime from './UnscheduledTime';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const _ = require('lodash');
 
@@ -34,12 +35,14 @@ export default function TaskList({ taskList, deleteTask }) {
               key={task._id}>
               <ListItemText primary={task.name + ' ' + task.duration + 'hrs'} />
               <ListItemSecondaryAction>
-                <IconButton
-                  edge='end'
-                  aria-label='delete'
-                  onClick={() => deleteTask(task._id)}>
-                  <DeleteIcon />
-                </IconButton>
+                  <Tooltip title='Delete task'>
+                    <IconButton
+                      edge='end'
+                      aria-label='delete'
+                      onClick={() => deleteTask(task._id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
               </ListItemSecondaryAction>
             </ListItem>
           ))}

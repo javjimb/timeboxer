@@ -61,8 +61,7 @@ export default class Scheduler extends React.Component {
    convertTasksToSchedulerEvents() {
        let events = [];
        this.props.taskList.forEach((task) => {
-           console.log(task.status);
-           if (task.status === 'scheduled' || task.status == 'completed') {
+           if (task.status === 'scheduled' || task.status === 'completed') {
                events.push({
                    title: task.name,
                    id: task._id,

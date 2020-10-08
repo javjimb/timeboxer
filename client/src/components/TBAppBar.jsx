@@ -22,6 +22,7 @@ import MenuList from "@material-ui/core/MenuList";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ForwardIcon from "@material-ui/icons/Forward";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Components
 
@@ -45,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
         backgroundColor: "white",
     },
+    button: {
+        color: "white"
+    }
 }));
 
 export default function TBAppBar({ next, prev, today }) {
@@ -119,7 +123,8 @@ export default function TBAppBar({ next, prev, today }) {
         showCalendarActions = true;
     }
 
-    var showCalendar = window.location.pathname.includes(userProfile);
+    const showCalendar = window.location.pathname.includes(userProfile);
+
 
     return (
         <div className={classes.root}>
@@ -130,18 +135,20 @@ export default function TBAppBar({ next, prev, today }) {
                             <img
                                 src="https://res.cloudinary.com/dcmfiobqe/image/upload/v1590138327/timeboxer_white_p74w3f.png"
                                 alt="logo"
-                                style={{ height: "80px", padding: "3px" }}
+                                style={{ height: "50px", padding: "3px" }}
                             />
                         </Link>
                     </div>
-                    <Typography variant="h2" className={classes.title}>
+                    <Typography variant="h4" className={classes.title}>
                         Time Boxer
                     </Typography>
                     {isLandingPage ? (
                         <div>
-                            <IconButton color="inherit" onClick={() => history.push("/app")}>
-                                <ForwardIcon />
-                            </IconButton>
+                            <Tooltip title='Go to App'>
+                                <IconButton color="inherit" onClick={() => history.push("/app")}>
+                                    <ForwardIcon />
+                                </IconButton>
+                            </Tooltip>
                         </div>
                     ) : (
                         <React.Fragment />
@@ -150,15 +157,21 @@ export default function TBAppBar({ next, prev, today }) {
                         // show calendar actions only when path is '/'
                         showCalendarActions ? (
                             <div>
-                                <IconButton color="inherit" onClick={prev}>
-                                    <NavigateBeforeIcon />
-                                </IconButton>
-                                <IconButton color="inherit" onClick={today}>
-                                    <TodayIcon />
-                                </IconButton>
-                                <IconButton color="inherit" onClick={next}>
-                                    <NavigateNextIcon />
-                                </IconButton>
+                                <Tooltip title='Previous day'>
+                                    <IconButton color="inherit" onClick={prev}>
+                                        <NavigateBeforeIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Today'>
+                                    <IconButton color="inherit" onClick={today}>
+                                        <TodayIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Next day'>
+                                    <IconButton color="inherit" onClick={next}>
+                                        <NavigateNextIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </div>
                         ) : (
                             <React.Fragment />
@@ -167,9 +180,11 @@ export default function TBAppBar({ next, prev, today }) {
                     {showCalendar ? (
                         <div>
                             <Link to="/app">
-                                <IconButton color="inherit" >
-                                    <TodayIcon />
-                                </IconButton>
+                                <Tooltip title='Back to task scheduler'>
+                                    <IconButton  className={classes.button} >
+                                        <TodayIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </Link>
                         </div>
                     ) : (

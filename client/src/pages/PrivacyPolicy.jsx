@@ -1,8 +1,6 @@
 import React from "react";
 
 import "./PrivacyPolicy.scss";
-import TBAppBar from "../components/TBAppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
 
 function PrivacyPolicy() {
     return (
@@ -31,7 +29,7 @@ function PrivacyPolicy() {
 
           <p>Our website uses these "cookies" to collection information and to improve our Service. You have the option to either accept or refuse these cookies, and know when a cookie is being sent to your computer. If you choose to refuse our cookies, you may not be able to use some portions of our Service.</p>
 
-          <p>For more general information on cookies, please read <a href="https://www.cookieconsent.com/what-are-cookies/">"What Are Cookies"</a>.</p>
+          <p>For more general information on cookies, please read <a href="https://www.cookieconsent.com/what-are-cookies/" >"What Are Cookies"</a>.</p>
 
           <h2>Service Providers</h2>
 

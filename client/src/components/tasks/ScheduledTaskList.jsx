@@ -8,7 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-//import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
 
 // Components
 import ScheduledTime from './ScheduledTime';
@@ -32,6 +32,7 @@ export default function ScheduledTaskList({ taskList, updateTaskStatus }) {
         {scheduledTime}
         {taskList
           .filter((item) => item.status !== 'new')
+          .sort((a,b) => a.start - b.start)
           .map((task) => (
             <ListItem
               name={task.name}
@@ -48,22 +49,22 @@ export default function ScheduledTaskList({ taskList, updateTaskStatus }) {
                 />
               }
               <ListItemSecondaryAction>
-                {/* <Tooltip title='Mark as completed'> */}
+                <Tooltip title='Mark as completed'>
                 <IconButton
                   edge='end'
                   aria-label='completed'
                   onClick={() => updateTaskStatus(task._id, 'scheduled', 'completed')}>
                   <CheckCircleOutlinedIcon />
                 </IconButton>
-                {/* </Tooltip>
-                <Tooltip title='Removed from scheduled'> */}
+                </Tooltip>
+                <Tooltip title='Remove from schedule'>
                 <IconButton
                   edge='end'
                   aria-label='scheduled'
                   onClick={() => updateTaskStatus(task._id, 'scheduled', 'new') }>
                   <HighlightOffIcon />
                 </IconButton>
-                {/* </Tooltip> */}
+                </Tooltip>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
