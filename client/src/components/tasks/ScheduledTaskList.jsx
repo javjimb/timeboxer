@@ -32,6 +32,7 @@ export default function ScheduledTaskList({ taskList, updateTaskStatus }) {
         {scheduledTime}
         {taskList
           .filter((item) => item.status !== 'new')
+          .sort((a,b) => a.start - b.start)
           .map((task) => (
             <ListItem
               name={task.name}
