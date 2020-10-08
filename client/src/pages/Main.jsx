@@ -41,7 +41,7 @@ export default function Main() {
     const [startTimestamp, setStartTimestamp] = useState(
         moment().startOf("day").unix()
     );
-    const [endTimestamp, setEndTimestamp] = useState(
+    const [, setEndTimestamp] = useState(
         moment().endOf("day").unix()
     );
 

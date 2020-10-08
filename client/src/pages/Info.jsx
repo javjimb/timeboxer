@@ -24,7 +24,7 @@ function Info(props) {
                     <h4>A simple and effective way to manage your daily workload</h4>
                 </div>
                 <div className={'header-image'}>
-                    <img src={process.env.PUBLIC_URL + '/assets/screenshot_1.png'} />
+                    <img src={process.env.PUBLIC_URL + '/assets/screenshot_1.png'} alt="time-boxer app screenshot" />
                 </div>
                 <div className={'content-white'}>
                     <h1>What is timeboxing?</h1>
@@ -32,7 +32,7 @@ function Info(props) {
                         Timeboxing is a very simple technique to manage time and become more productive. The idea is to allocate a certain amount of time to an activity in advance and then complete the activity within that time frame.
                         <br />
                         The concept was first introduced by James Martin, the author of the book Rapid Application Development, as a part of agile software development.
-                        <a href="https://en.wikipedia.org/wiki/Timeboxing" target="_blank">Learn more</a>
+                        <a href="https://en.wikipedia.org/wiki/Timeboxing" target="_blank" rel="noopener noreferrer">Learn more</a>
                     </h4>
                 </div>
                 <div className={'content-gray'}>

@@ -4,28 +4,18 @@ import React, { useState } from "react";
 import PasswordService from "../services/PasswordService";
 
 // Material UI
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert } from "@material-ui/lab";
-import Divider from "@material-ui/core/Divider";
-import FacebookIcon from "@material-ui/icons/Facebook";
 
 // Components
 import TBAppBar from "../components/TBAppBar";
-// helper
-import auth from "../helper/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
