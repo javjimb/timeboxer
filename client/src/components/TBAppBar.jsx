@@ -130,11 +130,11 @@ export default function TBAppBar({ next, prev, today }) {
                             <img
                                 src="https://res.cloudinary.com/dcmfiobqe/image/upload/v1590138327/timeboxer_white_p74w3f.png"
                                 alt="logo"
-                                style={{ height: "80px", padding: "3px" }}
+                                style={{ height: "50px", padding: "3px" }}
                             />
                         </Link>
                     </div>
-                    <Typography variant="h2" className={classes.title}>
+                    <Typography variant="h4" className={classes.title}>
                         Time Boxer
                     </Typography>
                     {isLandingPage ? (
