@@ -120,6 +120,15 @@ class AuthController {
                isVerified: true,
                password: Math.random().toString(36).slice(-6)
             });
+        } else {
+            // set the profile picture if the user doesn't have one yet
+            if (!user.avatar && req.body.avatar) {
+                try {
+                    await UserService.updateUser(user._id, {avatar: req.body.avatar});
+                } catch (e) {
+                    // ignore
+                }
+            }
         }
 
         let externalAuth = await ExternalAuthService.getAll({

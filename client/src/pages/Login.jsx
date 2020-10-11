@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState } from "react";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import GoogleLogin from "react-google-login";
+//import GoogleLogin from "react-google-login";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -33,7 +33,7 @@ import auth from "../helper/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
-import google from "../images/google_icon.png";
+//import google from "../images/google_icon.png";
 
 const appId = process.env.REACT_APP_FB_APP_ID;
 const imageToBase64 = require("image-to-base64");
@@ -109,22 +109,44 @@ export default function Login(props) {
     const classes = useStyles();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [remember, setRemember] = useState(false);
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
-    const emailChangeHandler = (event) => {
-        setEmail(event.target.value);
-    };
-    const passwordChangeHandler = (event) => {
-        setPassword(event.target.value);
-    };
-    const onSnackbarClose = (event) => {
+    const onSnackbarClose = () => {
         setShowSnackbar(false);
     };
+
+    /**
+     * Gets an image from a URL an encodes it in base64
+     * @param url
+     */
+    const convertImgToBase64 = (url) => {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Create a Uint8Array from ArrayBuffer
+                    let codes = new Uint8Array(xhr.response);
+                    // Get binary string from UTF-16 code units
+                    let bin = String.fromCharCode.apply(null, codes);
+                    // Convert binary to Base64
+                    resolve(btoa(bin));
+                } else {
+                    reject(Error(xhr.statusText));
+                }
+            };
+            // Send HTTP request and fetch file as ArrayBuffer
+            xhr.open('GET', url);
+            xhr.responseType = 'arraybuffer';
+            xhr.send();
+        });
+    }
+
     const loginUser = async (event) => {
         event.preventDefault();
         try {
-            let response = await AuthService.loginUser(email, password);
+            let response = await AuthService.loginUser(email, password, remember);
 
             if (response.errors) {
                 setShowSnackbar(true);
@@ -140,6 +162,7 @@ export default function Login(props) {
             setAlertMessage(error);
         }
     };
+
     const responseFacebook = async (response) => {
 
         const data = {
@@ -152,7 +175,7 @@ export default function Login(props) {
         };
 
         try {
-            let base64String = await imageToBase64(response.picture.data.url);
+            let base64String = await convertImgToBase64(response.picture.data.url);
             data.avatar = "data:image/jpeg;base64," + base64String;
         } catch (e) {
             console.error(e);
@@ -171,9 +194,9 @@ export default function Login(props) {
                 console.error(error);
             });
     };
-
+/*
     const responseGoogle = async (response) => {
-        console.log(response);
+
         const data = {
             email: response.profileObj.email,
             provider_id: response.profileObj.googleId,
@@ -198,6 +221,7 @@ export default function Login(props) {
                 console.error(error);
             });
     };
+*/
 
     return (
         <div>
@@ -245,7 +269,7 @@ export default function Login(props) {
                                 name="email"
                                 type="email"
                                 value={email}
-                                onChange={emailChangeHandler}
+                                onChange={e => setEmail(e.target.value)}
                                 autoComplete="email"
                                 autoFocus
                             />
@@ -260,13 +284,14 @@ export default function Login(props) {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                onChange={passwordChangeHandler}
+                                onChange={e => setPassword(e.target.value)}
                             />
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        value="remember"
+                                        value={true}
                                         color="primary"
+                                        onChange={ e => setRemember(e.target.checked)}
                                     />
                                 }
                                 label="Remember me"
