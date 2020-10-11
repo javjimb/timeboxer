@@ -109,6 +109,7 @@ export default function Login(props) {
     const classes = useStyles();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [remember, setRemember] = useState(false);
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
@@ -124,7 +125,7 @@ export default function Login(props) {
     const loginUser = async (event) => {
         event.preventDefault();
         try {
-            let response = await AuthService.loginUser(email, password);
+            let response = await AuthService.loginUser(email, password, remember);
 
             if (response.errors) {
                 setShowSnackbar(true);
@@ -173,7 +174,7 @@ export default function Login(props) {
     };
 
     const responseGoogle = async (response) => {
-        console.log(response);
+
         const data = {
             email: response.profileObj.email,
             provider_id: response.profileObj.googleId,
@@ -265,8 +266,9 @@ export default function Login(props) {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        value="remember"
+                                        value={true}
                                         color="primary"
+                                        onChange={ e => setRemember(e.target.checked)}
                                     />
                                 }
                                 label="Remember me"
