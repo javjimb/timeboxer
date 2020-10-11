@@ -100,8 +100,6 @@ export default function User() {
                 let reader = new FileReader();
 
                 reader.onloadend = () => {
-                    console.log("image changed");
-
                     setFormData(
                         Object.assign({}, formData, {
                             avatar: reader.result,

@@ -116,6 +116,33 @@ export default function Login(props) {
     const onSnackbarClose = () => {
         setShowSnackbar(false);
     };
+
+    /**
+     * Gets an image from a URL an encodes it in base64
+     * @param url
+     */
+    const convertImgToBase64 = (url) => {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Create a Uint8Array from ArrayBuffer
+                    let codes = new Uint8Array(xhr.response);
+                    // Get binary string from UTF-16 code units
+                    let bin = String.fromCharCode.apply(null, codes);
+                    // Convert binary to Base64
+                    resolve(btoa(bin));
+                } else {
+                    reject(Error(xhr.statusText));
+                }
+            };
+            // Send HTTP request and fetch file as ArrayBuffer
+            xhr.open('GET', url);
+            xhr.responseType = 'arraybuffer';
+            xhr.send();
+        });
+    }
+
     const loginUser = async (event) => {
         event.preventDefault();
         try {
@@ -135,6 +162,7 @@ export default function Login(props) {
             setAlertMessage(error);
         }
     };
+
     const responseFacebook = async (response) => {
 
         const data = {
@@ -147,7 +175,7 @@ export default function Login(props) {
         };
 
         try {
-            let base64String = await imageToBase64(response.picture.data.url);
+            let base64String = await convertImgToBase64(response.picture.data.url);
             data.avatar = "data:image/jpeg;base64," + base64String;
         } catch (e) {
             console.error(e);
