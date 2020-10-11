@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState } from "react";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import GoogleLogin from "react-google-login";
+//import GoogleLogin from "react-google-login";
 
 // Services
 import AuthService from "../services/AuthService";
@@ -33,7 +33,7 @@ import auth from "../helper/auth";
 
 // Media
 import timeBoxer from "../images/time-head.jpg";
-import google from "../images/google_icon.png";
+//import google from "../images/google_icon.png";
 
 const appId = process.env.REACT_APP_FB_APP_ID;
 const imageToBase64 = require("image-to-base64");
@@ -113,13 +113,7 @@ export default function Login(props) {
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
-    const emailChangeHandler = (event) => {
-        setEmail(event.target.value);
-    };
-    const passwordChangeHandler = (event) => {
-        setPassword(event.target.value);
-    };
-    const onSnackbarClose = (event) => {
+    const onSnackbarClose = () => {
         setShowSnackbar(false);
     };
     const loginUser = async (event) => {
@@ -172,7 +166,7 @@ export default function Login(props) {
                 console.error(error);
             });
     };
-
+/*
     const responseGoogle = async (response) => {
 
         const data = {
@@ -199,6 +193,7 @@ export default function Login(props) {
                 console.error(error);
             });
     };
+*/
 
     return (
         <div>
@@ -246,7 +241,7 @@ export default function Login(props) {
                                 name="email"
                                 type="email"
                                 value={email}
-                                onChange={emailChangeHandler}
+                                onChange={e => setEmail(e.target.value)}
                                 autoComplete="email"
                                 autoFocus
                             />
@@ -261,7 +256,7 @@ export default function Login(props) {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                onChange={passwordChangeHandler}
+                                onChange={e => setPassword(e.target.value)}
                             />
                             <FormControlLabel
                                 control={
